@@ -49,6 +49,8 @@ function onCreatePost()
     setProperty('iconP1.visible', false)
     setProperty('iconP2.visible', false)
     setProperty('scoreTxt.visible', false)
+    setProperty('timeBar.visible', false)
+    setProperty('timeTxt.visible', false)
 
     setProperty('showRating', false)
     setProperty('showComboNum', false)
@@ -84,6 +86,9 @@ function onEvent(name, value1, value2, strumTime)
         if value1 == '-alt' then
             runTimer('correctHeadY', 1.1)
             setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 115)
+        else
+            setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 88)
+            setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 120)
         end
         debugPrint('puke' .. value1)
     end
