@@ -1,6 +1,8 @@
 --luaDebugMode = true
 
 function onCreate()
+    setProperty('skipCountdown', true)
+
     makeAnimatedLuaSprite('goldPukeBody', 'characters/gold/gold_puke', getProperty('dad.x') + 57, getProperty('dad.y') - 73)
     addAnimationByPrefix('goldPukeBody', 'puke', 'body', 24, false)
     scaleObject('goldPukeBody', 1.13, 1.13)
@@ -17,6 +19,9 @@ end
 
 function onCreatePost()
     removeLuaScript('scripts/camFollow')
+
+    setProperty('camFollowPos.x', -456.5)
+    setProperty('camFollowPos.y', -47.25)
 
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
