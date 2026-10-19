@@ -1,0 +1,13 @@
+[
+	{
+		"save": "mechanics",
+		"name": "Mechanics: ",
+		"type": "string",
+		"description": "Hell mode increases the difficulty,\nBaby mode disables all mechanics.",
+		"value": "Normal",
+		"format": "%v",
+
+		"options": ["Normal", "Hell", "Baby"]
+	}
+]
+

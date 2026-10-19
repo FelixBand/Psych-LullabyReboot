@@ -1,0 +1,6 @@
+{
+	"name": "Hypno's Lullaby REBOOT",
+	"description": "A Psych Online compatible port by FelixBand.",
+	"restart":false,
+	"color": [170, 0, 255]
+}
