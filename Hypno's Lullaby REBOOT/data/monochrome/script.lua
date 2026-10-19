@@ -1,4 +1,15 @@
---luaDebugMode = true
+luaDebugMode = true
+
+local function getPlaysAsBF()
+    if type(_G.playsAsBF) == "function" then
+        local result = _G.playsAsBF()
+        if result ~= nil then
+            return result
+        end
+    end
+    
+    return true
+end
 
 function onCreate()
     setProperty('skipCountdown', true)
@@ -27,9 +38,9 @@ function onCreatePost()
     setProperty('gfGroup.visible', false)
     triggerEvent('Camera Follow Pos', '183', '312')
 
-    debugPrint(playsAsBF())
+    debugPrint(getPlaysAsBF())
 
-    if playsAsBF() then
+    if getPlaysAsBF() then
         for i = 0,getProperty('opponentStrums.length') - 1 do
             setPropertyFromGroup('opponentStrums', i, 'x', -5000)
         end
