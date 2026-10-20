@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:4b4c47770a0f2f393fb84114fc04a7c8:95ea23bb49f6df1524fd14958c7b7732:1baa436e12ec4c96a4aca322c2f1d097$ -->
+<TextureAtlas imagePath="jumpscare.png" width="5763" height="2031">
+    <SubTexture name="buildup0000" x="5229" y="1" width="533" height="659" frameX="-1142" frameY="-115" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0001" x="4070" y="1" width="529" height="735" frameX="-1176" frameY="-137" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0002" x="5229" y="1185" width="526" height="661" frameX="-1213" frameY="-165" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0003" x="1" y="1" rotated="true" width="796" height="937" frameX="-175" frameY="-35" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0004" x="799" y="1" rotated="true" width="800" height="917" frameX="-63" frameY="-130" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0005" x="1654" y="893" rotated="true" width="791" height="872" frameX="-22" frameY="-152" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0006" x="1601" y="1" width="869" height="890" frameX="-522" frameY="-287" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0007" x="807" y="920" width="845" height="908" frameX="-550" frameY="-326" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="buildup0008" x="1" y="940" width="804" height="924" frameX="-594" frameY="-357" frameWidth="1778" frameHeight="1281"/>
+    <SubTexture name="jumpscare0000" x="4095" y="1426" width="588" height="604" frameX="-239" frameY="-238" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0001" x="2447" y="893" width="850" height="856" frameX="-26" frameY="-6" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0002" x="3270" y="1" rotated="true" width="798" height="801" frameX="-59" frameY="-50" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0003" x="2472" y="1" rotated="true" width="796" height="805" frameX="-56" frameY="-51" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0004" x="3299" y="804" width="778" height="783" frameX="-73" frameY="-88" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0005" x="4079" y="738" width="644" height="686" frameX="-145" frameY="-167" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0006" x="4601" y="1" width="626" height="677" frameX="-187" frameY="-263" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0007" x="4685" y="1426" rotated="true" width="542" height="545" frameX="-319" frameY="-380" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0008" x="5229" y="662" width="532" height="521" frameX="-421" frameY="-426" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0009" x="3299" y="1589" rotated="true" width="449" height="441" frameX="-576" frameY="-374" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0010" x="4725" y="680" rotated="true" width="465" height="328" frameX="-671" frameY="-276" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0011" x="3750" y="1589" width="343" height="395" frameX="-643" frameY="-188" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0012" x="2926" y="1751" rotated="true" width="311" height="269" frameX="-523" frameY="-138" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0013" x="1654" y="1767" width="266" height="250" frameX="-351" frameY="-248" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0014" x="1922" y="1767" width="225" height="250" frameX="-299" frameY="-361" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0015" x="2149" y="1767" rotated="true" width="277" height="237" frameX="-353" frameY="-330" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0016" x="2428" y="1767" rotated="true" width="278" height="234" frameX="-383" frameY="-320" frameWidth="1034" frameHeight="960"/>
+    <SubTexture name="jumpscare0017" x="2708" y="1751" width="216" height="274" frameX="-390" frameY="-324" frameWidth="1034" frameHeight="960"/>
+</TextureAtlas>

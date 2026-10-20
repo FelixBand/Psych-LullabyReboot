@@ -44,7 +44,7 @@
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/gold/goldp1-alt",
-	"position": [-190, -165],
+	"position": [-190.5, -168],
 	"healthicon": "dad",
 	"flip_x": false,
 	"healthbar_colors": [175, 102, 206],

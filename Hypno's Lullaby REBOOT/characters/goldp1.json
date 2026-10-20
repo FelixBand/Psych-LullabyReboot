@@ -1,15 +1,54 @@
 {
 	"animations": [
 		{
-			"offsets": [150, -44],
-			"indices": [],
-			"fps": 24,
-			"anim": "singLEFT",
 			"loop": false,
-			"name": "mono_left"
+			"offsets": [
+				150,
+				-44
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "mono_left",
+			"indices": []
 		},
 		{
-			"offsets": [34, 40],
+			"loop": false,
+			"offsets": [
+				1,
+				-42
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "mono_down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				83,
+				337
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "mono_up",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "mono_idle",
+			"indices": []
+		},
+		{
+			"offsets": [
+				33,
+				40
+			],
 			"indices": [],
 			"fps": 24,
 			"anim": "singRIGHT",
@@ -17,39 +56,46 @@
 			"name": "mono_right"
 		},
 		{
-			"offsets": [1, -42],
-			"indices": [],
+			"offsets": [
+				33,
+				40
+			],
+			"indices": [
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21
+			],
 			"fps": 24,
-			"anim": "singDOWN",
+			"anim": "jumpscareEnd",
 			"loop": false,
-			"name": "mono_down"
-		},
-		{
-			"offsets": [83, 337],
-			"indices": [],
-			"fps": 24,
-			"anim": "singUP",
-			"loop": false,
-			"name": "mono_up"
-		},
-		{
-			"offsets": [0, 0],
-			"indices": [],
-			"fps": 24,
-			"anim": "idle",
-			"loop": true,
-			"name": "mono_idle"
+			"name": "mono_right"
 		}
 	],
 	"vocals_file": "",
+	"results_character": null,
 	"no_antialiasing": false,
 	"image": "characters/gold/goldp1",
-	"position": [-270, -120],
+	"position": [
+		-270,
+		-120
+	],
+	"speaker": null,
 	"healthicon": "dad",
 	"flip_x": false,
-	"healthbar_colors": [175, 102, 206],
-	"camera_position": [0, 0],
+	"healthbar_colors": [
+		175,
+		102,
+		206
+	],
+	"camera_position": [
+		0,
+		0
+	],
 	"sing_duration": 8,
-	"scale": 1,
-	"_editor_isPlayer": false
+	"dead_character": null,
+	"scale": 1
 }

@@ -26,6 +26,15 @@ function onCreate()
     scaleObject('goldPukeHead', 1.13, 1.13)
     setProperty('goldPukeHead.alpha', 0.0001)
     addLuaSprite('goldPukeHead', true)
+
+    makeAnimatedLuaSprite('jumpscareP1', 'characters/gold/jumpscarep1', 70, -60)
+    addAnimationByPrefix('jumpscareP1', 'triple0', 'triple_first', 24, false)
+    addAnimationByPrefix('jumpscareP1', 'triple1', 'triple_second', 24, false)
+    addAnimationByPrefix('jumpscareP1', 'jump', 'jumpscare', 24, false)
+    setObjectCamera('jumpscareP1', 'other')
+    scaleObject('jumpscareP1', 1, 1)
+    setProperty('jumpscareP1.alpha', 0.0001)
+    addLuaSprite('jumpscareP1', true)
 end
 
 function onCreatePost()
@@ -92,6 +101,12 @@ function onEvent(name, value1, value2, strumTime)
         end
         debugPrint('puke' .. value1)
     end
+    if name == 'Jumpscare' then
+        playAnim('jumpscareP1', 'jump', true)
+        setProperty('jumpscareP1.alpha', 1)
+        setProperty('dadGroup.visible', false)
+        runTimer('jumpscareEnd', 1.85)
+    end
 end
 
 function onTimerCompleted(tag, loops, loopsLeft)
@@ -99,6 +114,11 @@ function onTimerCompleted(tag, loops, loopsLeft)
         setProperty('dadGroup.visible', true)
         setProperty('goldPukeBody.alpha', 0)
         setProperty('goldPukeHead.alpha', 0)
+    end
+    if tag == 'jumpscareEnd' then
+        setProperty('dadGroup.visible', true)
+        triggerEvent('Play Animation', 'jumpscareEnd', 'dad')
+        setProperty('jumpscareP1.alpha', 0)
     end
     if tag == 'correctHeadY' then
         setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
