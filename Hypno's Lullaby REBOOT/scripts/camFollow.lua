@@ -1,4 +1,4 @@
-local move = 20 --Pixel To Move
+local move = 5 --Pixel To Move
 
 local c = {
     on = true,

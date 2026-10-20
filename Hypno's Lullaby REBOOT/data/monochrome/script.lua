@@ -44,8 +44,6 @@ function onCreate()
 end
 
 function onCreatePost()
-    removeLuaScript('scripts/camFollow')
-
     setProperty('camFollowPos.x', -456.5)
     setProperty('camFollowPos.y', -47.25)
 

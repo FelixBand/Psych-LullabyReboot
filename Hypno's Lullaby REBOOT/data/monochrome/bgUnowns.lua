@@ -1,11 +1,30 @@
--- This spaghetti is going in a separate script
+-- Monochrome background eyes, rendered on their OWN camera ("camBG") that sits
+-- BEHIND camGame. Because camBG never zooms or scrolls, the eyes are plain
+-- screen-space sprites now: no more compensating for camGame zoom / position.
+--
+-- Compatibility: only uses Lua callbacks that exist in Psych Engine 0.7.x / 1.0 /
+-- Psych Online, plus runHaxeCode (for the camera itself, since Lua has no
+-- "make camera" function). Needs no engine edits.
 
+-- ===== config =============================================================
+local CAM_NAME = 'camBG'      -- other scripts can reuse it: setObjectCamera(tag, 'camBG')
+local EYE_SCALE = 2 / 3
+-- Scale of the whole eye field (eyes, spacing, bloom) about the screen centre.
+-- 1 = as authored, bigger = spreads out / fills more of the screen.
+-- Done in this script's own maths rather than FlxCamera.zoom, so it can't be overridden.
+local CAM_SCALE = 1.6
+-- Extra shift applied before scaling (0 = centred).
+local OFFSET_X = 0
+local OFFSET_Y = 0
+local PARALLAX = 0.2          -- how much camGame scrolling nudges the eyes (0 = locked to screen)
+
+-- ===== state ==============================================================
 local bgUnowns = {}
-local eyeScale = 2 / 3
 local referenceScrollX = 0
 local referenceScrollY = 0
 local hasReferenceScroll = false
 local eyesBlackened = false
+
 local eyeVisibleKeys = {
     {91.541664, true}, {92.958336, false}, {151.91667, true}, {205.375, false},
     {232.41667, true}, {241.0, false}, {242.08333, true}, {266.54166, false}, {330.04166, true},
@@ -13,6 +32,7 @@ local eyeVisibleKeys = {
 local eyeProgressTimes = {0, 91.541664, 91.833336, 92.66667, 93.083336, 151.9167, 232.41667, 232.5, 233.04167, 233.41667, 236.70834, 236.79167, 237.41667, 237.75002, 249.83336, 249.91669, 250.54169, 250.87503, 329.58334, 330.04166, 362.5417, 382.09}
 local eyeProgressValues = {0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1}
 
+-- ===== timeline helpers ===================================================
 local function getBgEyeProgress(songTime)
     for i = 1, #eyeProgressTimes - 1 do
         local startTime = eyeProgressTimes[i]
@@ -37,9 +57,49 @@ local function areBgEyesVisible(songTime)
     return visible
 end
 
-function onCreate()
-    -- Authored Monochrome background eyes: depth, rect x/y/size, wobble amount/speed/angle/side, eye variant.
-    local bgEyeData = [[1,540.698,540.680,78.082,78.087,12.445,0.361,349.710,0.409,0
+-- ===== the new camera =====================================================
+-- Creates (once) a camera drawn behind camGame and registers it as getVar(CAM_NAME),
+-- which is also what setObjectCamera(tag, 'camBG') looks up on newer engines.
+-- Safe to run from several scripts: whoever gets there first creates it.
+local function ensureBGCamera()
+    addHaxeLibrary('FlxG', 'flixel')
+    addHaxeLibrary('FlxCamera', 'flixel')
+    local ok = runHaxeCode([=[
+        if (getVar(camName) == null) {
+            var cam = new FlxCamera();
+            setVar(camName, cam);              // register first so later steps can't lose it
+            cam.bgColor = 0xFF000000;          // solid black backdrop
+            FlxG.cameras.add(cam, false);      // appended on top, not a default target
+            // ...then move it to the very back of the draw order
+            FlxG.cameras.list.remove(cam);
+            FlxG.cameras.list.insert(0, cam);
+            for (i in 0...FlxG.cameras.list.length) FlxG.cameras.list[i].ID = i;
+            // camGame must be see-through or it would paint over camBG
+            game.camGame.bgColor = 0x00000000;
+        }
+        return getVar(camName) != null;
+    ]=], {camName = CAM_NAME})
+    debugPrint('[monochrome_bg_eyes] camBG ready: ' .. tostring(ok))
+end
+
+-- Points the given Lua sprite tags at camBG (works on engines where
+-- setObjectCamera can't resolve custom cameras).
+local function moveToBGCamera(tags)
+    local moved = runHaxeCode([=[
+        var cam = getVar(camName);
+        var n = 0;
+        for (t in tags) {
+            var s = game.getLuaObject(t);
+            if (s != null && cam != null) { s.cameras = [cam]; n++; }
+        }
+        return n;
+    ]=], {camName = CAM_NAME, tags = tags})
+    debugPrint('[monochrome_bg_eyes] sprites moved to camBG: ' .. tostring(moved) .. ' / ' .. #tags)
+end
+
+-- ===== eye data ===========================================================
+-- Authored Monochrome background eyes: depth, rect x/y/size, wobble amount/speed/angle/side, eye variant.
+local bgEyeData = [[1,540.698,540.680,78.082,78.087,12.445,0.361,349.710,0.409,0
 1,1823.830,104.929,54.046,54.038,14.706,0.720,292.796,0.254,0
 1,435.888,515.646,49.263,49.228,5.667,0.433,251.367,0.194,0
 1,733.829,585.286,45.701,45.700,5.762,0.468,80.888,0.282,0
@@ -166,8 +226,14 @@ function onCreate()
 3,1044.071,863.755,46.059,46.013,8.357,0.510,327.537,0.398,2
 3,828.238,1009.667,54.522,54.662,8.530,0.240,96.747,0.167,2
 3,33.128,93.462,76.154,76.157,15.376,0.589,301.010,0.332,2]]
-    local eyeFill = {[0] = 0.18, [1] = 0.38, [2] = 1.0}
+
+local eyeFill = {[0] = 0.18, [1] = 0.38, [2] = 1.0}
+local bloomVariantScale = {[0] = 0.395, [1] = 0.65, [2] = 1.325}
+
+function onCreate()
+    ensureBGCamera()
     bgUnowns = {}
+    local tags = {}
 
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
@@ -177,31 +243,48 @@ function onCreate()
 
         local depth, x, y, width, height = values[1], values[2], values[3], values[4], values[5]
         local fill = eyeFill[values[10]] or 0.5
-        local spriteWidth = width * eyeScale * fill
-        local spriteHeight = height * eyeScale * fill
+        local spriteWidth = width * EYE_SCALE * fill
+        local spriteHeight = height * EYE_SCALE * fill
         local tag = "mono-bg-unown-" .. (#bgUnowns + 1)
+        local bloomTag = tag .. "-bloom"
 
-        makeLuaSprite(tag, "monochrome/unown_particle", (x * eyeScale) + ((width * eyeScale - spriteWidth) / 2), (y * eyeScale) + ((height * eyeScale - spriteHeight) / 2))
+        makeLuaSprite(bloomTag, "monochrome/unown_particle_bloom", 0, 0)
+        setScrollFactor(bloomTag, 0, 0)
+        setProperty(bloomTag .. ".alpha", 0)
+        addLuaSprite(bloomTag, false)
+
+        makeLuaSprite(tag, "monochrome/unown_particle", 0, 0)
         scaleObject(tag, spriteWidth / 134, spriteHeight / 134)
-        setScrollFactor(tag, depth * 0.2, depth * 0.2)
+        setScrollFactor(tag, 0, 0)
         setProperty(tag .. ".alpha", 0)
         addLuaSprite(tag, false)
 
+        tags[#tags + 1] = bloomTag
+        tags[#tags + 1] = tag
+
         bgUnowns[#bgUnowns + 1] = {
             tag = tag,
-            x = x * eyeScale,
-            y = y * eyeScale,
-            width = width * eyeScale,
-            height = height * eyeScale,
-            amount = values[6] * eyeScale,
+            bloomTag = bloomTag,
+            x = x * EYE_SCALE,
+            y = y * EYE_SCALE,
+            width = width * EYE_SCALE,
+            height = height * EYE_SCALE,
+            amount = values[6] * EYE_SCALE,
             speed = values[7],
             direction = math.rad(values[8]),
             side = values[9],
             fill = fill,
+            variantScale = bloomVariantScale[values[10]] or 1.0,
             depth = depth,
         }
     end
+
+    moveToBGCamera(tags)
 end
+
+-- scale a top-left screen position about the screen centre
+local function fx(x) return screenWidth / 2 + (x - screenWidth / 2) * CAM_SCALE end
+local function fy(y) return screenHeight / 2 + (y - screenHeight / 2) * CAM_SCALE end
 
 function onUpdate(elapsed)
     if #bgUnowns == 0 then return end
@@ -213,9 +296,10 @@ function onUpdate(elapsed)
     end
 
     local songTime = getSongPosition() / 1000 + 1
-    local zoom = math.max(0.001, getProperty('camGame.zoom'))
-    local cameraX = getProperty('camGame.x') + 270
-    local cameraY = getProperty('camGame.y') + 150
+    local zoom = getProperty('camGame.zoom')
+    local scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
+    local scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
+
     local movementSpeed = 1
     if songTime >= 366.54166 then
         movementSpeed = 0
@@ -254,12 +338,25 @@ function onUpdate(elapsed)
 
         local screenX = eye.x + ((eye.width - width) / 2) + (wobbleX * eye.amount * intensity)
         local screenY = eye.y + ((eye.height - height) / 2) + (wobbleY * eye.amount * intensity)
-        local scrollX = referenceScrollX * eye.depth * 0.2
-        local scrollY = referenceScrollY * eye.depth * 0.2
+        local centerX = screenX + (width / 2)
+        local centerY = screenY + (height / 2)
 
-        setProperty(eye.tag .. '.x', ((screenX - cameraX) / zoom) + scrollX)
-        setProperty(eye.tag .. '.y', ((screenY - cameraY) / zoom) + scrollY)
-        scaleObject(eye.tag, (width / 134) / zoom, (height / 134) / zoom)
+        -- camBG never zooms/scrolls, so these are final screen positions.
+        local parX = scrollDX * eye.depth * PARALLAX * zoom + OFFSET_X
+        local parY = scrollDY * eye.depth * PARALLAX * zoom + OFFSET_Y
+
+        setProperty(eye.tag .. '.x', fx(screenX + parX))
+        setProperty(eye.tag .. '.y', fy(screenY + parY))
+        scaleObject(eye.tag, width / 134 * CAM_SCALE, height / 134 * CAM_SCALE)
         setProperty(eye.tag .. '.alpha', alpha)
+
+        local bloomWidth = math.max(eye.width, eye.height) * 3 * eye.variantScale
+        local bloomScale = bloomWidth / 1280
+        local bloomHeight = 720 * (bloomWidth / 1280) * 0.44
+        setProperty(eye.bloomTag .. '.x', fx(centerX - (bloomWidth / 2) + parX))
+        setProperty(eye.bloomTag .. '.y', fy(centerY - (bloomHeight * 0.85) + parY))
+        scaleObject(eye.bloomTag, bloomScale * CAM_SCALE, bloomScale * 0.44 * CAM_SCALE)
+        setProperty(eye.bloomTag .. '.angle', math.deg(math.atan2(360 - centerY, 640 - centerX)))
+        setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or alpha)
     end
 end
