@@ -151,9 +151,6 @@ function onEvent(name, value1, value2, strumTime)
             jumpscare(tonumber(value1))
         end
     end
-    if name == 'no more' then
-        
-    end
 end
 
 function onTimerCompleted(tag, loops, loopsLeft)

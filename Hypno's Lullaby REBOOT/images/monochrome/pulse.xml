@@ -19,4 +19,23 @@
     <SubTexture name="pulse0014" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
     <SubTexture name="pulse0015" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
     <SubTexture name="pulse0016" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0017" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0018" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0019" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0020" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0021" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0022" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0023" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0024" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0025" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0026" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0027" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0028" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0029" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0030" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0031" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0032" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0033" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0034" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="pulse0035" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
 </TextureAtlas>

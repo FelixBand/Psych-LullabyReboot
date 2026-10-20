@@ -12,7 +12,7 @@ local EYE_SCALE = 2 / 3
 -- Scale of the whole eye field (eyes, spacing, bloom) about the screen centre.
 -- 1 = as authored, bigger = spreads out / fills more of the screen.
 -- Done in this script's own maths rather than FlxCamera.zoom, so it can't be overridden.
-local CAM_SCALE = 1.6
+local CAM_SCALE = 1.5
 -- Extra shift applied before scaling (0 = centred).
 local OFFSET_X = 0
 local OFFSET_Y = 0
@@ -25,36 +25,98 @@ local referenceScrollY = 0
 local hasReferenceScroll = false
 local eyesBlackened = false
 
-local eyeVisibleKeys = {
-    {91.541664, true}, {92.958336, false}, {151.91667, true}, {205.375, false},
-    {232.41667, true}, {241.0, false}, {242.08333, true}, {266.54166, false}, {330.04166, true},
-}
 local eyeProgressTimes = {0, 91.541664, 91.833336, 92.66667, 93.083336, 151.9167, 232.41667, 232.5, 233.04167, 233.41667, 236.70834, 236.79167, 237.41667, 237.75002, 249.83336, 249.91669, 250.54169, 250.87503, 329.58334, 330.04166, 362.5417, 382.09}
 local eyeProgressValues = {0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1}
+local eyeProgressTransitions = {1, 0.5, 1, 0.5, 0, 0, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 2, 1}
+local eyeHoldTimes = {0, 151.91667, 232.41667, 233.04167, 233.41667, 236.70834, 236.95833, 237.33334, 237.70834, 249.83336, 250.08334, 250.45836, 250.83336, 265.625, 266.54166, 329.95834, 330.04166}
+local eyeHoldValues = {0, 0, 0, 0, 0.5, 0.5, 1, 1, 0.75, 0.75, 1, 1, 1, 1, 0, 0, 1}
+local eyeHoldTransitions = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1}
+local eyeStaggerTimes = {0, 91.541664, 232.375}
+local eyeStaggerValues = {0.65, 0.561, 0.706}
+local eyeVisibleTimes = {0, 91.541664, 92.958336, 151.91667, 205.375, 232.41667, 241, 242.08333, 266.54166, 330.04166}
+local eyeVisibleValues = {false, true, false, true, false, true, false, true, false, true}
+local eyeFadeEvents = {}
+for _, times in ipairs({eyeProgressTimes, eyeHoldTimes, eyeStaggerTimes, eyeVisibleTimes}) do
+    for _, time in ipairs(times) do
+        if time > 0 then eyeFadeEvents[#eyeFadeEvents + 1] = time end
+    end
+end
+table.sort(eyeFadeEvents)
+for i = #eyeFadeEvents, 2, -1 do
+    if math.abs(eyeFadeEvents[i] - eyeFadeEvents[i - 1]) < 0.001 then
+        table.remove(eyeFadeEvents, i)
+    end
+end
+local nextEyeFadeEvent = 1
+local pulseEventData = [[
+152.00000p 153.62500r 153.83333r 154.04167r 154.25000r 154.45833r 154.66667r 154.87500r 155.08333r 155.29167r 155.50000r 155.70834r 155.91667r 156.12500r 156.33334r 156.54167r
+156.75000r 156.95833r 157.16666r 157.37500r 157.58333r 157.79166r 158.00000r 158.20833r 158.41666r 158.62500r 158.83333r 159.04167r 159.25000r 159.45833r 159.66667r 159.87500r
+160.08333r 160.29167r 160.50000r 160.70834r 160.91667r 161.12500r 161.33334r 161.54167r 161.75000r 161.95834r 162.37502r 162.58334r 162.79167r 163.00002r 163.20834r 163.41667r
+163.62500r 163.83333r 164.04166r 164.25000r 164.45833r 164.66666r 164.87500r 165.08333r 165.29166r 165.50000r 165.70833r 165.91666r 166.12500r 166.33333r 166.54167r 166.75000r
+166.95833r 167.16666r 167.37498r 167.58331r 167.79166r 167.99998r 168.20831r 168.41666r 168.62498r 168.83331r 169.04166r 169.24998r 169.45831r 169.66667r 169.87500r 170.08334r
+170.29167r 170.50000r 170.70833r 170.91666r 171.12500p 175.50000p 177.73209r 177.95833r 178.20834r 178.45834r 178.68459r 178.91667r 179.16667r 179.39291r 179.62500r 179.83333p
+188.70833p 195.16667q 195.66544q 196.16667q 199.54167p 200.58333p 201.66667p 202.70834p 203.79167p 204.87500p 205.91666p 207.00000p 208.12500p 209.20833p 210.33333p 211.37498p
+212.45833p 213.50000p 214.75000r 214.95834r 215.16667r 215.37500r 215.58334r 215.79167r 216.00000r 223.62500p 224.66667p 225.75000p 226.83333p 227.93124p 229.04167p 230.12500p
+231.50000q 231.75000q 232.04167q 233.37500p 237.87500q 238.20833r 238.41667r 238.91667q 239.25000r 239.45834r 239.95834q 240.29167r 240.50002r 241.91667p 243.04167p 244.12500p
+245.29167p 246.41667p 247.54167p 248.83334r 249.00000r 249.20833r 249.41667r 249.58333p 251.31033p 253.54167r 253.75000r 253.91667r 254.04167p 255.08333p 256.12500p 257.25000p
+258.33334p 259.45834p 260.58334p 261.70834p 266.04166p 331.08334q 331.66666q 332.29166q 332.87500q 333.45834q 334.04170q 334.62500q 335.79166q 336.37500q 336.91666q 337.45834q
+338.04166q 338.62500q 339.20834q 339.79166q 340.37500q 340.95830q 341.54166q 342.12497q 342.74997q 344.37503q 344.95834q 345.54170q 346.12500q 346.70834q 348.62503r 348.83334r
+349.04170r 349.25000r 349.45834r 349.66670r 349.87500r 350.08334r 350.29170r 350.50000r 350.70834r 350.91670r 351.12500r 351.33334r 351.54170r 351.75000r 351.95834r 352.16670r
+352.37500r 352.58334r 352.79170r 353.00000r 353.20834r 353.41670r 353.62500r 353.83334r 354.04170r 354.25000r 354.45834r 354.66670r 354.87500r 355.08334r 355.29170r 355.50000r
+355.70834r 355.91670r 356.12500r 356.54170r 356.95834r 357.16666r 357.37500r 357.79170r 358.00000r 358.20834r 358.41670r 358.62500r 358.83334r 359.04170r 359.25000r 359.45834r
+359.66670r 359.87500r 360.08334r 360.29170r 360.50000r 360.70834r 360.91670r 361.12500r 361.33334r 361.54170r 361.75000r 361.95834r 362.16670r 362.37500r 362.58334r 362.79170r
+363.00000r
+]]
+local pulseAnimations = {p = "pulse", q = "pulse_quick", r = "pulse_quicker"}
+local pulseEvents = {}
+for event in pulseEventData:gmatch("%S+") do
+    local time, animation = event:match("^([%d%.]+)([pqr])$")
+    pulseEvents[#pulseEvents + 1] = {tonumber(time), pulseAnimations[animation]}
+end
+local nextPulseEvent = 1
 
 -- ===== timeline helpers ===================================================
-local function getBgEyeProgress(songTime)
-    for i = 1, #eyeProgressTimes - 1 do
-        local startTime = eyeProgressTimes[i]
-        local endTime = eyeProgressTimes[i + 1]
-        if songTime <= endTime then
-            local startValue = eyeProgressValues[i]
-            local endValue = eyeProgressValues[i + 1]
-            if startValue == endValue then return startValue end
-            local t = math.max(0, math.min(1, (songTime - startTime) / (endTime - startTime)))
-            return startValue + (endValue - startValue) * t
+local function getTimelineValue(times, values, transitions, songTime, step)
+    if songTime <= times[1] then return values[1] end
+    for i = 1, #times - 1 do
+        if songTime < times[i + 1] then
+            if step then return values[i] end
+            local t = math.max(0, math.min(1, (songTime - times[i]) / (times[i + 1] - times[i])))
+            local transition = transitions and transitions[i] or 1
+            if transition == 0 then
+                t = 0
+            elseif transition < 1 then
+                t = 1 - (1 - t) ^ (1 / transition)
+            else
+                t = t ^ transition
+            end
+            return values[i] + (values[i + 1] - values[i]) * t
         end
     end
-    return eyeProgressValues[#eyeProgressValues]
+    return values[#values]
 end
 
-local function areBgEyesVisible(songTime)
-    local visible = false
-    for i = 1, #eyeVisibleKeys do
-        if songTime < eyeVisibleKeys[i][1] then break end
-        visible = eyeVisibleKeys[i][2]
+local function getEyeTimelineState(songTime)
+    return {
+        progress = getTimelineValue(eyeProgressTimes, eyeProgressValues, eyeProgressTransitions, songTime),
+        holdProgress = getTimelineValue(eyeHoldTimes, eyeHoldValues, eyeHoldTransitions, songTime),
+        staggerAmount = getTimelineValue(eyeStaggerTimes, eyeStaggerValues, nil, songTime, true),
+        visible = getTimelineValue(eyeVisibleTimes, eyeVisibleValues, nil, songTime, true),
+    }
+end
+
+local function getEyeAlphaAt(eyeIndex, state)
+    if not state.visible then return 0 end
+    local staggerIndex = (eyeIndex - 1) / math.max(#bgUnowns - 1, 1)
+
+    local function staggeredProgress(value)
+        local start = staggerIndex * state.staggerAmount
+        local finish = start + (1 - state.staggerAmount)
+        local t = math.max(0, math.min(1, (value - start) / (finish - start)))
+        return t * t * (3 - 2 * t)
     end
-    return visible
+
+    return math.max(staggeredProgress(state.progress), staggeredProgress(state.holdProgress))
 end
 
 -- ===== the new camera =====================================================
@@ -229,12 +291,23 @@ local bgEyeData = [[1,540.698,540.680,78.082,78.087,12.445,0.361,349.710,0.409,0
 
 local eyeFill = {[0] = 0.18, [1] = 0.38, [2] = 1.0}
 local bloomVariantScale = {[0] = 0.395, [1] = 0.65, [2] = 1.325}
+local EYE_FADE_DURATION = 0.18
 
 function onCreate()
     ensureBGCamera()
-
     bgUnowns = {}
     local tags = {}
+
+    -- Pulse: the source retriggers one of three authored frame rates at exact song times.
+    makeAnimatedLuaSprite('pulse', 'monochrome/pulse', -270, -270)
+    addAnimationByIndices('pulse', 'pulse', 'pulse', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 24, false)
+    addAnimationByIndices('pulse', 'pulse_quick', 'pulse', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 48, false)
+    addAnimationByIndices('pulse', 'pulse_quicker', 'pulse', '4,5,6,7,8,9,10,11,12,13,14,15,16', 72, false)
+    setScrollFactor('pulse', 0, 0)
+    scaleObject('pulse', 1.1, 1.1)
+    setProperty('pulse.alpha', 0)
+    addLuaSprite('pulse', false)
+    tags[#tags + 1] = 'pulse'
 
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
@@ -288,6 +361,16 @@ local function fx(x) return screenWidth / 2 + (x - screenWidth / 2) * CAM_SCALE 
 local function fy(y) return screenHeight / 2 + (y - screenHeight / 2) * CAM_SCALE end
 
 function onUpdate(elapsed)
+    setProperty('pulse.scale.x', 2.5 - (getProperty('camGame.zoom') * 2))
+    setProperty('pulse.scale.y', 2.5 - (getProperty('camGame.zoom') * 2))
+
+    local songTime = getSongPosition() / 1000 + 1
+    while nextPulseEvent <= #pulseEvents and pulseEvents[nextPulseEvent][1] <= songTime do
+        playAnim('pulse', pulseEvents[nextPulseEvent][2], true)
+        setProperty('pulse.alpha', 0.68235296)
+        nextPulseEvent = nextPulseEvent + 1
+    end
+
     if #bgUnowns == 0 then return end
 
     if not hasReferenceScroll then
@@ -296,7 +379,6 @@ function onUpdate(elapsed)
         hasReferenceScroll = true
     end
 
-    local songTime = getSongPosition() / 1000 + 1
     local zoom = getProperty('camGame.zoom')
     local scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
     local scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
@@ -308,14 +390,29 @@ function onUpdate(elapsed)
         movementSpeed = 2
     end
 
-    local progress = getBgEyeProgress(songTime)
-    local eyesVisible = areBgEyesVisible(songTime)
     local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272
     if eyesBlackened ~= shouldBlackenEyes then
         for i = 1, #bgUnowns do
             setProperty(bgUnowns[i].tag .. '.color', shouldBlackenEyes and getColorFromHex('000000') or getColorFromHex('FFFFFF'))
         end
         eyesBlackened = shouldBlackenEyes
+    end
+
+    local eyeTimeline = getEyeTimelineState(songTime)
+    while nextEyeFadeEvent <= #eyeFadeEvents and eyeFadeEvents[nextEyeFadeEvent] <= songTime do
+        local eventTime = eyeFadeEvents[nextEyeFadeEvent]
+        local beforeState = getEyeTimelineState(math.max(0, eventTime - 0.002))
+        local afterState = getEyeTimelineState(eventTime + 0.002)
+        for i = 1, #bgUnowns do
+            local beforeAlpha = getEyeAlphaAt(i, beforeState)
+            local targetAlpha = getEyeAlphaAt(i, afterState)
+            if math.abs(targetAlpha - beforeAlpha) > 0.02 then
+                local eye = bgUnowns[i]
+                eye.alphaTweening = true
+                doTweenAlpha('bgUnownFade-' .. i, eye.tag, targetAlpha, EYE_FADE_DURATION, 'sineInOut')
+            end
+        end
+        nextEyeFadeEvent = nextEyeFadeEvent + 1
     end
 
     local intensity = 1
@@ -325,11 +422,7 @@ function onUpdate(elapsed)
 
     for i = 1, #bgUnowns do
         local eye = bgUnowns[i]
-        local staggerStart = ((i - 1) / (#bgUnowns - 1)) * 0.884
-        local staggerEnd = staggerStart + 0.116
-        local stagger = math.max(0, math.min(1, (progress - staggerStart) / (staggerEnd - staggerStart)))
-        stagger = stagger * stagger * (3 - 2 * stagger)
-        local alpha = eyesVisible and stagger or 0
+        local alpha = getEyeAlphaAt(i, eyeTimeline)
         local time = songTime * movementSpeed * eye.speed
         local direction = eye.direction
         local side = eye.side
@@ -350,7 +443,9 @@ function onUpdate(elapsed)
         setProperty(eye.tag .. '.x', fx(screenX + parX))
         setProperty(eye.tag .. '.y', fy(screenY + parY))
         scaleObject(eye.tag, width / 134 * CAM_SCALE, height / 134 * CAM_SCALE)
-        setProperty(eye.tag .. '.alpha', alpha)
+        if not eye.alphaTweening then
+            setProperty(eye.tag .. '.alpha', alpha)
+        end
 
         local bloomWidth = math.max(eye.width, eye.height) * 3 * eye.variantScale
         local bloomScale = bloomWidth / 1280
@@ -359,6 +454,14 @@ function onUpdate(elapsed)
         setProperty(eye.bloomTag .. '.y', fy(centerY - (bloomHeight * 0.85) + parY))
         scaleObject(eye.bloomTag, bloomScale * CAM_SCALE, bloomScale * 0.44 * CAM_SCALE)
         setProperty(eye.bloomTag .. '.angle', math.deg(math.atan2(360 - centerY, 640 - centerX)))
-        setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or alpha)
+        local renderedAlpha = getProperty(eye.tag .. '.alpha')
+        setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or renderedAlpha)
+    end
+end
+
+function onTweenCompleted(tag)
+    local eyeIndex = tonumber(tag:match('^bgUnownFade%-(%d+)$'))
+    if eyeIndex and bgUnowns[eyeIndex] then
+        bgUnowns[eyeIndex].alphaTweening = false
     end
 end
