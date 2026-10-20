@@ -86,7 +86,7 @@ function onCreatePost()
     end
 end
 
-function onUpdate()
+function onUpdate(elapsed)
     setProperty('camZooming', false)
 end
 
@@ -147,7 +147,7 @@ function onEvent(name, value1, value2, strumTime)
         debugPrint('puke' .. value1)
     end
     if name == 'Jumpscare' then
-        if value1 ~= '' and value1 ~= '4' then
+        if value1 ~= '0' and value1 ~= '4' then
             tripleScare(tonumber(value1), 0.1)
         else
             jumpscare(tonumber(value1))
