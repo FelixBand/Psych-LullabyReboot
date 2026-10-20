@@ -232,6 +232,7 @@ local bloomVariantScale = {[0] = 0.395, [1] = 0.65, [2] = 1.325}
 
 function onCreate()
     ensureBGCamera()
+
     bgUnowns = {}
     local tags = {}
 
@@ -309,11 +310,12 @@ function onUpdate(elapsed)
 
     local progress = getBgEyeProgress(songTime)
     local eyesVisible = areBgEyesVisible(songTime)
-    if not eyesBlackened and songTime >= 92.958336 then
+    local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272
+    if eyesBlackened ~= shouldBlackenEyes then
         for i = 1, #bgUnowns do
-            setProperty(bgUnowns[i].tag .. '.color', '000000')
+            setProperty(bgUnowns[i].tag .. '.color', shouldBlackenEyes and getColorFromHex('000000') or getColorFromHex('FFFFFF'))
         end
-        eyesBlackened = true
+        eyesBlackened = shouldBlackenEyes
     end
 
     local intensity = 1
