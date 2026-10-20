@@ -30,6 +30,7 @@ function onCreate()
     makeAnimatedLuaSprite('jumpscareP1', 'characters/gold/jumpscarep1', 70, -60)
     addAnimationByPrefix('jumpscareP1', 'triple0', 'triple_first', 24, false)
     addAnimationByPrefix('jumpscareP1', 'triple1', 'triple_second', 24, false)
+    addAnimationByPrefix('jumpscareP1', 'jumpFaster', 'jumpscare', 30, false)
     addAnimationByPrefix('jumpscareP1', 'jump', 'jumpscare', 24, false)
     setObjectCamera('jumpscareP1', 'other')
     scaleObject('jumpscareP1', 1, 1)
@@ -84,6 +85,40 @@ function onUpdate()
     setProperty('camZooming', false)
 end
 
+local scareType = 0
+
+local function tripleScare(which, duration)
+    setProperty('camGame.visible', false)
+    setProperty('camHUD.visible', false)
+    setProperty('camOther.visible', false)
+    scareType = which
+    runTimer('darkFlashEnd', duration)
+end
+
+local function jumpscare(type)
+    setProperty('jumpscareP1.alpha', 1)
+    setProperty('dadGroup.visible', false)
+    if type == 1 then
+        setProperty('jumpscareP1.x', 680)
+        setProperty('jumpscareP1.y', 50)
+        playAnim('jumpscareP1', 'triple0', true)
+    elseif type == 2 then
+        setProperty('jumpscareP1.x', -100)
+        setProperty('jumpscareP1.y', 100)
+        playAnim('jumpscareP1', 'triple1', true)
+    elseif type == 3 then
+        setProperty('jumpscareP1.x', 70)
+        setProperty('jumpscareP1.y', -60)
+        playAnim('jumpscareP1', 'jumpFaster', true)
+        runTimer('jumpscareEnd', 1.48)
+    else
+        setProperty('jumpscareP1.x', 70)
+        setProperty('jumpscareP1.y', -60)
+        playAnim('jumpscareP1', 'jump', true)
+        runTimer('jumpscareEnd', 1.85)
+    end
+end
+
 function onEvent(name, value1, value2, strumTime)
     if name == 'Puke' then
         runTimer('pukeEnd', 2.15)
@@ -102,14 +137,23 @@ function onEvent(name, value1, value2, strumTime)
         debugPrint('puke' .. value1)
     end
     if name == 'Jumpscare' then
-        playAnim('jumpscareP1', 'jump', true)
-        setProperty('jumpscareP1.alpha', 1)
-        setProperty('dadGroup.visible', false)
-        runTimer('jumpscareEnd', 1.85)
+        if value1 ~= '' then
+            tripleScare(tonumber(value1), 0.1)
+        else
+            jumpscare(0)
+        end
     end
 end
 
 function onTimerCompleted(tag, loops, loopsLeft)
+    if tag == 'darkFlashEnd' then
+        setProperty('camGame.visible', true)
+        setProperty('camHUD.visible', true)
+        setProperty('camOther.visible', true)
+
+        jumpscare(scareType)
+    end
+
     if tag == 'pukeEnd' then
         setProperty('dadGroup.visible', true)
         setProperty('goldPukeBody.alpha', 0)
