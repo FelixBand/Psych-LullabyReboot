@@ -27,6 +27,11 @@ function onCreate()
     setProperty('goldPukeHead.alpha', 0.0001)
     addLuaSprite('goldPukeHead', true)
 
+    makeAnimatedLuaSprite('headrip', 'characters/gold/head_rip', (getProperty('dad.x') - 357) + 50, getProperty('dad.y') - 370)
+    addAnimationByPrefix('headrip', 'rip', 'mono_head_rip', 24, false)
+    setProperty('headrip.alpha', 0.0001)
+    addLuaSprite('headrip', true)
+
     makeAnimatedLuaSprite('jumpscareP1', 'characters/gold/jumpscarep1', 70, -60)
     addAnimationByPrefix('jumpscareP1', 'triple0', 'triple_first', 24, false)
     addAnimationByPrefix('jumpscareP1', 'triple1', 'triple_second', 24, false)
@@ -111,6 +116,11 @@ local function jumpscare(type)
         setProperty('jumpscareP1.y', -60)
         playAnim('jumpscareP1', 'jumpFaster', true)
         runTimer('jumpscareEnd', 1.48)
+    elseif type == 4 then
+        setProperty('jumpscareP1.x', 70)
+        setProperty('jumpscareP1.y', -60)
+        playAnim('jumpscareP1', 'jump', true)
+        runTimer('startP2', 1.85)
     else
         setProperty('jumpscareP1.x', 70)
         setProperty('jumpscareP1.y', -60)
@@ -137,11 +147,14 @@ function onEvent(name, value1, value2, strumTime)
         debugPrint('puke' .. value1)
     end
     if name == 'Jumpscare' then
-        if value1 ~= '' then
+        if value1 ~= '' and value1 ~= '4' then
             tripleScare(tonumber(value1), 0.1)
         else
-            jumpscare(0)
+            jumpscare(tonumber(value1))
         end
+    end
+    if name == 'no more' then
+        
     end
 end
 
@@ -164,7 +177,25 @@ function onTimerCompleted(tag, loops, loopsLeft)
         triggerEvent('Play Animation', 'jumpscareEnd', 'dad')
         setProperty('jumpscareP1.alpha', 0)
     end
+    if tag == 'startP2' then
+        playAnim('headrip', 'rip')
+        setProperty('headrip.alpha', 1)
+        setProperty('jumpscareP1.alpha', 0)
+        runTimer('showGoldP2', 4.5)
+        setProperty('defaultCamZoom', 0.45)
+        doTweenZoom('zoomOut', 'camGame', 0.45, 5, 'cubeInOut')
+    end
+    if tag == 'showGoldP2' then
+        setProperty('dadGroup.visible', true)
+    end
     if tag == 'correctHeadY' then
         setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
+    end
+end
+
+function onTweenCompleted(tag)
+    if tag == 'zoomOut' then
+        setProperty('defaultCamZoom', 0.7)
+        doTweenZoom('zoomIn', 'camGame', 0.7, 25, 'cubeInOut')
     end
 end

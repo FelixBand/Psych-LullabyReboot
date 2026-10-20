@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:3eb528382c6c9e45cf177a93b82df597:f2d583721245356e1a35d6e94e0f6fa6:90471ec5d5e72afc85fdf19052b64471$ -->
+<TextureAtlas imagePath="mono_head_rip.png" width="10118" height="7788">
+    <SubTexture name="mono_head_rip0000" x="8498" y="2921" width="625" height="920" frameX="-468" frameY="-299" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0001" x="4931" y="4440" width="627" height="955" frameX="-423" frameY="-287" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0002" x="4931" y="4440" width="627" height="955" frameX="-423" frameY="-287" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0003" x="8505" y="1935" width="627" height="984" frameX="-395" frameY="-307" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0004" x="8505" y="1935" width="627" height="984" frameX="-395" frameY="-307" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0005" x="9148" y="1" rotated="true" width="969" height="628" frameX="-379" frameY="-374" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0006" x="9148" y="1" rotated="true" width="969" height="628" frameX="-379" frameY="-374" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0007" x="9148" y="631" rotated="true" width="960" height="588" frameX="-408" frameY="-401" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0008" x="9148" y="631" rotated="true" width="960" height="588" frameX="-408" frameY="-401" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0009" x="9148" y="631" rotated="true" width="960" height="588" frameX="-408" frameY="-401" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0010" x="9110" y="3973" rotated="true" width="970" height="610" frameX="-382" frameY="-378" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0011" x="9110" y="3973" rotated="true" width="970" height="610" frameX="-382" frameY="-378" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0012" x="9125" y="3389" rotated="true" width="972" height="582" frameX="-413" frameY="-366" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0013" x="9125" y="3389" rotated="true" width="972" height="582" frameX="-413" frameY="-366" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0014" x="9125" y="3389" rotated="true" width="972" height="582" frameX="-413" frameY="-366" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0015" x="9135" y="1808" rotated="true" width="981" height="584" frameX="-410" frameY="-363" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0016" x="9135" y="1808" rotated="true" width="981" height="584" frameX="-410" frameY="-363" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0017" x="9135" y="1221" rotated="true" width="982" height="585" frameX="-410" frameY="-375" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0018" x="2849" y="4767" rotated="true" width="990" height="644" frameX="-353" frameY="-400" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0019" x="9108" y="4585" rotated="true" width="1008" height="642" frameX="-353" frameY="-428" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0020" x="9052" y="6190" rotated="true" width="1032" height="736" frameX="-360" frameY="-445" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0021" x="9052" y="6190" rotated="true" width="1032" height="736" frameX="-360" frameY="-445" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0022" x="7442" y="4853" rotated="true" width="1048" height="748" frameX="-367" frameY="-494" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0023" x="6647" y="6192" width="746" height="1041" frameX="-361" frameY="-563" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0024" x="6650" y="5153" width="775" height="1037" frameX="-330" frameY="-644" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0025" x="6650" y="5153" width="775" height="1037" frameX="-330" frameY="-644" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0026" x="6650" y="5153" width="775" height="1037" frameX="-330" frameY="-644" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0027" x="7427" y="5603" rotated="true" width="1047" height="745" frameX="-375" frameY="-635" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0028" x="7427" y="5603" rotated="true" width="1047" height="745" frameX="-375" frameY="-635" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0029" x="7764" y="7021" rotated="true" width="1073" height="667" frameX="-442" frameY="-592" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0030" x="8839" y="6928" rotated="true" width="1073" height="667" frameX="-442" frameY="-592" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0031" x="8839" y="6928" rotated="true" width="1073" height="667" frameX="-442" frameY="-592" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0032" x="7806" y="1" width="669" height="1073" frameX="-445" frameY="-573" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0033" x="8477" y="1" width="669" height="1073" frameX="-445" frameY="-573" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0034" x="7395" y="6350" rotated="true" width="1073" height="669" frameX="-445" frameY="-573" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0035" x="6313" y="2211" width="661" height="1089" frameX="-449" frameY="-555" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0036" x="6802" y="1103" width="661" height="1089" frameX="-449" frameY="-555" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0037" x="7143" y="1" width="661" height="1089" frameX="-449" frameY="-555" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0038" x="4802" y="6503" width="664" height="1097" frameX="-447" frameY="-551" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0039" x="5063" y="5397" width="664" height="1097" frameX="-447" frameY="-551" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0040" x="5931" y="3321" width="664" height="1097" frameX="-447" frameY="-551" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0041" x="2077" y="6679" width="668" height="1108" frameX="-447" frameY="-548" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0042" x="4070" y="1115" width="668" height="1107" frameX="-447" frameY="-548" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0043" x="4770" y="1" width="670" height="1105" frameX="-430" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0044" x="5442" y="1" width="670" height="1105" frameX="-430" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0045" x="4716" y="3333" width="670" height="1105" frameX="-430" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0046" x="5098" y="2217" width="670" height="1105" frameX="-430" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0047" x="4109" y="1" width="659" height="1107" frameX="-431" frameY="-542" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0048" x="4055" y="3343" width="659" height="1107" frameX="-431" frameY="-542" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0049" x="4437" y="2224" width="659" height="1107" frameX="-431" frameY="-542" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0050" x="2442" y="1211" width="541" height="1112" frameX="-457" frameY="-545" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0051" x="2481" y="1" width="541" height="1112" frameX="-457" frameY="-545" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0052" x="2985" y="1115" width="541" height="1112" frameX="-457" frameY="-545" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0053" x="3024" y="1" width="541" height="1112" frameX="-457" frameY="-545" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0054" x="4520" y="5399" width="541" height="1102" frameX="-456" frameY="-553" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0055" x="5388" y="3324" width="541" height="1102" frameX="-456" frameY="-553" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0056" x="5770" y="2217" width="541" height="1102" frameX="-456" frameY="-553" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0057" x="3354" y="2229" width="540" height="1112" frameX="-458" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0058" x="3528" y="1115" width="540" height="1112" frameX="-458" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0059" x="3567" y="1" width="540" height="1112" frameX="-458" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0060" x="3513" y="3343" width="540" height="1112" frameX="-458" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0061" x="3896" y="2229" width="539" height="1112" frameX="-459" frameY="-543" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0062" x="1488" y="3767" width="551" height="1179" frameX="-450" frameY="-485" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0063" x="2041" y="3767" width="551" height="1179" frameX="-450" frameY="-485" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0064" x="1126" y="1306" width="526" height="1249" frameX="-473" frameY="-429" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0065" x="1" y="4148" width="556" height="1273" frameX="-475" frameY="-433" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0066" x="1" y="5423" width="556" height="1273" frameX="-475" frameY="-433" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0067" x="554" y="1350" width="570" height="1303" frameX="-482" frameY="-465" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0068" x="1121" y="1" width="570" height="1303" frameX="-482" frameY="-465" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0069" x="1" y="2799" width="565" height="1347" frameX="-502" frameY="-483" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0070" x="554" y="1" width="565" height="1347" frameX="-502" frameY="-483" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0071" x="1" y="1" width="551" height="1397" frameX="-501" frameY="-524" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0072" x="1" y="1" width="551" height="1397" frameX="-501" frameY="-524" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0073" x="1" y="1400" width="551" height="1397" frameX="-501" frameY="-524" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0074" x="7937" y="2882" rotated="true" width="559" height="529" frameX="-497" frameY="-577" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0075" x="6646" y="7235" rotated="true" width="557" height="529" frameX="-497" frameY="-577" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0076" x="7205" y="7235" rotated="true" width="557" height="529" frameX="-497" frameY="-577" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0077" x="7559" y="3413" rotated="true" width="933" height="718" frameX="-248" frameY="-667" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0078" x="7559" y="4133" rotated="true" width="933" height="718" frameX="-248" frameY="-667" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0079" x="6650" y="4392" width="790" height="759" frameX="-176" frameY="-667" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0080" x="8505" y="1076" rotated="true" width="628" height="857" frameX="-92" frameY="-726" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0081" x="559" y="5421" rotated="true" width="886" height="1271" frameX="-92" frameY="-699" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0082" x="559" y="4148" rotated="true" width="927" height="1271" frameX="-92" frameY="-658" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0083" x="568" y="2655" rotated="true" width="790" height="1251" frameX="-60" frameY="-607" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0084" x="1654" y="1306" rotated="true" width="786" height="1208" frameX="-60" frameY="-607" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0085" x="1693" y="1" rotated="true" width="786" height="1208" frameX="-60" frameY="-607" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0086" x="1360" y="2557" rotated="true" width="1074" height="1208" frameX="-60" frameY="-522" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0087" x="1060" y="6694" rotated="true" width="1015" height="1089" frameX="-56" frameY="-468" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0088" x="1" y="6698" rotated="true" width="1057" height="1089" frameX="-56" frameY="-426" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0089" x="5839" y="1108" rotated="true" width="961" height="1101" frameX="-45" frameY="-522" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0090" x="6114" y="1" rotated="true" width="1027" height="1100" frameX="-45" frameY="-456" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0091" x="7465" y="1092" rotated="true" width="1038" height="1076" frameX="-69" frameY="-456" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0092" x="3712" y="6536" width="1088" height="1115" frameX="-69" frameY="-379" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0093" x="5560" y="4428" width="1088" height="967" frameX="-69" frameY="-527" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0094" x="3841" y="4457" width="1088" height="940" frameX="-69" frameY="-527" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0095" x="2594" y="3644" rotated="true" width="917" height="1121" frameX="-36" frameY="-550" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0096" x="3601" y="5413" rotated="true" width="917" height="1121" frameX="-36" frameY="-550" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0097" x="2436" y="2516" rotated="true" width="916" height="1126" frameX="-36" frameY="-551" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0098" x="2636" y="5417" rotated="true" width="963" height="1123" frameX="-39" frameY="-478" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0099" x="2636" y="5417" rotated="true" width="963" height="1123" frameX="-39" frameY="-478" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0100" x="2747" y="6542" rotated="true" width="963" height="1123" frameX="-39" frameY="-478" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0101" x="4740" y="1110" rotated="true" width="1097" height="1105" frameX="-39" frameY="-344" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0102" x="1447" y="5421" width="1187" height="1256" frameX="-186" frameY="-608" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0103" x="1447" y="5421" width="1187" height="1256" frameX="-186" frameY="-608" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0104" x="9134" y="2394" rotated="true" width="976" height="993" frameX="-186" frameY="-575" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0105" x="9108" y="5229" width="959" height="959" frameX="-232" frameY="-471" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0106" x="6597" y="3302" width="960" height="1088" frameX="-231" frameY="-342" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0107" x="6976" y="2194" width="959" height="1088" frameX="-232" frameY="-342" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0108" x="5729" y="5397" width="916" height="1034" frameX="-259" frameY="-209" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0109" x="5729" y="6433" width="915" height="1034" frameX="-260" frameY="-209" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0110" x="8494" y="3843" width="614" height="737" frameX="-561" frameY="-506" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0111" x="8494" y="4582" width="612" height="826" frameX="-563" frameY="-417" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0112" x="7937" y="2170" width="564" height="710" frameX="-563" frameY="-417" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0113" x="8492" y="5410" rotated="true" width="610" height="425" frameX="-702" frameY="-517" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0114" x="8476" y="5837" rotated="true" width="574" height="425" frameX="-689" frameY="-517" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0115" x="8476" y="6264" rotated="true" width="462" height="425" frameX="-612" frameY="-451" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0116" x="8476" y="6264" rotated="true" width="462" height="425" frameX="-612" frameY="-451" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0117" x="2396" y="4948" width="451" height="467" frameX="-537" frameY="-285" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0118" x="1488" y="4948" width="452" height="467" frameX="-536" frameY="-79" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0119" x="1942" y="4948" width="452" height="467" frameX="-551" frameY="-2" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0120" x="1121" y="1306" width="3" height="3" frameX="0" frameY="0" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0121" x="1121" y="1306" width="3" height="3" frameX="0" frameY="0" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0122" x="1121" y="1306" width="3" height="3" frameX="0" frameY="0" frameWidth="1423" frameHeight="1980"/>
+    <SubTexture name="mono_head_rip0123" x="1121" y="1306" width="3" height="3" frameX="0" frameY="0" frameWidth="1423" frameHeight="1980"/>
+</TextureAtlas>

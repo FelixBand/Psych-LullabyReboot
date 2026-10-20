@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:5b317a49091a53ff82ac3000870c3e49:900d0e2fbd8bf148b360249426337849:90471ec5d5e72afc85fdf19052b64471$ -->
+<TextureAtlas imagePath="mono_head_rip.png" width="1701" height="3231">
+    <SubTexture name="frame_0000_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0001_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0002_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0003_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0004_padded" x="1" y="2153" width="1695" height="1077" frameX="-24" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0005_padded" x="1" y="2153" width="1695" height="1077" frameX="-24" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0006_padded" x="1" y="2153" width="1695" height="1077" frameX="-24" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0007_padded" x="1" y="2153" width="1695" height="1077" frameX="-24" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0008_padded" x="6" y="1" width="1694" height="1071" frameX="-25" frameY="-25" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0009_padded" x="6" y="1" width="1694" height="1071" frameX="-25" frameY="-25" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0010_padded" x="6" y="1" width="1694" height="1071" frameX="-25" frameY="-25" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0011_padded" x="6" y="1" width="1694" height="1071" frameX="-25" frameY="-25" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0012_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0013_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0014_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0015_padded" x="1" y="1074" width="1694" height="1077" frameX="-25" frameY="-19" frameWidth="1719" frameHeight="1096"/>
+    <SubTexture name="frame_0016_padded" x="1" y="1" width="3" height="3" frameX="0" frameY="0" frameWidth="1719" frameHeight="1096"/>
+</TextureAtlas>
