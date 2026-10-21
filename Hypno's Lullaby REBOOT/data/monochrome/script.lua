@@ -51,6 +51,13 @@ function onCreate()
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
     addLuaSprite('jumpscareP2', true)
+
+    -- todo: bf screamer
+    makeLuaSprite('bfbg', 'monochrome/cutscenes/bf screamer/background', 0, 0)
+    setObjectCamera('bfbg', 'hud')
+    scaleObject('bfbg', screenWidth / getProperty('bfbg.width'), screenHeight / getProperty('bfbg.height'))
+    --addLuaSprite('bfbg')
+    --doTweenColor('fadetoblack', 'bfbg', 'BE5103', 5, 'linear')
 end
 
 local PLAY_EVERY = 2          -- 2 = half as fast, 3 = a third, 1 = vanilla restart rate (keep <= 4)
@@ -61,6 +68,8 @@ local DISABLE_ENGINE_HOLD_FREEZE = true   -- the sustainTimer part; set false to
 function onCreatePost()
     setProperty('camFollowPos.x', -456.5)
     setProperty('camFollowPos.y', -47.25)
+
+    setProperty('cameraSpeed', 2)
 
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
@@ -189,7 +198,7 @@ local function jumpscare(type)
             playAnim('jumpscareP2', 'jump', true)
             runTimer('jumpscareEnd', 1.75)
             cameraShake('other', 0.005, 1.75)
-            jumpBlur(0.10, 0.1, 'game')
+            jumpBlur(0.15, 0.1, 'game')
         end
     end
 end
