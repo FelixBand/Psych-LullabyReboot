@@ -43,8 +43,9 @@ function onCreate()
     addLuaSprite('jumpscareP1', true)
 
     makeAnimatedLuaSprite('jumpscareP2', 'characters/gold/jumpscarep2', 180, -40)
-    --addAnimationByPrefix('jumpscareP2', 'buildup', 'buildup', 30, false)
-    --addAnimationByPrefix('jumpscareP2', 'jump', 'jumpscare', 12, true)
+    addAnimationByIndices('jumpscareP2', 'buildup0', 'buildup', '0,1,2', 12, false)
+    addAnimationByIndices('jumpscareP2', 'buildup1', 'buildup', '3,4,5', 12, false)
+    addAnimationByIndices('jumpscareP2', 'buildup2', 'buildup', '6,7,8', 12, false)
     addAnimationByIndices('jumpscareP2', 'jump', 'jumpscare', '0,1,2,3,2,3,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17', 12, false)
     setObjectCamera('jumpscareP2', 'other')
     scaleObject('jumpscareP2', 0.9, 0.9)
@@ -142,20 +143,20 @@ local function jumpscare(type)
     setProperty('dadGroup.visible', false)
     if dadName == 'goldp1' or dadName == 'goldp1-alt' then
         setProperty('jumpscareP1.alpha', 1)
-        if type == 1 then
+        if type == '1' then
             setProperty('jumpscareP1.x', 680)
             setProperty('jumpscareP1.y', 50)
             playAnim('jumpscareP1', 'triple0', true)
-        elseif type == 2 then
+        elseif type == '2' then
             setProperty('jumpscareP1.x', -100)
             setProperty('jumpscareP1.y', 100)
             playAnim('jumpscareP1', 'triple1', true)
-        elseif type == 3 then
+        elseif type == '3' then
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jumpFaster', true)
             runTimer('jumpscareEnd', 1.48)
-        elseif type == 4 then
+        elseif type == '4' then
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jump', true)
@@ -168,16 +169,31 @@ local function jumpscare(type)
         end
     elseif dadName == 'goldp2' then
         setProperty('jumpscareP2.alpha', 1)
-        if type == 1 then
-        elseif type == 2 then
-        elseif type == 3 then
-        elseif type == 4 then
-        else
-            setProperty('jumpscareP2.x', 180)
+        setProperty('jumpscareP2.scale.x', 0.75)
+        setProperty('jumpscareP2.scale.y', 0.75)
+        if type == '1' then
+            setProperty('jumpscareP2.x', -100)
             setProperty('jumpscareP2.y', -40)
+            playAnim('jumpscareP2', 'buildup0', true)
+        elseif type == '2' then
+            setProperty('jumpscareP2.x', -100)
+            setProperty('jumpscareP2.y', -40)
+            playAnim('jumpscareP2', 'buildup1', true)
+        elseif type == '3' then
+            setProperty('jumpscareP2.x', -120)
+            setProperty('jumpscareP2.y', -140)
+            playAnim('jumpscareP2', 'buildup2', true)
+        elseif type == 'fakeout' then
+            setProperty('jumpscareP2.alpha', 0)
+            setProperty('dadGroup.visible', true)
+        elseif type == '4' or type == '0' then
+            setProperty('jumpscareP2.x', 210)
+            setProperty('jumpscareP2.y', -35)
+            setProperty('jumpscareP2.scale.x', 0.95)
+            setProperty('jumpscareP2.scale.y', 0.95)
             playAnim('jumpscareP2', 'jump', true)
-            runTimer('jumpscareEnd', 1.65)
-            cameraShake('other', 0.005, 1.65)
+            runTimer('jumpscareEnd', 1.75)
+            cameraShake('other', 0.005, 1.75)
         end
     end
 end
@@ -201,17 +217,17 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'Jumpscare' then
         if value1 ~= '0' and value1 ~= '4' then
-            tripleScare(tonumber(value1), 0.1)
+            tripleScare(value1, 0.05)
         else
-            jumpscare(tonumber(value1))
+            jumpscare(value1)
         end
     end
 
     if name == 'JumpscareP2' then
-        if value1 ~= '0' and value1 ~= '4' then
-            tripleScare(tonumber(value1), 0.1)
+        if value1 ~= '0' then
+            tripleScare(value1, 0.05)
         else
-            jumpscare(tonumber(value1))
+            jumpscare(value1)
         end
     end
 end
@@ -254,7 +270,7 @@ end
 
 function onTweenCompleted(tag)
     if tag == 'zoomOut' then
-        setProperty('defaultCamZoom', 0.7)
-        doTweenZoom('zoomIn', 'camGame', 0.7, 25, 'cubeInOut')
+        setProperty('defaultCamZoom', 0.64)
+        doTweenZoom('zoomIn', 'camGame', 0.64, 25, 'cubeInOut')
     end
 end
