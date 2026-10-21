@@ -4,9 +4,9 @@
 local EYE_SCALE = 2 / 3
 
 -- The eye field behaves like its own little camera, no matter how camGame zooms or moves:
-local FIELD_SCALE = 1   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
-local FIELD_X = 50         -- pan the whole field in screen pixels (+ = right)
-local FIELD_Y = 50         -- (+ = down)
+local FIELD_SCALE = 1.05   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
+local FIELD_X = 70         -- pan the whole field in screen pixels (+ = right)
+local FIELD_Y = 80         -- (+ = down)
 local PARALLAX = 0.2      -- how much camGame scrolling nudges the eyes (0 = locked to the screen)
 
 -- ===== state ==============================================================
@@ -298,27 +298,35 @@ function onCreate()
         }
     end
 
-    -- if shadersEnabled then
-    --     makeLuaSprite('blurController', '', 0, 0)
+    if shadersEnabled then
+        makeLuaSprite('gameHUDblurController', '', 0, 0)
+        makeLuaSprite('otherBlurController', '', 0, 0)
 
-    --     initLuaShader('radialBlur')
+        initLuaShader('zoomBlur')
 
-    --     runHaxeCode([[
-    --         var blurShader = game.createRuntimeShader('radialBlur');
+        runHaxeCode([[
+            var blurShaderGameHUD = game.createRuntimeShader('zoomBlur');
 
-    --         game.getLuaObject('blurController').shader = blurShader;
+            game.getLuaObject('gameHUDblurController').shader = blurShaderGameHUD;
 
-    --         game.camGame.setFilters([
-    --             new ShaderFilter(blurShader),
-    --         ]);
-    --         game.camHUD.setFilters([
-    --             new ShaderFilter(blurShader),
-    --         ]);
-    --         game.camOther.setFilters([
-    --             new ShaderFilter(blurShader),
-    --         ]);
-    --     ]]);
-    -- end
+            var blurShaderOther = game.createRuntimeShader('zoomBlur');
+
+            game.getLuaObject('otherBlurController').shader = blurShaderOther;
+
+            game.camGame.setFilters([
+                new ShaderFilter(blurShaderGameHUD),
+            ]);
+            game.camHUD.setFilters([
+                new ShaderFilter(blurShaderGameHUD),
+            ]);
+            game.camOther.setFilters([
+                new ShaderFilter(blurShaderOther),
+            ]);
+        ]]);
+
+        setShaderFloat('gameHUDblurController', 'sampleCount', 13)
+        setShaderFloat('otherBlurController', 'sampleCount', 13)
+    end
 end
 
 -- Field transform: where a wanted screen position ends up after FIELD_SCALE / FIELD_X / FIELD_Y.
@@ -332,6 +340,9 @@ local function toSpriteX(screenPx, zoom) return screenWidth / 2 + (screenPx - sc
 local function toSpriteY(screenPx, zoom) return screenHeight / 2 + (screenPx - screenHeight / 2) / zoom end
 
 function onUpdate(elapsed)
+    setShaderFloat('gameHUDblurController', 'blurWidth', getProperty('gameHUDblurController.x'))
+    setShaderFloat('otherBlurController', 'blurWidth', getProperty('otherBlurController.x'))
+
     setProperty('pulse.scale.x', 2.5 - (getProperty('camGame.zoom') * 2))
     setProperty('pulse.scale.y', 2.5 - (getProperty('camGame.zoom') * 2))
 

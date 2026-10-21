@@ -121,6 +121,15 @@ local function tripleScare(which, duration)
     runTimer('darkFlashEnd', duration)
 end
 
+local function jumpBlur(amount, duration, cam)
+    if cam == 'game' or cam == 'both' then
+        doTweenX('gameBlurUp', 'gameHUDblurController', amount, duration, 'linear')
+    end
+    if cam == 'other' or cam == 'both' then
+        doTweenX('otherBlurUp', 'otherBlurController', amount, duration, 'linear')
+    end
+end
+
 local function jumpscare(type)
     
     setProperty('dadGroup.visible', false)
@@ -139,21 +148,24 @@ local function jumpscare(type)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jumpFaster', true)
             runTimer('jumpscareEnd', 1.48)
+            jumpBlur(0.10, 0.1, 'both')
         elseif type == '4' then
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jump', true)
             runTimer('startP2', 1.85)
+            jumpBlur(0.10, 0.1, 'both')
         else
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jump', true)
             runTimer('jumpscareEnd', 1.85)
+            jumpBlur(0.10, 0.1, 'both')
         end
     elseif dadName == 'goldp2' then
         setProperty('jumpscareP2.alpha', 1)
-        setProperty('jumpscareP2.scale.x', 0.75)
-        setProperty('jumpscareP2.scale.y', 0.75)
+        setProperty('jumpscareP2.scale.x', 0.6)
+        setProperty('jumpscareP2.scale.y', 0.6)
         if type == '1' then
             setProperty('jumpscareP2.x', -100)
             setProperty('jumpscareP2.y', -40)
@@ -177,6 +189,7 @@ local function jumpscare(type)
             playAnim('jumpscareP2', 'jump', true)
             runTimer('jumpscareEnd', 1.75)
             cameraShake('other', 0.005, 1.75)
+            jumpBlur(0.10, 0.1, 'game')
         end
     end
 end
@@ -212,6 +225,16 @@ function onEvent(name, value1, value2, strumTime)
         else
             jumpscare(value1)
         end
+    end
+
+    if name == 'start zooming' then
+        setProperty('defaultCamZoom', 0.8)
+        doTweenZoom('zoomIn', 'camGame', 0.8, 8, 'cubeInOut')
+    end
+    if name == 'undo zoom' then
+        cancelTween('zoomIn')
+        setProperty('defaultCamZoom', 0.64)
+        setProperty('camGame.zoom', 0.64)
     end
 end
 
@@ -255,5 +278,11 @@ function onTweenCompleted(tag)
     if tag == 'zoomOut' then
         setProperty('defaultCamZoom', 0.64)
         doTweenZoom('zoomIn', 'camGame', 0.64, 25, 'cubeInOut')
+    end
+    if tag == 'otherBlurUp' then
+        doTweenX('otherBlurOff', 'otherBlurController', 0, 2, 'cubeOut')
+    end
+    if tag == 'gameBlurUp' then
+        doTweenX('gameBlurOff', 'gameHUDblurController', 0, 2, 'cubeOut')
     end
 end
