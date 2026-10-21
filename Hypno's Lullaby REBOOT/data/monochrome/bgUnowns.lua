@@ -1,10 +1,5 @@
--- Monochrome background eyes, rendered on their OWN camera ("camBG") that sits
--- BEHIND camGame. Because camBG never zooms or scrolls, the eyes are plain
--- screen-space sprites now: no more compensating for camGame zoom / position.
---
--- Compatibility: only uses Lua callbacks that exist in Psych Engine 0.7.x / 1.0 /
--- Psych Online, plus runHaxeCode (for the camera itself, since Lua has no
--- "make camera" function). Needs no engine edits.
+-- Monochrome background eyes & pulsing BG, rendered on their OWN camera ("camBG") that sits
+-- BEHIND camGame.
 
 -- ===== config =============================================================
 local CAM_NAME = 'camBG'      -- other scripts can reuse it: setObjectCamera(tag, 'camBG')
@@ -354,6 +349,28 @@ function onCreate()
     end
 
     moveToBGCamera(tags)
+
+    -- if shadersEnabled then
+    --     makeLuaSprite('blurController', '', 0, 0)
+
+    --     initLuaShader('radialBlur')
+
+    --     runHaxeCode([[
+    --         var blurShader = game.createRuntimeShader('radialBlur');
+
+    --         game.getLuaObject('blurController').shader = blurShader;
+
+    --         game.camGame.setFilters([
+    --             new ShaderFilter(blurShader),
+    --         ]);
+    --         game.camHUD.setFilters([
+    --             new ShaderFilter(blurShader),
+    --         ]);
+    --         game.camOther.setFilters([
+    --             new ShaderFilter(blurShader),
+    --         ]);
+    --     ]]);
+    -- end
 end
 
 -- scale a top-left screen position about the screen centre
