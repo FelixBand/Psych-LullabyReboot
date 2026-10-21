@@ -107,23 +107,6 @@ function onCreatePost()
     end
 end
 
--- charTag is 'dad', 'boyfriend', 'gf' or 'characters[<id>]' (online), straight from the engine.
-local function afterHoldPiece(id, isSus, charTag)
-    if not isSus then return end
-    if getPropertyFromGroup('notes', id, 'gfNote') then charTag = 'gf' end
-
-    local skipped = getPropertyFromGroup('notes', id, 'noAnimation')
-    if DISABLE_ENGINE_HOLD_FREEZE then
-        setProperty(charTag .. '.sustainTimer', 0)
-    end
-    if skipped then
-        setProperty(charTag .. '.holdTimer', 0)   -- skipped pieces skip the engine's holdTimer reset; keep the pose alive
-    end
-end
-
-function opponentNoteHit(id, dir, noteType, isSus, charTag) afterHoldPiece(id, isSus, charTag or 'dad') end
-function goodNoteHit(id, dir, noteType, isSus, charTag) afterHoldPiece(id, isSus, charTag or 'boyfriend') end
-
 function onUpdate(elapsed)
     setProperty('camZooming', false)
 end

@@ -1,17 +1,13 @@
--- Monochrome background eyes & pulsing BG, rendered on their OWN camera ("camBG") that sits
--- BEHIND camGame.
+-- Monochrome background eyes & pulsing BG. Everything lives on camGame (no extra camera).
 
 -- ===== config =============================================================
-local CAM_NAME = 'camBG'      -- other scripts can reuse it: setObjectCamera(tag, 'camBG')
 local EYE_SCALE = 2 / 3
--- Scale of the whole eye field (eyes, spacing, bloom) about the screen centre.
--- 1 = as authored, bigger = spreads out / fills more of the screen.
--- Done in this script's own maths rather than FlxCamera.zoom, so it can't be overridden.
-local CAM_SCALE = 1.5
--- Extra shift applied before scaling (0 = centred).
-local OFFSET_X = 0
-local OFFSET_Y = 0
-local PARALLAX = 0.2          -- how much camGame scrolling nudges the eyes (0 = locked to screen)
+
+-- The eye field behaves like its own little camera, no matter how camGame zooms or moves:
+local FIELD_SCALE = 1   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
+local FIELD_X = 50         -- pan the whole field in screen pixels (+ = right)
+local FIELD_Y = 50         -- (+ = down)
+local PARALLAX = 0.2      -- how much camGame scrolling nudges the eyes (0 = locked to the screen)
 
 -- ===== state ==============================================================
 local bgUnowns = {}
@@ -112,46 +108,6 @@ local function getEyeAlphaAt(eyeIndex, state)
     end
 
     return math.max(staggeredProgress(state.progress), staggeredProgress(state.holdProgress))
-end
-
--- ===== the new camera =====================================================
--- Creates (once) a camera drawn behind camGame and registers it as getVar(CAM_NAME),
--- which is also what setObjectCamera(tag, 'camBG') looks up on newer engines.
--- Safe to run from several scripts: whoever gets there first creates it.
-local function ensureBGCamera()
-    addHaxeLibrary('FlxG', 'flixel')
-    addHaxeLibrary('FlxCamera', 'flixel')
-    local ok = runHaxeCode([=[
-        if (getVar(camName) == null) {
-            var cam = new FlxCamera();
-            setVar(camName, cam);              // register first so later steps can't lose it
-            cam.bgColor = 0xFF000000;          // solid black backdrop
-            FlxG.cameras.add(cam, false);      // appended on top, not a default target
-            // ...then move it to the very back of the draw order
-            FlxG.cameras.list.remove(cam);
-            FlxG.cameras.list.insert(0, cam);
-            for (i in 0...FlxG.cameras.list.length) FlxG.cameras.list[i].ID = i;
-            // camGame must be see-through or it would paint over camBG
-            game.camGame.bgColor = 0x00000000;
-        }
-        return getVar(camName) != null;
-    ]=], {camName = CAM_NAME})
-    debugPrint('[monochrome_bg_eyes] camBG ready: ' .. tostring(ok))
-end
-
--- Points the given Lua sprite tags at camBG (works on engines where
--- setObjectCamera can't resolve custom cameras).
-local function moveToBGCamera(tags)
-    local moved = runHaxeCode([=[
-        var cam = getVar(camName);
-        var n = 0;
-        for (t in tags) {
-            var s = game.getLuaObject(t);
-            if (s != null && cam != null) { s.cameras = [cam]; n++; }
-        }
-        return n;
-    ]=], {camName = CAM_NAME, tags = tags})
-    debugPrint('[monochrome_bg_eyes] sprites moved to camBG: ' .. tostring(moved) .. ' / ' .. #tags)
 end
 
 -- ===== eye data ===========================================================
@@ -289,9 +245,7 @@ local bloomVariantScale = {[0] = 0.395, [1] = 0.65, [2] = 1.325}
 local EYE_FADE_DURATION = 0.18
 
 function onCreate()
-    ensureBGCamera()
     bgUnowns = {}
-    local tags = {}
 
     -- Pulse: the source retriggers one of three authored frame rates at exact song times.
     makeAnimatedLuaSprite('pulse', 'monochrome/pulse', -270, -270)
@@ -301,8 +255,7 @@ function onCreate()
     setScrollFactor('pulse', 0, 0)
     scaleObject('pulse', 1.1, 1.1)
     setProperty('pulse.alpha', 0)
-    addLuaSprite('pulse', false)
-    tags[#tags + 1] = 'pulse'
+    addLuaSprite('pulse', false)   -- added first, so it draws behind the eyes
 
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
@@ -328,9 +281,6 @@ function onCreate()
         setProperty(tag .. ".alpha", 0)
         addLuaSprite(tag, false)
 
-        tags[#tags + 1] = bloomTag
-        tags[#tags + 1] = tag
-
         bgUnowns[#bgUnowns + 1] = {
             tag = tag,
             bloomTag = bloomTag,
@@ -347,8 +297,6 @@ function onCreate()
             depth = depth,
         }
     end
-
-    moveToBGCamera(tags)
 
     -- if shadersEnabled then
     --     makeLuaSprite('blurController', '', 0, 0)
@@ -373,9 +321,15 @@ function onCreate()
     -- end
 end
 
--- scale a top-left screen position about the screen centre
-local function fx(x) return screenWidth / 2 + (x - screenWidth / 2) * CAM_SCALE end
-local function fy(y) return screenHeight / 2 + (y - screenHeight / 2) * CAM_SCALE end
+-- Field transform: where a wanted screen position ends up after FIELD_SCALE / FIELD_X / FIELD_Y.
+local function fieldX(x) return screenWidth / 2 + (x - screenWidth / 2) * FIELD_SCALE + FIELD_X end
+local function fieldY(y) return screenHeight / 2 + (y - screenHeight / 2) * FIELD_SCALE + FIELD_Y end
+
+-- The sprites sit on camGame, which zooms about the screen centre C: a scroll-factor-0 sprite at x is
+-- drawn at C + zoom * (x - C). Pre-dividing by the zoom makes a sprite land exactly where we want
+-- on screen, whatever the camera is doing (sizes get divided by the zoom too, see `k` below).
+local function toSpriteX(screenPx, zoom) return screenWidth / 2 + (screenPx - screenWidth / 2) / zoom end
+local function toSpriteY(screenPx, zoom) return screenHeight / 2 + (screenPx - screenHeight / 2) / zoom end
 
 function onUpdate(elapsed)
     setProperty('pulse.scale.x', 2.5 - (getProperty('camGame.zoom') * 2))
@@ -396,7 +350,8 @@ function onUpdate(elapsed)
         hasReferenceScroll = true
     end
 
-    local zoom = getProperty('camGame.zoom')
+    local zoom = math.max(0.001, getProperty('camGame.zoom'))
+    local k = FIELD_SCALE / zoom   -- field zoom with camGame's zoom cancelled out
     local scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
     local scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
 
@@ -453,13 +408,12 @@ function onUpdate(elapsed)
         local centerX = screenX + (width / 2)
         local centerY = screenY + (height / 2)
 
-        -- camBG never zooms/scrolls, so these are final screen positions.
-        local parX = scrollDX * eye.depth * PARALLAX * zoom + OFFSET_X
-        local parY = scrollDY * eye.depth * PARALLAX * zoom + OFFSET_Y
+        local parX = scrollDX * eye.depth * PARALLAX * zoom
+        local parY = scrollDY * eye.depth * PARALLAX * zoom
 
-        setProperty(eye.tag .. '.x', fx(screenX + parX))
-        setProperty(eye.tag .. '.y', fy(screenY + parY))
-        scaleObject(eye.tag, width / 134 * CAM_SCALE, height / 134 * CAM_SCALE)
+        setProperty(eye.tag .. '.x', toSpriteX(fieldX(screenX + parX), zoom))
+        setProperty(eye.tag .. '.y', toSpriteY(fieldY(screenY + parY), zoom))
+        scaleObject(eye.tag, width / 134 * k, height / 134 * k)
         if not eye.alphaTweening then
             setProperty(eye.tag .. '.alpha', alpha)
         end
@@ -467,9 +421,9 @@ function onUpdate(elapsed)
         local bloomWidth = math.max(eye.width, eye.height) * 3 * eye.variantScale
         local bloomScale = bloomWidth / 1280
         local bloomHeight = 720 * (bloomWidth / 1280) * 0.44
-        setProperty(eye.bloomTag .. '.x', fx(centerX - (bloomWidth / 2) + parX))
-        setProperty(eye.bloomTag .. '.y', fy(centerY - (bloomHeight * 0.85) + parY))
-        scaleObject(eye.bloomTag, bloomScale * CAM_SCALE, bloomScale * 0.44 * CAM_SCALE)
+        setProperty(eye.bloomTag .. '.x', toSpriteX(fieldX(centerX - (bloomWidth / 2) + parX), zoom))
+        setProperty(eye.bloomTag .. '.y', toSpriteY(fieldY(centerY - (bloomHeight * 0.85) + parY), zoom))
+        scaleObject(eye.bloomTag, bloomScale * k, bloomScale * 0.44 * k)
         setProperty(eye.bloomTag .. '.angle', math.deg(math.atan2(360 - centerY, 640 - centerX)))
         local renderedAlpha = getProperty(eye.tag .. '.alpha')
         setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or renderedAlpha)
