@@ -41,7 +41,21 @@ function onCreate()
     scaleObject('jumpscareP1', 1, 1)
     setProperty('jumpscareP1.alpha', 0.0001)
     addLuaSprite('jumpscareP1', true)
+
+    makeAnimatedLuaSprite('jumpscareP2', 'characters/gold/jumpscarep2', 180, -40)
+    --addAnimationByPrefix('jumpscareP2', 'buildup', 'buildup', 30, false)
+    --addAnimationByPrefix('jumpscareP2', 'jump', 'jumpscare', 12, true)
+    addAnimationByIndices('jumpscareP2', 'jump', 'jumpscare', '0,1,2,3,2,3,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17', 12, false)
+    setObjectCamera('jumpscareP2', 'other')
+    scaleObject('jumpscareP2', 0.9, 0.9)
+    setProperty('jumpscareP2.alpha', 0.0001)
+    addLuaSprite('jumpscareP2', true)
 end
+
+local PLAY_EVERY = 2          -- 2 = half as fast, 3 = a third, 1 = vanilla restart rate (keep <= 4)
+local AFFECT_OPPONENT = true
+local AFFECT_PLAYER = true
+local DISABLE_ENGINE_HOLD_FREEZE = true   -- the sustainTimer part; set false to keep the engine's frozen-pose holds
 
 function onCreatePost()
     setProperty('camFollowPos.x', -456.5)
@@ -68,21 +82,46 @@ function onCreatePost()
     setProperty('showRating', false)
     setProperty('showComboNum', false)
 
-    local opponentSustainCount = 0
+    local count = {}   -- hold pieces seen so far in the hold currently running on each lane
+    local total = getProperty('unspawnNotes.length')
+    local sustains, flagged = 0, 0
 
-    for i = 0, getProperty('unspawnNotes.length') - 1 do
-        local isSustain = getPropertyFromGroup('unspawnNotes', i, 'isSustainNote')
-        local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
+    for i = 0, total - 1 do
+        local must = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
+        local lane = getPropertyFromGroup('unspawnNotes', i, 'noteData') + (must and 4 or 0)
 
-        if isSustain and not mustPress then
-            if (opponentSustainCount - 1) % 2 == 0 then
-                setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true)
+        if not getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
+            count[lane] = 0                       -- a new note head starts a new hold
+        else
+            sustains = sustains + 1
+            if (must and AFFECT_PLAYER) or (not must and AFFECT_OPPONENT) then
+                count[lane] = (count[lane] or 0) + 1
+                -- piece 1 plays, then every PLAY_EVERY-th piece plays; the rest don't touch the animation
+                if (count[lane] - 1) % PLAY_EVERY ~= 0 then
+                    setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true)
+                    flagged = flagged + 1
+                end
             end
-
-            opponentSustainCount = opponentSustainCount + 1
         end
     end
 end
+
+-- charTag is 'dad', 'boyfriend', 'gf' or 'characters[<id>]' (online), straight from the engine.
+local function afterHoldPiece(id, isSus, charTag)
+    if not isSus then return end
+    if getPropertyFromGroup('notes', id, 'gfNote') then charTag = 'gf' end
+
+    local skipped = getPropertyFromGroup('notes', id, 'noAnimation')
+    if DISABLE_ENGINE_HOLD_FREEZE then
+        setProperty(charTag .. '.sustainTimer', 0)
+    end
+    if skipped then
+        setProperty(charTag .. '.holdTimer', 0)   -- skipped pieces skip the engine's holdTimer reset; keep the pose alive
+    end
+end
+
+function opponentNoteHit(id, dir, noteType, isSus, charTag) afterHoldPiece(id, isSus, charTag or 'dad') end
+function goodNoteHit(id, dir, noteType, isSus, charTag) afterHoldPiece(id, isSus, charTag or 'boyfriend') end
 
 function onUpdate(elapsed)
     setProperty('camZooming', false)
@@ -99,31 +138,47 @@ local function tripleScare(which, duration)
 end
 
 local function jumpscare(type)
-    setProperty('jumpscareP1.alpha', 1)
+    
     setProperty('dadGroup.visible', false)
-    if type == 1 then
-        setProperty('jumpscareP1.x', 680)
-        setProperty('jumpscareP1.y', 50)
-        playAnim('jumpscareP1', 'triple0', true)
-    elseif type == 2 then
-        setProperty('jumpscareP1.x', -100)
-        setProperty('jumpscareP1.y', 100)
-        playAnim('jumpscareP1', 'triple1', true)
-    elseif type == 3 then
-        setProperty('jumpscareP1.x', 70)
-        setProperty('jumpscareP1.y', -60)
-        playAnim('jumpscareP1', 'jumpFaster', true)
-        runTimer('jumpscareEnd', 1.48)
-    elseif type == 4 then
-        setProperty('jumpscareP1.x', 70)
-        setProperty('jumpscareP1.y', -60)
-        playAnim('jumpscareP1', 'jump', true)
-        runTimer('startP2', 1.85)
-    else
-        setProperty('jumpscareP1.x', 70)
-        setProperty('jumpscareP1.y', -60)
-        playAnim('jumpscareP1', 'jump', true)
-        runTimer('jumpscareEnd', 1.85)
+    if dadName == 'goldp1' or dadName == 'goldp1-alt' then
+        setProperty('jumpscareP1.alpha', 1)
+        if type == 1 then
+            setProperty('jumpscareP1.x', 680)
+            setProperty('jumpscareP1.y', 50)
+            playAnim('jumpscareP1', 'triple0', true)
+        elseif type == 2 then
+            setProperty('jumpscareP1.x', -100)
+            setProperty('jumpscareP1.y', 100)
+            playAnim('jumpscareP1', 'triple1', true)
+        elseif type == 3 then
+            setProperty('jumpscareP1.x', 70)
+            setProperty('jumpscareP1.y', -60)
+            playAnim('jumpscareP1', 'jumpFaster', true)
+            runTimer('jumpscareEnd', 1.48)
+        elseif type == 4 then
+            setProperty('jumpscareP1.x', 70)
+            setProperty('jumpscareP1.y', -60)
+            playAnim('jumpscareP1', 'jump', true)
+            runTimer('startP2', 1.85)
+        else
+            setProperty('jumpscareP1.x', 70)
+            setProperty('jumpscareP1.y', -60)
+            playAnim('jumpscareP1', 'jump', true)
+            runTimer('jumpscareEnd', 1.85)
+        end
+    elseif dadName == 'goldp2' then
+        setProperty('jumpscareP2.alpha', 1)
+        if type == 1 then
+        elseif type == 2 then
+        elseif type == 3 then
+        elseif type == 4 then
+        else
+            setProperty('jumpscareP2.x', 180)
+            setProperty('jumpscareP2.y', -40)
+            playAnim('jumpscareP2', 'jump', true)
+            runTimer('jumpscareEnd', 1.65)
+            cameraShake('other', 0.005, 1.65)
+        end
     end
 end
 
@@ -151,6 +206,14 @@ function onEvent(name, value1, value2, strumTime)
             jumpscare(tonumber(value1))
         end
     end
+
+    if name == 'JumpscareP2' then
+        if value1 ~= '0' and value1 ~= '4' then
+            tripleScare(tonumber(value1), 0.1)
+        else
+            jumpscare(tonumber(value1))
+        end
+    end
 end
 
 function onTimerCompleted(tag, loops, loopsLeft)
@@ -171,6 +234,7 @@ function onTimerCompleted(tag, loops, loopsLeft)
         setProperty('dadGroup.visible', true)
         triggerEvent('Play Animation', 'jumpscareEnd', 'dad')
         setProperty('jumpscareP1.alpha', 0)
+        setProperty('jumpscareP2.alpha', 0)
     end
     if tag == 'startP2' then
         playAnim('headrip', 'rip')
