@@ -60,11 +60,6 @@ function onCreate()
     --doTweenColor('fadetoblack', 'bfbg', 'BE5103', 5, 'linear')
 end
 
-local PLAY_EVERY = 2          -- 2 = half as fast, 3 = a third, 1 = vanilla restart rate (keep <= 4)
-local AFFECT_OPPONENT = true
-local AFFECT_PLAYER = true
-local DISABLE_ENGINE_HOLD_FREEZE = true   -- the sustainTimer part; set false to keep the engine's frozen-pose holds
-
 function onCreatePost()
     setProperty('camFollowPos.x', -456.5)
     setProperty('camFollowPos.y', -47.25)
@@ -91,29 +86,6 @@ function onCreatePost()
 
     setProperty('showRating', false)
     setProperty('showComboNum', false)
-
-    local count = {}   -- hold pieces seen so far in the hold currently running on each lane
-    local total = getProperty('unspawnNotes.length')
-    local sustains, flagged = 0, 0
-
-    for i = 0, total - 1 do
-        local must = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
-        local lane = getPropertyFromGroup('unspawnNotes', i, 'noteData') + (must and 4 or 0)
-
-        if not getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
-            count[lane] = 0                       -- a new note head starts a new hold
-        else
-            sustains = sustains + 1
-            if (must and AFFECT_PLAYER) or (not must and AFFECT_OPPONENT) then
-                count[lane] = (count[lane] or 0) + 1
-                -- piece 1 plays, then every PLAY_EVERY-th piece plays; the rest don't touch the animation
-                if (count[lane] - 1) % PLAY_EVERY ~= 0 then
-                    setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true)
-                    flagged = flagged + 1
-                end
-            end
-        end
-    end
 end
 
 function onUpdate(elapsed)
