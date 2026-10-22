@@ -262,7 +262,9 @@ function onTweenCompleted(tag)
 end
 
 function goodNoteHit()
-    for i = 1, getProperty('grpNoteSplashes.length') do
-        setPropertyFromGroup('grpNoteSplashes', i, 'alpha', 1)
-    end
+    runHaxeCode([[
+        for (s in game.grpNoteSplashes.members)
+            if (s != null && s.exists && s.animation.curAnim != null && !s.animation.curAnim.finished)
+                s.alpha = 1;
+    ]])
 end

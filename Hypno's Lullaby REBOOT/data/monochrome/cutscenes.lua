@@ -1,4 +1,8 @@
 function onCreate()
+    -- intro cutscene
+    
+
+    -- bf screamer
     makeLuaSprite('bfbg', 'monochrome/cutscenes/bf screamer/background', 0, 0)
     setObjectCamera('bfbg', 'hud')
     scaleObject('bfbg', screenWidth / getProperty('bfbg.width'), screenHeight / getProperty('bfbg.height'))
