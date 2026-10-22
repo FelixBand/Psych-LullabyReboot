@@ -51,13 +51,6 @@ function onCreate()
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
     addLuaSprite('jumpscareP2', true)
-
-    -- todo: bf screamer
-    makeLuaSprite('bfbg', 'monochrome/cutscenes/bf screamer/background', 0, 0)
-    setObjectCamera('bfbg', 'hud')
-    scaleObject('bfbg', screenWidth / getProperty('bfbg.width'), screenHeight / getProperty('bfbg.height'))
-    --addLuaSprite('bfbg')
-    --doTweenColor('fadetoblack', 'bfbg', 'BE5103', 5, 'linear')
 end
 
 function onCreatePost()
@@ -265,5 +258,11 @@ function onTweenCompleted(tag)
     end
     if tag == 'gameBlurUp' then
         doTweenX('gameBlurOff', 'gameHUDblurController', 0, 2, 'cubeOut')
+    end
+end
+
+function goodNoteHit()
+    for i = 1, getProperty('grpNoteSplashes.length') do
+        setPropertyFromGroup('grpNoteSplashes', i, 'alpha', 1)
     end
 end

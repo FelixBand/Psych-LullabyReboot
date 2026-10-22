@@ -4,9 +4,9 @@
 local EYE_SCALE = 2 / 3
 
 -- The eye field behaves like its own little camera, no matter how camGame zooms or moves:
-local FIELD_SCALE = 1.05   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
+local FIELD_SCALE = 1.07   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
 local FIELD_X = 60         -- pan the whole field in screen pixels (+ = right)
-local FIELD_Y = 80         -- (+ = down)
+local FIELD_Y = 65         -- (+ = down)
 local PARALLAX = 0.2      -- how much camGame scrolling nudges the eyes (0 = locked to the screen)
 
 -- ===== state ==============================================================

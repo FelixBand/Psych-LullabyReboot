@@ -2,12 +2,12 @@
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
 <!-- $TexturePacker:SmartUpdate:ec1dd0a22637dbb0c62378e9966aea07:74dccf9fd5a9b3c4c7a9f7e54a855631:36d25331e58334159fcd112c2dd1055d$ -->
 <TextureAtlas imagePath="bf_scream.png" width="1962" height="3602">
-    <SubTexture name="frame_0000_padded" x="1" y="1" width="1238" height="720" frameX="-30" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0001_padded" x="1" y="1445" width="1210" height="720" frameX="-22" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0002_padded" x="1" y="723" width="1229" height="720" frameX="-6" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0003_padded" x="1241" y="1" rotated="true" width="720" height="1175" frameX="-40" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0004_padded" x="1" y="2881" width="1179" height="720" frameX="-21" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0005_padded" x="1232" y="1178" rotated="true" width="720" height="1142" frameX="-35" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0006_padded" x="1197" y="2322" rotated="true" width="720" height="1161" frameX="-17" frameY="0" frameWidth="1280" frameHeight="720"/>
-    <SubTexture name="frame_0007_padded" x="1" y="2167" width="1194" height="712" frameX="-15" frameY="-8" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0000" x="1" y="1" width="1238" height="720" frameX="-30" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0001" x="1" y="1445" width="1210" height="720" frameX="-22" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0002" x="1" y="723" width="1229" height="720" frameX="-6" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0003" x="1241" y="1" rotated="true" width="720" height="1175" frameX="-40" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0004" x="1" y="2881" width="1179" height="720" frameX="-21" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0005" x="1232" y="1178" rotated="true" width="720" height="1142" frameX="-35" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0006" x="1197" y="2322" rotated="true" width="720" height="1161" frameX="-17" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="scream0007" x="1" y="2167" width="1194" height="712" frameX="-15" frameY="-8" frameWidth="1280" frameHeight="720"/>
 </TextureAtlas>
