@@ -138,19 +138,19 @@ local function jumpscare(type)
         end
     elseif dadName == 'goldp2' then
         setProperty('jumpscareP2.alpha', 1)
-        setProperty('jumpscareP2.scale.x', 0.6)
-        setProperty('jumpscareP2.scale.y', 0.6)
+        setProperty('jumpscareP2.scale.x', 0.5)
+        setProperty('jumpscareP2.scale.y', 0.5)
         if type == '1' then
             setProperty('jumpscareP2.x', -100)
             setProperty('jumpscareP2.y', -40)
             playAnim('jumpscareP2', 'buildup0', true)
         elseif type == '2' then
-            setProperty('jumpscareP2.x', -100)
-            setProperty('jumpscareP2.y', -40)
+            setProperty('jumpscareP2.x', -200)
+            setProperty('jumpscareP2.y', -80)
             playAnim('jumpscareP2', 'buildup1', true)
         elseif type == '3' then
-            setProperty('jumpscareP2.x', -120)
-            setProperty('jumpscareP2.y', -140)
+            setProperty('jumpscareP2.x', -195)
+            setProperty('jumpscareP2.y', -130)
             playAnim('jumpscareP2', 'buildup2', true)
         elseif type == 'fakeout' then
             setProperty('jumpscareP2.alpha', 0)
