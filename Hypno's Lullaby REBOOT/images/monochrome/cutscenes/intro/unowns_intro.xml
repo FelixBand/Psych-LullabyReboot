@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:5f4568511748118f2edc6b8f58fde395:06681373981b43799aeda92596e2691d:6ad8a4db549cb998ba1ba5ebbd3a0907$ -->
+<TextureAtlas imagePath="unowns_intro.png" width="1023" height="5115">
+    <SubTexture name="atlas_2007_padded" x="1019" y="1065" width="3" height="3" frameX="0" frameY="0" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2008_padded" x="902" y="4108" width="106" height="106" frameX="-244" frameY="-812" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2009_padded" x="1" y="4884" width="407" height="199" frameX="-244" frameY="-719" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2010_padded" x="1" y="4715" width="413" height="167" frameX="-238" frameY="-719" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2011_padded" x="674" y="4108" rotated="true" width="226" height="434" frameX="-238" frameY="-660" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2012_padded" x="676" y="3037" rotated="true" width="316" height="569" frameX="-224" frameY="-510" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2013_padded" x="702" y="2224" rotated="true" width="317" height="568" frameX="-225" frameY="-510" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2014_padded" x="732" y="1" rotated="true" width="290" height="530" frameX="-248" frameY="-463" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2015_padded" x="732" y="533" rotated="true" width="290" height="530" frameX="-248" frameY="-463" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2016_padded" x="716" y="1724" rotated="true" width="264" height="498" frameX="-259" frameY="-446" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2017_padded" x="676" y="3608" rotated="true" width="264" height="498" frameX="-259" frameY="-446" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2018_padded" x="1" y="4265" rotated="true" width="659" height="448" frameX="-403" frameY="-383" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2019_padded" x="1" y="2347" width="674" height="661" frameX="-177" frameY="-381" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2020_padded" x="1" y="3652" width="671" height="611" frameX="-177" frameY="-355" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2021_padded" x="1" y="3010" width="673" height="640" frameX="-175" frameY="-321" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2022_padded" x="1" y="1762" width="699" height="583" frameX="-175" frameY="-321" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2023_padded" x="1" y="1154" width="713" height="606" frameX="-161" frameY="-273" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2024_padded" x="1" y="1" width="729" height="579" frameX="-161" frameY="-273" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2025_padded" x="1" y="582" width="714" height="570" frameX="-176" frameY="-223" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2026_padded" x="662" y="4544" width="356" height="570" frameX="-176" frameY="-223" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2027_padded" x="416" y="4715" rotated="true" width="223" height="355" frameX="-177" frameY="-514" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2028_padded" x="717" y="1065" rotated="true" width="300" height="316" frameX="-177" frameY="-437" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2029_padded" x="677" y="2794" width="326" height="241" frameX="-167" frameY="-436" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2030_padded" x="716" y="1383" rotated="true" width="292" height="339" frameX="-167" frameY="-385" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2031_padded" x="902" y="4216" width="106" height="105" frameX="-400" frameY="-385" frameWidth="953" frameHeight="1080"/>
+    <SubTexture name="atlas_2032_padded" x="1019" y="1065" width="3" height="3" frameX="0" frameY="0" frameWidth="953" frameHeight="1080"/>
+</TextureAtlas>
