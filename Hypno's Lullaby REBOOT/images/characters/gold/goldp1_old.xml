@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:f8a18450aed0ca9a96092f6802ea2c9e:fae23816ec119e570999cd433a27a934:2ef148ef1c19162d06f550e73a3f0d3d$ -->
+<TextureAtlas imagePath="goldp1.png" width="7764" height="5874">
+    <SubTexture name="mono_down0000" x="6181" y="4372" rotated="true" width="690" height="800" frameX="-46" frameY="-370" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0001" x="6181" y="4372" rotated="true" width="690" height="800" frameX="-46" frameY="-370" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0002" x="7044" y="2113" rotated="true" width="720" height="671" frameX="-144" frameY="-356" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0003" x="7044" y="2113" rotated="true" width="720" height="671" frameX="-144" frameY="-356" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0004" x="7044" y="2113" rotated="true" width="720" height="671" frameX="-144" frameY="-356" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0005" x="6979" y="4331" rotated="true" width="711" height="623" frameX="-143" frameY="-337" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0006" x="6979" y="4331" rotated="true" width="711" height="623" frameX="-143" frameY="-337" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0007" x="6438" y="5172" width="541" height="677" frameX="-145" frameY="-299" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0008" x="6438" y="5172" width="541" height="677" frameX="-145" frameY="-299" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0009" x="6438" y="5172" width="541" height="677" frameX="-145" frameY="-299" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0010" x="6389" y="2113" rotated="true" width="655" height="517" frameX="-172" frameY="-295" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0011" x="6389" y="2113" rotated="true" width="655" height="517" frameX="-172" frameY="-295" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0012" x="6979" y="4954" rotated="true" width="648" height="498" frameX="-189" frameY="-233" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0013" x="6979" y="4954" rotated="true" width="648" height="498" frameX="-189" frameY="-233" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0014" x="6765" y="3540" width="525" height="791" frameX="-177" frameY="-104" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0015" x="6765" y="3540" width="525" height="791" frameX="-177" frameY="-104" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0016" x="5634" y="4394" width="547" height="864" frameX="-161" frameY="-22" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0017" x="5634" y="4394" width="547" height="864" frameX="-161" frameY="-22" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0018" x="4763" y="0" width="547" height="879" frameX="-169" frameY="-3" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0019" x="4763" y="0" width="547" height="879" frameX="-169" frameY="-3" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0020" x="4707" y="879" width="549" height="879" frameX="-169" frameY="-5" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_down0021" x="4707" y="879" width="549" height="879" frameX="-169" frameY="-5" frameWidth="939" frameHeight="1245"/>
+    <SubTexture name="mono_idle0000" x="3404" y="881" width="581" height="880" frameX="-135" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0001" x="3404" y="881" width="581" height="880" frameX="-135" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0002" x="3404" y="881" width="581" height="880" frameX="-135" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0003" x="2821" y="3526" width="589" height="880" frameX="-127" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0004" x="3095" y="2645" width="589" height="880" frameX="-127" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0005" x="3095" y="2645" width="589" height="880" frameX="-127" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0006" x="2928" y="4406" width="554" height="880" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0007" x="3410" y="3525" width="554" height="880" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0008" x="3410" y="3525" width="554" height="880" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0009" x="3684" y="2643" width="554" height="880" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0010" x="3494" y="0" width="555" height="880" frameX="-162" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0011" x="3494" y="0" width="555" height="880" frameX="-162" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0012" x="1709" y="4892" width="552" height="882" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0013" x="1995" y="2796" width="552" height="882" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0014" x="1995" y="2796" width="552" height="882" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0015" x="1995" y="2796" width="552" height="882" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0016" x="2318" y="0" width="595" height="882" frameX="-120" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0017" x="1534" y="4010" width="595" height="882" frameX="-120" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0018" x="1534" y="4010" width="595" height="882" frameX="-120" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0019" x="1701" y="0" width="617" height="882" frameX="-96" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0020" x="1930" y="1914" width="617" height="882" frameX="-96" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0021" x="1930" y="1914" width="617" height="882" frameX="-96" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0022" x="2209" y="882" width="614" height="882" frameX="-99" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0023" x="3746" y="1761" width="776" height="879" frameX="-99" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0024" x="3964" y="3523" width="708" height="879" frameX="-167" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0025" x="4238" y="2640" width="708" height="879" frameX="-167" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0026" x="4238" y="2640" width="708" height="879" frameX="-167" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0027" x="3985" y="880" width="722" height="879" frameX="-153" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0028" x="4196" y="4402" width="724" height="878" frameX="-153" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0029" x="4672" y="3519" width="724" height="878" frameX="-153" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0030" x="4920" y="4397" width="714" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0031" x="4920" y="4397" width="714" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0032" x="5396" y="3516" width="714" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0033" x="5663" y="2636" width="714" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0034" x="5256" y="879" width="716" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0035" x="5310" y="0" width="716" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0036" x="5310" y="0" width="716" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0037" x="5310" y="0" width="716" height="878" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0038" x="4946" y="2638" width="717" height="878" frameX="-162" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0039" x="5107" y="1758" width="717" height="878" frameX="-162" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0040" x="5107" y="1758" width="717" height="878" frameX="-162" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0041" x="4049" y="0" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0042" x="4049" y="0" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0043" x="4049" y="0" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0044" x="4049" y="0" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0045" x="3482" y="4405" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0046" x="3482" y="4405" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0047" x="3482" y="4405" width="714" height="879" frameX="-163" frameY="-47" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0048" x="2547" y="2645" width="548" height="881" frameX="-167" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0049" x="2547" y="2645" width="548" height="881" frameX="-167" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0050" x="2823" y="882" width="581" height="881" frameX="-134" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0051" x="2823" y="882" width="581" height="881" frameX="-134" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0052" x="2913" y="0" width="581" height="881" frameX="-134" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0053" x="2547" y="1764" width="610" height="881" frameX="-105" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0054" x="2547" y="1764" width="610" height="881" frameX="-105" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_idle0055" x="2547" y="1764" width="610" height="881" frameX="-105" frameY="-45" frameWidth="913" frameHeight="931"/>
+    <SubTexture name="mono_left0000" x="6892" y="2784" rotated="true" width="838" height="756" frameX="-33" frameY="-102" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0001" x="6892" y="2784" rotated="true" width="838" height="756" frameX="-33" frameY="-102" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0002" x="6892" y="1390" rotated="true" width="845" height="723" frameX="-29" frameY="-118" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0003" x="6892" y="1390" rotated="true" width="845" height="723" frameX="-29" frameY="-118" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0004" x="6892" y="1390" rotated="true" width="845" height="723" frameX="-29" frameY="-118" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0005" x="6892" y="0" rotated="true" width="849" height="718" frameX="-32" frameY="-115" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0006" x="6892" y="0" rotated="true" width="849" height="718" frameX="-32" frameY="-115" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0007" x="6892" y="718" rotated="true" width="847" height="672" frameX="-39" frameY="-110" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0008" x="6892" y="718" rotated="true" width="847" height="672" frameX="-39" frameY="-110" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0009" x="6892" y="718" rotated="true" width="847" height="672" frameX="-39" frameY="-110" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0010" x="6110" y="3514" width="655" height="858" frameX="-62" frameY="-93" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0011" x="6110" y="3514" width="655" height="858" frameX="-62" frameY="-93" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0012" x="837" y="5246" rotated="true" width="872" height="627" frameX="-101" frameY="-66" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0013" x="0" y="5246" rotated="true" width="837" height="628" frameX="-170" frameY="-51" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0014" x="0" y="5246" rotated="true" width="837" height="628" frameX="-170" frameY="-51" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0015" x="6026" y="0" width="566" height="875" frameX="-291" frameY="-5" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0016" x="6026" y="0" width="566" height="875" frameX="-291" frameY="-5" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0017" x="5824" y="1757" width="565" height="876" frameX="-304" frameY="-7" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0018" x="5972" y="878" width="565" height="876" frameX="-304" frameY="-7" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0019" x="5972" y="878" width="565" height="876" frameX="-304" frameY="-7" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0020" x="3807" y="5284" rotated="true" width="878" height="580" frameX="-286" frameY="-5" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_left0021" x="3807" y="5284" rotated="true" width="878" height="580" frameX="-286" frameY="-5" frameWidth="871" frameHeight="980"/>
+    <SubTexture name="mono_right0000" x="0" y="4310" rotated="true" width="912" height="936" frameX="-80" frameY="-70" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0001" x="0" y="4310" rotated="true" width="912" height="936" frameX="-80" frameY="-70" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0002" x="1329" y="1021" width="880" height="893" frameX="-102" frameY="-92" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0003" x="1329" y="1021" width="880" height="893" frameX="-102" frameY="-92" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0004" x="1329" y="1021" width="880" height="893" frameX="-102" frameY="-92" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0005" x="1169" y="3109" width="826" height="901" frameX="-152" frameY="-88" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0006" x="1169" y="3109" width="826" height="901" frameX="-152" frameY="-88" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0007" x="691" y="2203" width="626" height="906" frameX="-358" frameY="-84" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0008" x="691" y="2203" width="626" height="906" frameX="-358" frameY="-84" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0009" x="691" y="2203" width="626" height="906" frameX="-358" frameY="-84" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0010" x="912" y="4239" width="622" height="907" frameX="-342" frameY="-77" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0011" x="1317" y="2203" width="613" height="900" frameX="-321" frameY="-76" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0012" x="1317" y="2203" width="613" height="900" frameX="-321" frameY="-76" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0013" x="3157" y="1763" width="589" height="880" frameX="-313" frameY="-83" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0014" x="3157" y="1763" width="589" height="880" frameX="-313" frameY="-83" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0015" x="6377" y="2633" width="515" height="855" frameX="-233" frameY="-123" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0016" x="5563" y="5275" rotated="true" width="875" height="549" frameX="-201" frameY="-94" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0017" x="5563" y="5275" rotated="true" width="875" height="549" frameX="-201" frameY="-94" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0018" x="2928" y="5286" rotated="true" width="879" height="585" frameX="-164" frameY="-90" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0019" x="4522" y="1759" width="585" height="879" frameX="-164" frameY="-90" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0020" x="4685" y="5280" rotated="true" width="878" height="577" frameX="-171" frameY="-87" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_right0021" x="4685" y="5280" rotated="true" width="878" height="577" frameX="-171" frameY="-87" frameWidth="1067" frameHeight="1098"/>
+    <SubTexture name="mono_up0000" x="0" y="0" width="697" height="1136" frameX="-228" frameY="-58" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0001" x="0" y="0" width="697" height="1136" frameX="-228" frameY="-58" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0002" x="0" y="1136" width="662" height="1114" frameX="-231" frameY="-54" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0003" x="0" y="1136" width="662" height="1114" frameX="-231" frameY="-54" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0004" x="0" y="1136" width="662" height="1114" frameX="-231" frameY="-54" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0005" x="0" y="2250" width="691" height="1081" frameX="-213" frameY="-90" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0006" x="0" y="2250" width="691" height="1081" frameX="-213" frameY="-90" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0007" x="662" y="1136" width="667" height="1067" frameX="-254" frameY="-111" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0008" x="662" y="1136" width="667" height="1067" frameX="-254" frameY="-111" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0009" x="662" y="1136" width="667" height="1067" frameX="-254" frameY="-111" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0010" x="697" y="0" width="497" height="1031" frameX="-285" frameY="-156" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0011" x="697" y="0" width="497" height="1031" frameX="-285" frameY="-156" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0012" x="697" y="0" width="497" height="1031" frameX="-285" frameY="-156" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0013" x="1194" y="0" width="507" height="1021" frameX="-281" frameY="-176" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0014" x="1194" y="0" width="507" height="1021" frameX="-281" frameY="-176" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0015" x="0" y="3331" width="543" height="979" frameX="-251" frameY="-239" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0016" x="543" y="3331" width="626" height="908" frameX="-174" frameY="-345" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0017" x="543" y="3331" width="626" height="908" frameX="-174" frameY="-345" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0018" x="2129" y="3678" width="692" height="881" frameX="-104" frameY="-385" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0019" x="2129" y="3678" width="692" height="881" frameX="-104" frameY="-385" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0020" x="2261" y="4559" width="667" height="881" frameX="-130" frameY="-382" frameWidth="989" frameHeight="1271"/>
+    <SubTexture name="mono_up0021" x="2261" y="4559" width="667" height="881" frameX="-130" frameY="-382" frameWidth="989" frameHeight="1271"/>
+</TextureAtlas>

@@ -1,101 +1,79 @@
 {
 	"animations": [
 		{
+			"offsets": [150, -44],
 			"loop": false,
-			"offsets": [
-				150,
-				-44
-			],
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
-			"name": "mono_left",
-			"indices": []
+			"indices": [],
+			"name": "mono_left"
 		},
 		{
+			"offsets": [1, -42],
 			"loop": false,
-			"offsets": [
-				1,
-				-42
-			],
+			"fps": 24,
 			"anim": "singDOWN",
+			"indices": [],
+			"name": "mono_down"
+		},
+		{
+			"offsets": [83, 337],
+			"loop": false,
 			"fps": 24,
-			"name": "mono_down",
+			"anim": "singUP",
+			"indices": [],
+			"name": "mono_up"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": true,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "mono_idle"
+		},
+		{
+			"loop": false,
+			"offsets": [33, 40],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "mono_right",
 			"indices": []
 		},
 		{
 			"loop": false,
-			"offsets": [
-				83,
-				337
-			],
-			"anim": "singUP",
+			"offsets": [33, 40],
+			"anim": "jumpscareEnd",
 			"fps": 24,
-			"name": "mono_up",
-			"indices": []
+			"name": "mono_right",
+			"indices": [15, 16, 17, 18, 19, 20, 21]
 		},
 		{
-			"loop": true,
-			"offsets": [
-				0,
-				0
-			],
-			"anim": "idle",
-			"fps": 24,
-			"name": "mono_idle",
-			"indices": []
-		},
-		{
-			"offsets": [
-				33,
-				40
-			],
+			"offsets": [-237, -152],
 			"indices": [],
 			"fps": 24,
-			"anim": "singRIGHT",
+			"anim": "idle-backshot",
 			"loop": false,
-			"name": "mono_right"
+			"name": "mono_backshot_idle"
 		},
 		{
-			"offsets": [
-				33,
-				40
-			],
-			"indices": [
-				15,
-				16,
-				17,
-				18,
-				19,
-				20,
-				21
-			],
+			"offsets": [11, -30],
+			"indices": [],
 			"fps": 24,
-			"anim": "jumpscareEnd",
+			"anim": "sing",
 			"loop": false,
-			"name": "mono_right"
+			"name": "mono_backshot_sing"
 		}
 	],
 	"vocals_file": "",
-	"results_character": null,
 	"no_antialiasing": false,
 	"image": "characters/gold/goldp1",
-	"position": [
-		-270,
-		-120
-	],
-	"speaker": null,
+	"position": [-270, -120],
 	"healthicon": "dad",
 	"flip_x": false,
-	"healthbar_colors": [
-		175,
-		102,
-		206
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [175, 102, 206],
+	"camera_position": [0, 0],
 	"sing_duration": 8,
-	"dead_character": null,
-	"scale": 1
+	"scale": 1,
+	"_editor_isPlayer": false
 }

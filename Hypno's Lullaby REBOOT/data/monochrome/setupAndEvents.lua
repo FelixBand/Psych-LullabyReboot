@@ -190,6 +190,9 @@ local function jumpscare(type)
 end
 
 function onEvent(name, value1, value2, strumTime)
+    if name == 'HUD Fade In' then
+        doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
+    end
     if name == 'Puke' then
         --runTimer('pukeEnd', 2.15)
         setProperty('goldPukeBody.alpha', 1)

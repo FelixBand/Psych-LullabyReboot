@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:f36f01461e6edc595b8edc9c27d08cba:aad8db62b272d841ccfe760b432555d2:88f93823e0ef80ff95c64e1c0bdd124f$ -->
+<TextureAtlas imagePath="bf_lift.png" width="1372" height="4007">
+    <SubTexture name="lift0000" x="1" y="1587" width="1370" height="795"/>
+    <SubTexture name="lift0001" x="1" y="1" width="1369" height="788"/>
+    <SubTexture name="lift0002" x="1" y="791" width="1364" height="794"/>
+    <SubTexture name="lift0003" x="1" y="2384" width="1362" height="810"/>
+    <SubTexture name="lift0004" x="1" y="3196" width="1361" height="810"/>
+</TextureAtlas>
