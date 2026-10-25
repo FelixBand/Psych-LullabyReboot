@@ -79,6 +79,14 @@ function onCreatePost()
 
     setProperty('showRating', false)
     setProperty('showComboNum', false)
+
+    for i = 0, getProperty('unspawnNotes.length') - 1 do
+        local strumTime = getPropertyFromGroup('unspawnNotes', i, 'strumTime')
+        local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
+        if strumTime >= 363536 and not mustPress then
+            setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true) -- as to not interrupt the ending break animation
+        end
+    end
 end
 
 function onUpdate(elapsed)
@@ -104,15 +112,15 @@ local function jumpBlur(amount, duration, cam)
     end
 end
 
----@param obj string "name of the game object you want to get the animation duration of"
-local function getAnimLength(obj)
+---@param obj string "name of the game object you want to get the current animation duration of"
+local function getAnimDuration(obj)
     return getProperty(obj..'.animation.curAnim.numFrames') / getProperty(obj..'.animation.curAnim.frameRate')
 end
 
 ---@param tag string "name of the timer"
----@param obj string "name of the game object you want to get the animation duration of"
+---@param obj string "name of the game object you want to get the current animation duration of"
 local function animEndTimer(tag, obj)
-    runTimer(tag, getAnimLength(obj))
+    runTimer(tag, getAnimDuration(obj))
 end
 
 local function jumpscare(type)
@@ -175,7 +183,7 @@ local function jumpscare(type)
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, 1.75)
-            cameraShake('other', 0.005, getAnimLength('jumpscareP2'))
+            cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
             jumpBlur(0.15, 0.1, 'game')
         end
     end
@@ -190,7 +198,7 @@ function onEvent(name, value1, value2, strumTime)
         playAnim('goldPukeBody', 'puke', true)
         playAnim('goldPukeHead', 'puke' .. value1, true)
         if value1 == '-alt' then
-            runTimer('correctHeadY', 1.1)
+            runTimer('correctHeadY', 1.6)
             setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 115)
         else
             setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 88)
