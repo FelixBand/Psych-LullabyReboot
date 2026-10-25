@@ -1,4 +1,4 @@
--- Monochrome background eyes & pulsing BG. Everything lives on camGame (no extra camera).
+-- background eyes & pulsing BG
 
 -- ===== config =============================================================
 local EYE_SCALE = 2 / 3
@@ -373,7 +373,7 @@ function onUpdate(elapsed)
         movementSpeed = 2
     end
 
-    local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272
+    local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272 or songTime >= 368.818
     if eyesBlackened ~= shouldBlackenEyes then
         for i = 1, #bgUnowns do
             setProperty(bgUnowns[i].tag .. '.color', shouldBlackenEyes and getColorFromHex('000000') or getColorFromHex('FFFFFF'))

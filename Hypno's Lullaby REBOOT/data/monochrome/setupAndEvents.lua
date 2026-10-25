@@ -35,7 +35,7 @@ function onCreate()
     makeAnimatedLuaSprite('jumpscareP1', 'characters/gold/jumpscarep1', 70, -60)
     addAnimationByPrefix('jumpscareP1', 'triple0', 'triple_first', 24, false)
     addAnimationByPrefix('jumpscareP1', 'triple1', 'triple_second', 24, false)
-    addAnimationByPrefix('jumpscareP1', 'jumpFaster', 'jumpscare', 30, false)
+    addAnimationByPrefix('jumpscareP1', 'jumpFaster', 'jumpscare', 32, false)
     addAnimationByPrefix('jumpscareP1', 'jump', 'jumpscare', 24, false)
     setObjectCamera('jumpscareP1', 'other')
     scaleObject('jumpscareP1', 1, 1)
@@ -104,6 +104,17 @@ local function jumpBlur(amount, duration, cam)
     end
 end
 
+---@param obj string "name of the game object you want to get the animation duration of"
+local function getAnimLength(obj)
+    return getProperty(obj..'.animation.curAnim.numFrames') / getProperty(obj..'.animation.curAnim.frameRate')
+end
+
+---@param tag string "name of the timer"
+---@param obj string "name of the game object you want to get the animation duration of"
+local function animEndTimer(tag, obj)
+    runTimer(tag, getAnimLength(obj))
+end
+
 local function jumpscare(type)
     
     setProperty('dadGroup.visible', false)
@@ -121,19 +132,19 @@ local function jumpscare(type)
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jumpFaster', true)
-            runTimer('jumpscareEnd', 1.48)
+            animEndTimer('jumpscareEnd', 'jumpscareP1')
             jumpBlur(0.10, 0.1, 'both')
         elseif type == '4' then
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jump', true)
-            runTimer('startP2', 1.85)
+            animEndTimer('startP2', 'jumpscareP1')
             jumpBlur(0.10, 0.1, 'both')
         else
             setProperty('jumpscareP1.x', 70)
             setProperty('jumpscareP1.y', -60)
             playAnim('jumpscareP1', 'jump', true)
-            runTimer('jumpscareEnd', 1.85)
+            animEndTimer('jumpscareEnd', 'jumpscareP1')
             jumpBlur(0.10, 0.1, 'both')
         end
     elseif dadName == 'goldp2' then
@@ -161,8 +172,10 @@ local function jumpscare(type)
             setProperty('jumpscareP2.scale.x', 0.95)
             setProperty('jumpscareP2.scale.y', 0.95)
             playAnim('jumpscareP2', 'jump', true)
-            runTimer('jumpscareEnd', 1.75)
-            cameraShake('other', 0.005, 1.75)
+            --runTimer('jumpscareEnd', 1.75)
+            animEndTimer('jumpscareEnd', 'jumpscareP2')
+            --cameraShake('other', 0.005, 1.75)
+            cameraShake('other', 0.005, getAnimLength('jumpscareP2'))
             jumpBlur(0.15, 0.1, 'game')
         end
     end
@@ -170,7 +183,7 @@ end
 
 function onEvent(name, value1, value2, strumTime)
     if name == 'Puke' then
-        runTimer('pukeEnd', 2.15)
+        --runTimer('pukeEnd', 2.15)
         setProperty('goldPukeBody.alpha', 1)
         setProperty('goldPukeHead.alpha', 1)
         setProperty('dadGroup.visible', false)
@@ -183,7 +196,7 @@ function onEvent(name, value1, value2, strumTime)
             setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 88)
             setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 120)
         end
-        debugPrint('puke' .. value1)
+        animEndTimer('pukeEnd', 'goldPukeBody')
     end
     if name == 'Jumpscare' then
         if value1 ~= '0' and value1 ~= '4' then
