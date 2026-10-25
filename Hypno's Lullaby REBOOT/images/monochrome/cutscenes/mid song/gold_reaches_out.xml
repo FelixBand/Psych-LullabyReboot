@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:9351fde24485f9632fa955bd068b90b7:bb72ce3948fa77658f46648fe0de408e:fe08d408855dc23790a20b976086cec2$ -->
+<TextureAtlas imagePath="gold_reaches_out.png" width="1839" height="7385">
+    <SubTexture name="reachout0000" x="1680" y="5276" width="91" height="370" frameX="0" frameY="-670" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0001" x="1367" y="6919" width="203" height="434" frameX="0" frameY="-530" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0002" x="830" y="6919" rotated="true" width="535" height="417" frameX="0" frameY="-388" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0003" x="1" y="6875" width="827" height="509" frameX="0" frameY="-299" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0004" x="906" y="6325" width="932" height="592" frameX="0" frameY="-240" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0005" x="960" y="5276" rotated="true" width="718" height="1047" frameX="0" frameY="-168" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0006" x="988" y="3190" rotated="true" width="772" height="1033" frameX="0" frameY="-90" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0007" x="988" y="2146" rotated="true" width="802" height="1042" frameX="0" frameY="-66" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0008" x="996" y="1079" rotated="true" width="812" height="1065" frameX="0" frameY="-46" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0009" x="996" y="1" rotated="true" width="838" height="1076" frameX="0" frameY="-29" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0010" x="960" y="4225" rotated="true" width="868" height="1049" frameX="0" frameY="-6" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0011" x="1" y="5767" rotated="true" width="903" height="1106" frameX="0" frameY="0" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0012" x="1" y="3845" rotated="true" width="957" height="1920" frameX="0" frameY="-94" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0013" x="1" y="1" rotated="true" width="993" height="1920" frameX="0" frameY="-58" frameWidth="1920" frameHeight="1051"/>
+    <SubTexture name="reachout0014" x="1" y="1923" rotated="true" width="985" height="1920" frameX="0" frameY="-66" frameWidth="1920" frameHeight="1051"/>
+</TextureAtlas>

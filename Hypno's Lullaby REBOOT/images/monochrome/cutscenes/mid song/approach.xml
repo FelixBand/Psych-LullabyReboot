@@ -4,4 +4,6 @@
 <TextureAtlas imagePath="approach.png" width="1917" height="814">
     <SubTexture name="approach0000" x="1443" y="1" width="473" height="523" frameX="-6" frameY="0" frameWidth="483" frameHeight="540"/>
     <SubTexture name="approach0001" x="1" y="1" width="1440" height="812"/>
+
+    <SubTexture name="approach0002" x="1" y="1" width="1" height="1"/> <!-- blank frame :) -->
 </TextureAtlas>

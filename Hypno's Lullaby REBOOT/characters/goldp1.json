@@ -53,7 +53,7 @@
 			"indices": [],
 			"fps": 24,
 			"anim": "idle-backshot",
-			"loop": false,
+			"loop": true,
 			"name": "mono_backshot_idle"
 		},
 		{

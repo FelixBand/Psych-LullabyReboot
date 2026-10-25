@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:03d67b314f71e7ce4c825e9ccc81e453:0bfc5b587a8fdae9ecef22c0433ec465:0706a3750df553d44127cc647782a653$ -->
+<TextureAtlas imagePath="collector_hand.png" width="4570" height="1649">
+    <SubTexture name="hand0000" x="1679" y="620" rotated="true" width="542" height="1022" frameX="-51" frameY="0" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0001" x="564" y="621" rotated="true" width="552" height="1023" frameX="-47" frameY="0" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0002" x="1118" y="620" rotated="true" width="559" height="1023" frameX="-42" frameY="-2" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0003" x="1" y="621" rotated="true" width="561" height="1027" frameX="-34" frameY="-6" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0004" x="2816" y="607" rotated="true" width="579" height="1038" frameX="-21" frameY="-2" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0005" x="3989" y="591" rotated="true" width="580" height="1032" frameX="-19" frameY="-7" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0006" x="3097" y="1" width="1038" height="588" frameX="-15" frameY="-9" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0007" x="2223" y="607" rotated="true" width="591" height="1033" frameX="-16" frameY="-14" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0008" x="3397" y="591" rotated="true" width="590" height="1032" frameX="-13" frameY="-22" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0009" x="2063" y="1" width="1032" height="604" frameX="-11" frameY="-19" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0010" x="1" y="1" width="1032" height="618" frameX="-5" frameY="-13" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0011" x="1035" y="1" width="1026" height="617" frameX="-3" frameY="-18" frameWidth="1076" frameHeight="641"/>
+    <SubTexture name="hand0012" x="0" y="0" width="1" height="1"/>
+</TextureAtlas>
