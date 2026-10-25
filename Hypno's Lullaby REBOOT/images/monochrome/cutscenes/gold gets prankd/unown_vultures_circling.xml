@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:398953b3c73910ba2f959e4d3cd0e5da:849fdf72672b38e55fbf032c36d517e2:6c39bfdafa60ecf4b80530bdbf3e0ff3$ -->
+<TextureAtlas imagePath="unown_vultures_circling.png" width="7800" height="2784">
+    <SubTexture name="whatanindividual0000" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0001" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0002" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0003" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0004" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0005" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0006" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0007" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0008" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0009" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0010" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0011" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0012" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0013" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0014" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0015" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0016" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0017" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0018" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0019" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0020" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0021" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0022" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0023" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0024" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0025" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0026" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0027" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0028" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0029" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0030" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0031" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0032" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0033" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0034" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0035" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0036" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0037" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0038" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0039" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0040" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0041" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0042" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0043" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0044" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0045" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0046" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0047" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0048" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0049" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0050" x="6090" y="1553" width="1429" height="1106" frameX="-131" frameY="-10" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0051" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0052" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0053" x="1" y="1682" width="1395" height="1101" frameX="-176" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0054" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0055" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0056" x="4612" y="1612" width="1476" height="1112" frameX="-125" frameY="-4" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0057" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0058" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0059" x="3054" y="1645" width="1556" height="1119" frameX="-72" frameY="-5" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0060" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0061" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0062" x="3397" y="1" rotated="true" width="1140" height="1626" frameX="-28" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0063" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0064" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0065" x="1142" y="1" rotated="true" width="1154" height="1657" frameX="-14" frameY="-6" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0066" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0067" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0068" x="1" y="1" rotated="true" width="1139" height="1679" frameX="-6" frameY="-11" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0069" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0070" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0071" x="1398" y="1660" width="1654" height="1121" frameX="-18" frameY="-12" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0072" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0073" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0074" x="2298" y="1" rotated="true" width="1097" height="1642" frameX="-26" frameY="-20" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0075" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0076" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0077" x="4539" y="1" rotated="true" width="1093" height="1609" frameX="-33" frameY="-24" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0078" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0079" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0080" x="5634" y="1" rotated="true" width="1080" height="1550" frameX="-55" frameY="-21" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0081" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0082" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+    <SubTexture name="whatanindividual0083" x="6716" y="1" rotated="true" width="1083" height="1489" frameX="-89" frameY="-14" frameWidth="1698" frameHeight="1208"/>
+</TextureAtlas>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:9f978c8758b8187e81b2b068533189a9:766ca00e986685b197e8c343eff5712a:89659fdd50f6f3fae17e4a0774671fdc$ -->
+<TextureAtlas imagePath="hair.png" width="3846" height="2166">
+    <SubTexture name="hair0000" x="1" y="1" width="1280" height="720"/>
+    <SubTexture name="hair0001" x="1283" y="1" width="1280" height="720"/>
+    <SubTexture name="hair0002" x="2565" y="1" width="1280" height="720"/>
+    <SubTexture name="hair0003" x="1" y="723" width="1280" height="720"/>
+    <SubTexture name="hair0004" x="1283" y="723" width="1280" height="720"/>
+    <SubTexture name="hair0005" x="2565" y="723" width="1280" height="720"/>
+    <SubTexture name="hair0006" x="1" y="1445" width="1280" height="720"/>
+    <SubTexture name="hair0007" x="1283" y="1445" width="1280" height="720"/>
+    <SubTexture name="hair0008" x="2565" y="1445" width="1280" height="720"/>
+</TextureAtlas>

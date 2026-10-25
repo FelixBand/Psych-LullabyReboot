@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:c35a5464ed906d16392838d4b7c13538:7b6aafdcbb47d446b0d48b5cb452fe81:42b9fb1f38cd4b7ea520fec3f3c46ddb$ -->
+<TextureAtlas imagePath="closeup.png" width="1442" height="1624">
+    <SubTexture name="closeup0000" x="1" y="1" width="1440" height="810"/>
+    <SubTexture name="closeup0001" x="1" y="813" width="1440" height="810"/>
+</TextureAtlas>

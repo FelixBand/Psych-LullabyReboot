@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:d980aa8c30fdce3434c40a0c983c5da9:0f6dd26b7989f75893b003856a17f49a:30bca303a3bbb2bf1240424067bc022e$ -->
+<TextureAtlas imagePath="gold_crawl_above.png" width="1005" height="788">
+    <SubTexture name="frame_0000_padded" x="1" y="1" width="527" height="262" frameX="-17" frameY="-29" frameWidth="568" frameHeight="316"/>
+    <SubTexture name="frame_0001_padded" x="1" y="265" width="517" height="260" frameX="-25" frameY="-27" frameWidth="568" frameHeight="316"/>
+    <SubTexture name="frame_0002_padded" x="1" y="527" width="508" height="260" frameX="-32" frameY="-24" frameWidth="568" frameHeight="316"/>
+    <SubTexture name="frame_0003_padded" x="530" y="1" rotated="true" width="263" height="513" frameX="-31" frameY="-22" frameWidth="568" frameHeight="316"/>
+    <SubTexture name="frame_0004_padded" x="511" y="527" width="493" height="260" frameX="-36" frameY="-23" frameWidth="568" frameHeight="316"/>
+</TextureAtlas>

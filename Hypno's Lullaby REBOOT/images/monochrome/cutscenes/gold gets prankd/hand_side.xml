@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:62d3f754b41643ab8f66216eef54535b:57b82c7ebc038e82e7c24552a5bca2d0:3c83b705662211ed222cae8ea5a987b0$ -->
+<TextureAtlas imagePath="hand_side.png" width="127" height="373">
+    <SubTexture name="frame_0000_padded" x="1" y="285" width="124" height="87" frameX="-15" frameY="-5" frameWidth="145" frameHeight="106"/>
+    <SubTexture name="frame_0001_padded" x="1" y="192" width="124" height="91" frameX="-11" frameY="-8" frameWidth="145" frameHeight="106"/>
+    <SubTexture name="frame_0002_padded" x="1" y="97" width="124" height="93" frameX="-9" frameY="-10" frameWidth="145" frameHeight="106"/>
+    <SubTexture name="frame_0003_padded" x="1" y="1" width="125" height="94" frameX="-5" frameY="-12" frameWidth="145" frameHeight="106"/>
+</TextureAtlas>

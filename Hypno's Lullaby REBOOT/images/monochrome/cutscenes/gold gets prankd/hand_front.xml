@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:a95685eb2ec5acebe1273002f693b640:746be4458c1c8da0ac8137f2582c71b4:e95487e62ef8a14e40363eac9f472598$ -->
+<TextureAtlas imagePath="hand_front.png" width="786" height="1349">
+    <SubTexture name="frame_0000_padded" x="396" y="677" width="387" height="335" frameX="-3" frameY="0" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0001_padded" x="389" y="1014" width="394" height="332" frameX="-1" frameY="-3" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0002_padded" x="1" y="1" width="397" height="334" frameX="0" frameY="-7" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0003_padded" x="1" y="337" width="395" height="334" frameX="-3" frameY="-10" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0004_padded" x="1" y="673" width="393" height="336" frameX="-5" frameY="-11" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0005_padded" x="398" y="339" width="387" height="336" frameX="-8" frameY="-12" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0006_padded" x="1" y="1011" width="386" height="337" frameX="-8" frameY="-16" frameWidth="398" frameHeight="353"/>
+    <SubTexture name="frame_0007_padded" x="400" y="1" width="383" height="336" frameX="-8" frameY="-17" frameWidth="398" frameHeight="353"/>
+</TextureAtlas>

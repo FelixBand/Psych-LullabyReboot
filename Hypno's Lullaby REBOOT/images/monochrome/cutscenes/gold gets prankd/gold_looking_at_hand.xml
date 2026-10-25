@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:83c3efebb9f3d165ff44f9b0860d5418:dc39e1a3d103b2b3ffe97cffab02d66a:45ce9136b879493bb8634f546d77d584$ -->
+<TextureAtlas imagePath="gold_looking_at_hand.png" width="1481" height="1928">
+    <SubTexture name="frame_0000_padded" x="743" y="483" width="734" height="480" frameX="-3" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0001_padded" x="742" y="1447" width="735" height="480" frameX="-5" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0002_padded" x="1" y="1" width="740" height="480" frameX="-2" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0003_padded" x="1" y="483" width="740" height="480" frameX="-2" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0004_padded" x="1" y="1447" width="739" height="480" frameX="-3" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0005_padded" x="1" y="965" width="740" height="480" frameX="-1" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0006_padded" x="743" y="1" width="737" height="480" frameX="0" frameY="0" frameWidth="742" frameHeight="480"/>
+    <SubTexture name="frame_0007_padded" x="743" y="965" width="732" height="480" frameX="0" frameY="0" frameWidth="742" frameHeight="480"/>
+</TextureAtlas>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:26a1f79f30076dbf529efdea7229dec2:092de299ba610ea119b8ab90e9d70a2d:db0486302ac0e5a41d71d67d9d8956a2$ -->
+<TextureAtlas imagePath="approach.png" width="1917" height="814">
+    <SubTexture name="approach0000" x="1443" y="1" width="473" height="523" frameX="-6" frameY="0" frameWidth="483" frameHeight="540"/>
+    <SubTexture name="approach0001" x="1" y="1" width="1440" height="812"/>
+</TextureAtlas>
