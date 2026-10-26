@@ -218,14 +218,14 @@ function onCreate()
         makeCutsceneObj('lightbg', 'monochrome/cutscenes/mid song/Light_bg')
 
         makeAnimatedLuaSprite('collectorhand', 'monochrome/cutscenes/mid song/collector_hand', 500, 200)
-        addAnimationByPrefix('collectorhand', 'idle', 'hand', 8, false)
+        addAnimationByPrefix('collectorhand', 'idle', 'hand', 7.5, false)
         setObjectCamera('collectorhand', 'other')
         scaleObject('collectorhand', 0.69, 0.69)
         setProperty('collectorhand.alpha', 0.0001)
         addLuaSprite('collectorhand')
 
         makeAnimatedLuaSprite('reachforhand', 'monochrome/cutscenes/mid song/gold_reaches_out', 0, 0)
-        addAnimationByPrefix('reachforhand', 'reach', 'reachout', 8, false)
+        addAnimationByPrefix('reachforhand', 'reach', 'reachout', 7.5, false)
         setObjectCamera('reachforhand', 'other')
         scaleObject('reachforhand', 0.69, 0.69)
         setProperty('reachforhand.alpha', 0.0001)
@@ -301,6 +301,9 @@ function onEvent(name, value1, value2)
         end
         if scene == 0 then
             setProperty('camHUD.alpha', 0)
+            for i = 0,getProperty('playerStrums.length') - 1 do
+                setPropertyFromGroup('playerStrums', i, 'alpha', 0)
+            end
             setProperty('camGame.alpha', 0)
             setProperty('approach.alpha', 1)
             playAnim('approach', '0', true)
