@@ -423,21 +423,11 @@ function onTimerCompleted(tag)
         setProperty('celebifly.y', 0)
         removeLuaSprite('introbg4')
         animEndTimer('celebi flown', 'celebifly')
-        runTimer('gold intro sing', 1.4)
         runTimer('camGame on', 1.65)
     end
     if tag == 'camGame on' then
         setProperty('camGame.zoom', 0.2)
         setProperty('camGame.alpha', 1)
-    end
-    if tag == 'gold intro sing' then
-        triggerEvent('Play Animation', 'sing', 'dad')
-        --triggerEvent('Alt Idle Animation', 'dad', '')
-        setProperty('dad.alpha', 0.6)
-        runTimer('gold fade in', 15)
-    end
-    if tag == 'gold fade in' then
-        doTweenAlpha('goldIn', 'dad', 1, 0.5, 'linear')
     end
     if tag == 'celebi flown' then
         removeLuaSprite('celebifly')

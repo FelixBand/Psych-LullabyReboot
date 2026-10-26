@@ -61,6 +61,7 @@ function onCreatePost()
 
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
+    setProperty('dad.alpha', 0.6)
     triggerEvent('Camera Follow Pos', '183', '312')
 
     debugPrint(getPlaysAsBF())
@@ -190,6 +191,9 @@ local function jumpscare(type)
 end
 
 function onEvent(name, value1, value2, strumTime)
+    if name == 'Gold Fade In' then
+        doTweenAlpha('goldIn', 'dad', 1, 0.5, 'linear')
+    end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
     end
