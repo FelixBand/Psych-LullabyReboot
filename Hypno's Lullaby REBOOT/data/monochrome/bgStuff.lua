@@ -3,17 +3,16 @@
 -- ===== config =============================================================
 local EYE_SCALE = 2 / 3
 
--- The eye field behaves like its own little camera, no matter how camGame zooms or moves:
-local FIELD_SCALE = 1.07   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
-local FIELD_X = 60         -- pan the whole field in screen pixels (+ = right)
-local FIELD_Y = 65         -- (+ = down)
-local PARALLAX = 0.2      -- how much camGame scrolling nudges the eyes (0 = locked to the screen)
+-- The eyes are ordinary camGame sprites: camGame's zoom and scroll affect them like anything else,
+-- and each depth layer follows the camera by its own scroll factor (1 = with the world, 0 = pinned).
+-- The three FIELD_ values move/scale the whole collection of eyes.
+local FIELD_SCALE = 1.67   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
+local FIELD_X = -420         -- pan the whole field in screen pixels (+ = right)
+local FIELD_Y = -100         -- (+ = down)
+local DEPTH_SCROLL = {[1] = 1.0, [2] = 1.0, [3] = 1.0}   -- depth 1 = far/small eyes, depth 3 = front/big eyes
 
 -- ===== state ==============================================================
 local bgUnowns = {}
-local referenceScrollX = 0
-local referenceScrollY = 0
-local hasReferenceScroll = false
 -- Wobble phase is accumulated instead of computed as songTime * speed, so changing the speed
 -- never makes the eyes teleport (songTime * 2 -> songTime * 0 used to jump them to phase 0).
 local wobblePhase = 0
@@ -262,9 +261,8 @@ function onCreate()
     addLuaSprite('pulse', false)   -- added first, so it draws behind the eyes
 
     makeAnimatedLuaSprite('bgunownsfly', 'monochrome/unowns_bg_fly', -300, -300)
-    addAnimationByPrefix('bgunownsfly', 'fly', 'unowns', 24, true)
+    addAnimationByPrefix('bgunownsfly', 'fly', 'unowns', 24, false)
     setProperty('bgunownsfly.color', getColorFromHex('FF0000'))
-    scaleObject('bgunownsfly', 1.5, 1.5)
     addLuaSprite('bgunownsfly')
 
     for row in bgEyeData:gmatch("[^\n]+") do
@@ -281,13 +279,14 @@ function onCreate()
         local bloomTag = tag .. "-bloom"
 
         makeLuaSprite(bloomTag, "monochrome/unown_particle_bloom", 0, 0)
-        setScrollFactor(bloomTag, 0, 0)
+        local sf = DEPTH_SCROLL[depth] or 0
+        setScrollFactor(bloomTag, sf, sf)
         setProperty(bloomTag .. ".alpha", 0)
         addLuaSprite(bloomTag, false)
 
         makeLuaSprite(tag, "monochrome/unown_particle", 0, 0)
         scaleObject(tag, spriteWidth / 134, spriteHeight / 134)
-        setScrollFactor(tag, 0, 0)
+        setScrollFactor(tag, sf, sf)
         setProperty(tag .. ".alpha", 0)
         addLuaSprite(tag, false)
 
@@ -304,7 +303,7 @@ function onCreate()
             side = values[9],
             fill = fill,
             variantScale = bloomVariantScale[values[10]] or 1.0,
-            depth = depth,
+            scrollFactor = sf,
         }
     end
 
@@ -339,15 +338,9 @@ function onCreate()
     end
 end
 
--- Field transform: where a wanted screen position ends up after FIELD_SCALE / FIELD_X / FIELD_Y.
+-- Where an authored position (1280x720 space) ends up after FIELD_SCALE / FIELD_X / FIELD_Y.
 local function fieldX(x) return screenWidth / 2 + (x - screenWidth / 2) * FIELD_SCALE + FIELD_X end
 local function fieldY(y) return screenHeight / 2 + (y - screenHeight / 2) * FIELD_SCALE + FIELD_Y end
-
--- The sprites sit on camGame, which zooms about the screen centre C: a scroll-factor-0 sprite at x is
--- drawn at C + zoom * (x - C). Pre-dividing by the zoom makes a sprite land exactly where we want
--- on screen, whatever the camera is doing (sizes get divided by the zoom too, see `k` below).
-local function toSpriteX(screenPx, zoom) return screenWidth / 2 + (screenPx - screenWidth / 2) / zoom end
-local function toSpriteY(screenPx, zoom) return screenHeight / 2 + (screenPx - screenHeight / 2) / zoom end
 
 function onUpdate(elapsed)
     setShaderFloat('gameHUDblurController', 'blurWidth', getProperty('gameHUDblurController.x'))
@@ -365,15 +358,7 @@ function onUpdate(elapsed)
 
     if #bgUnowns == 0 then return end
 
-    -- (the parallax reference is captured in onSongStart, once the camera has settled)
-
-    local zoom = math.max(0.001, getProperty('camGame.zoom'))
-    local k = FIELD_SCALE / zoom   -- field zoom with camGame's zoom cancelled out
-    local scrollDX, scrollDY = 0, 0
-    if hasReferenceScroll then
-        scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
-        scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
-    end
+    local k = FIELD_SCALE
 
     local movementSpeed = 1
     if songTime >= 366.54166 then
@@ -436,11 +421,8 @@ function onUpdate(elapsed)
         local centerX = screenX + (width / 2)
         local centerY = screenY + (height / 2)
 
-        local parX = scrollDX * eye.depth * PARALLAX * zoom
-        local parY = scrollDY * eye.depth * PARALLAX * zoom
-
-        setProperty(eye.tag .. '.x', toSpriteX(fieldX(screenX + parX), zoom))
-        setProperty(eye.tag .. '.y', toSpriteY(fieldY(screenY + parY), zoom))
+        setProperty(eye.tag .. '.x', fieldX(screenX))
+        setProperty(eye.tag .. '.y', fieldY(screenY))
         scaleObject(eye.tag, width / 134 * k, height / 134 * k)
         if not eye.alphaTweening then
             setProperty(eye.tag .. '.alpha', alpha)
@@ -449,19 +431,13 @@ function onUpdate(elapsed)
         local bloomWidth = math.max(eye.width, eye.height) * 3 * eye.variantScale
         local bloomScale = bloomWidth / 1280
         local bloomHeight = 720 * (bloomWidth / 1280) * 0.44
-        setProperty(eye.bloomTag .. '.x', toSpriteX(fieldX(centerX - (bloomWidth / 2) + parX), zoom))
-        setProperty(eye.bloomTag .. '.y', toSpriteY(fieldY(centerY - (bloomHeight * 0.85) + parY), zoom))
+        setProperty(eye.bloomTag .. '.x', fieldX(centerX - (bloomWidth / 2)))
+        setProperty(eye.bloomTag .. '.y', fieldY(centerY - (bloomHeight * 0.85)))
         scaleObject(eye.bloomTag, bloomScale * k, bloomScale * 0.44 * k)
         setProperty(eye.bloomTag .. '.angle', math.deg(math.atan2(360 - centerY, 640 - centerX)))
         local renderedAlpha = getProperty(eye.tag .. '.alpha')
         setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or renderedAlpha)
     end
-end
-
-function onSongStart()
-    referenceScrollX = getProperty('camGame.scroll.x')
-    referenceScrollY = getProperty('camGame.scroll.y')
-    hasReferenceScroll = true
 end
 
 function onTweenCompleted(tag)

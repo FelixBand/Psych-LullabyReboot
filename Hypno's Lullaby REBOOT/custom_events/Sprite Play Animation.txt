@@ -1,0 +1,4 @@
+Make an object play an animation.
+
+Value 1 = object tag
+Value 2 = animation tag

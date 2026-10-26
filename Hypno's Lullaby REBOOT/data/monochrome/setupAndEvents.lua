@@ -61,7 +61,7 @@ function onCreatePost()
 
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
-    setProperty('dad.alpha', 0.6)
+    setProperty('dad.color', getColorFromHex('808080'))
     triggerEvent('Camera Follow Pos', '183', '312')
 
     debugPrint(getPlaysAsBF())
@@ -191,8 +191,18 @@ local function jumpscare(type)
 end
 
 function onEvent(name, value1, value2, strumTime)
+    if name == 'End Intro Cutscene' then -- for debug
+        cancelTween('camIn1')
+        cancelTween('camIn2')
+        setProperty('camGame.zoom', 0.66)
+        setProperty('defaultCamZoom', 0.66)
+        removeLuaSprite('celebifly')
+        removeLuaSprite('introbg4')
+        setProperty('camGame.alpha', 1)
+    end
+
     if name == 'Gold Fade In' then
-        doTweenAlpha('goldIn', 'dad', 1, 0.5, 'linear')
+        doTweenColor('goldIn', 'dad', 'FFFFFF', 1, 'cubeIn')
     end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
@@ -246,6 +256,17 @@ function onEvent(name, value1, value2, strumTime)
         cancelTween('zoomIn')
         setProperty('defaultCamZoom', 0.64)
         setProperty('camGame.zoom', 0.64)
+    end
+    if name == 'Unowns Flutter' then
+        local splitX, splitY = string.match(value2, "([^,]+),([^,]+)")
+        local splitAngle, splitSize = string.match(value1, "([^,]+),([^,]+)")
+        
+        setProperty('bgunownsfly.angle', tonumber(splitAngle))
+        setProperty('bgunownsfly.scale.x', tonumber(splitSize))
+        setProperty('bgunownsfly.scale.y', tonumber(splitSize))
+        setProperty('bgunownsfly.x', tonumber(splitX))
+        setProperty('bgunownsfly.y', tonumber(splitY))
+        playAnim('bgunownsfly', 'fly', true)
     end
 end
 
