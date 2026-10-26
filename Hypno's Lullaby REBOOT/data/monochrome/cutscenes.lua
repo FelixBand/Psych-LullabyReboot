@@ -60,6 +60,7 @@ function onCreate()
     scaleObject('bflift', 0.92, 0.92)
     setProperty('bflift.alpha', 0.0001)
     addLuaSprite('bflift')
+    playAnim('bflift', 'still', true)
 
     makeAnimatedLuaSprite('unownsflyby', 'monochrome/cutscenes/intro/unown_flyby', 0, 0)
     addAnimationByPrefix('unownsflyby', 'flyby', 'flyby', 24, false)
@@ -76,6 +77,7 @@ function onCreate()
     scaleObject('celebifly', 2/3, 2/3)
     setProperty('celebifly.alpha', 0.0001)
     addLuaSprite('celebifly')
+    playAnim('celebifly', 'still', true)
 
     -- bf screamer
     makeCutsceneObj('bfbg', 'monochrome/cutscenes/bf screamer/background', true, false, 'hud')
@@ -87,6 +89,7 @@ function onCreate()
     fillScreen('bfscream')
     setProperty('bfscream.alpha', 0.0001)
     addLuaSprite('bfscream')
+    playAnim('bfscream', 'still', true)
 
     -- mid song cutscene
 
@@ -165,6 +168,7 @@ function onCreate()
         scaleObject('goldlookup', 2/3, 2/3)
         setProperty('goldlookup.alpha', 0.0001)
         addLuaSprite('goldlookup')
+        playAnim('goldlookup', 'still', true)
     --
 
     makeCutsceneObj('typhoflash', 'monochrome/cutscenes/mid song/typho')

@@ -14,6 +14,10 @@ local bgUnowns = {}
 local referenceScrollX = 0
 local referenceScrollY = 0
 local hasReferenceScroll = false
+-- Wobble phase is accumulated instead of computed as songTime * speed, so changing the speed
+-- never makes the eyes teleport (songTime * 2 -> songTime * 0 used to jump them to phase 0).
+local wobblePhase = 0
+local lastSongTime = nil
 local eyesBlackened = false
 
 local eyeProgressTimes = {0, 91.541664, 91.833336, 92.66667, 93.083336, 151.9167, 232.41667, 232.5, 233.04167, 233.41667, 236.70834, 236.79167, 237.41667, 237.75002, 249.83336, 249.91669, 250.54169, 250.87503, 329.58334, 330.04166, 362.5417, 382.09}
@@ -355,16 +359,15 @@ function onUpdate(elapsed)
 
     if #bgUnowns == 0 then return end
 
-    if not hasReferenceScroll then
-        referenceScrollX = getProperty('camGame.scroll.x')
-        referenceScrollY = getProperty('camGame.scroll.y')
-        hasReferenceScroll = true
-    end
+    -- (the parallax reference is captured in onSongStart, once the camera has settled)
 
     local zoom = math.max(0.001, getProperty('camGame.zoom'))
     local k = FIELD_SCALE / zoom   -- field zoom with camGame's zoom cancelled out
-    local scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
-    local scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
+    local scrollDX, scrollDY = 0, 0
+    if hasReferenceScroll then
+        scrollDX = referenceScrollX - getProperty('camGame.scroll.x')
+        scrollDY = referenceScrollY - getProperty('camGame.scroll.y')
+    end
 
     local movementSpeed = 1
     if songTime >= 366.54166 then
@@ -372,6 +375,14 @@ function onUpdate(elapsed)
     elseif songTime >= 232.375 then
         movementSpeed = 2
     end
+
+    if lastSongTime == nil then
+        wobblePhase = songTime
+    else
+        local dt = songTime - lastSongTime
+        if dt > 0 and dt < 0.25 then wobblePhase = wobblePhase + dt * movementSpeed end
+    end
+    lastSongTime = songTime
 
     local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272 or songTime >= 368.818
     if eyesBlackened ~= shouldBlackenEyes then
@@ -406,7 +417,7 @@ function onUpdate(elapsed)
     for i = 1, #bgUnowns do
         local eye = bgUnowns[i]
         local alpha = getEyeAlphaAt(i, eyeTimeline)
-        local time = songTime * movementSpeed * eye.speed
+        local time = wobblePhase * eye.speed
         local direction = eye.direction
         local side = eye.side
         local wobbleX = (math.cos(direction) * math.sin(time)) - (math.sin(direction) * math.cos(time * 0.85) * side)
@@ -439,6 +450,12 @@ function onUpdate(elapsed)
         local renderedAlpha = getProperty(eye.tag .. '.alpha')
         setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or renderedAlpha)
     end
+end
+
+function onSongStart()
+    referenceScrollX = getProperty('camGame.scroll.x')
+    referenceScrollY = getProperty('camGame.scroll.y')
+    hasReferenceScroll = true
 end
 
 function onTweenCompleted(tag)
