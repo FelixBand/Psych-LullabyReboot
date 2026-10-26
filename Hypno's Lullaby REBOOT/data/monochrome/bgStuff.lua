@@ -9,7 +9,7 @@ local EYE_SCALE = 2 / 3
 local FIELD_SCALE = 1.67   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
 local FIELD_X = -420         -- pan the whole field in screen pixels (+ = right)
 local FIELD_Y = -100         -- (+ = down)
-local DEPTH_SCROLL = {[1] = 1.0, [2] = 1.0, [3] = 1.0}   -- depth 1 = far/small eyes, depth 3 = front/big eyes
+local DEPTH_SCROLL = {[1] = 1.0, [2] = 1.0, [3] = 1.0} -- had a cool per layer parallaxing idea, but nah
 
 -- ===== state ==============================================================
 local bgUnowns = {}
