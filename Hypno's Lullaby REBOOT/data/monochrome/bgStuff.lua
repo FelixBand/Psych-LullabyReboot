@@ -261,6 +261,12 @@ function onCreate()
     setProperty('pulse.alpha', 0)
     addLuaSprite('pulse', false)   -- added first, so it draws behind the eyes
 
+    makeAnimatedLuaSprite('bgunownsfly', 'monochrome/unowns_bg_fly', -300, -300)
+    addAnimationByPrefix('bgunownsfly', 'fly', 'unowns', 24, true)
+    setProperty('bgunownsfly.color', getColorFromHex('FF0000'))
+    scaleObject('bgunownsfly', 1.5, 1.5)
+    addLuaSprite('bgunownsfly')
+
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
         for value in row:gmatch("[^,]+") do
