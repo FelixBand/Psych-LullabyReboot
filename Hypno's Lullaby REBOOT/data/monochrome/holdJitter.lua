@@ -36,12 +36,21 @@ local function currentAnim(charTag, dir)
     return name
 end
 
+-- Notes that are already noAnimation (chart/noteType "No Animation" etc.) must stay silent: a hold is skipped
+-- if its head note is noAnimation, or is a 'Hey!' note. Heads are never flagged by this script, so the head's
+-- flag is always the original one; pieces ask their parent head.
+local function isSilent(group, id, isSus)
+    local ok, v = pcall(getPropertyFromGroup, group, id, isSus and 'parent.noAnimation' or 'noAnimation')
+    if not ok or v == nil then return not isSus and false or true end   -- can't tell for a piece: stay silent
+    return v == true
+end
+
 -- every hold piece is flagged, so the engine never touches the animation (or sustainTimer) for pieces
 function onCreatePost()
     local total = getProperty('unspawnNotes.length')
     local flagged = 0
     for i = 0, total - 1 do
-        if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
+        if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') and not isSilent('unspawnNotes', i, true) then
             local must = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
             if (must and AFFECT_PLAYER) or (not must and AFFECT_OPPONENT) then
                 setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true)
@@ -52,8 +61,12 @@ function onCreatePost()
     if DEBUG then debugPrint('[hold_retrigger] hold pieces flagged noAnimation: ' .. flagged) end
 end
 
-local function onHit(id, dir, isSus, charTag, isPlayerSide)
+local function onHit(id, dir, noteType, isSus, charTag, isPlayerSide)
     if (isPlayerSide and not AFFECT_PLAYER) or (not isPlayerSide and not AFFECT_OPPONENT) then return end
+    if noteType == 'Hey!' or isSilent('notes', id, isSus) then
+        sessions[sessionKey(charTag, dir)] = nil
+        return
+    end
     if getPropertyFromGroup('notes', id, 'gfNote') then charTag = 'gf' end
 
     local now = getSongPosition()
@@ -86,8 +99,8 @@ local function onHit(id, dir, isSus, charTag, isPlayerSide)
     end
 end
 
-function opponentNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, isSus, charTag or 'dad', false) end
-function goodNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, isSus, charTag or 'boyfriend', true) end
+function opponentNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, noteType, isSus, charTag or 'dad', false) end
+function goodNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, noteType, isSus, charTag or 'boyfriend', true) end
 
 function noteMiss(id, dir, noteType, isSus, charTag)
     sessions[sessionKey(charTag or 'boyfriend', dir)] = nil
