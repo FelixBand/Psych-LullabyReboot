@@ -111,6 +111,13 @@ function onCreate()
             setProperty('closeupface.alpha', 0.0001)
             addLuaSprite('closeupface')
 
+            makeAnimatedLuaSprite('unownreflection', 'monochrome/cutscenes/mid song/unown_reflection', 860, 240)
+            addAnimationByIndices('unownreflection', 'reflect', 'reflect', '9,9,9,9,9,9,9,9,9,0,1,2,3,9,9,9,9,9,4,5,6,7,8,9', 8, false)
+            setObjectCamera('unownreflection', 'other')
+            --scaleObject('unownreflection', 2/3, 2/3)
+            setProperty('unownreflection.alpha', 0.0001)
+            addLuaSprite('unownreflection')
+
             makeAnimatedLuaSprite('closeuphair', 'monochrome/cutscenes/mid song/hair', 0, 0)
             addAnimationByPrefix('closeuphair', 'idle', 'hair', 8, true)
             setObjectCamera('closeuphair', 'other')
@@ -270,7 +277,7 @@ function onCreate()
         addLuaSprite('bloodcut2')
 
         makeAnimatedLuaSprite('bloodheadoff', 'monochrome/cutscenes/blood/golds_head_rips_off', 0, 0)
-        addAnimationByIndices('bloodheadoff', 'rip', 'rip', '0,1,2,3,4,5,6,7,8,9,9,10,10,10,10,11,11,12,12,13,13,14,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28', 12, false)
+        addAnimationByIndices('bloodheadoff', 'rip', 'rip', '0,1,2,3,4,5,6,7,8,9,9,10,10,10,10,11,11,12,12,13,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28', 12, false)
         setObjectCamera('bloodheadoff', 'hud')
         setProperty('bloodheadoff.alpha', 0.0001)
         addLuaSprite('bloodheadoff')
@@ -360,7 +367,9 @@ function onEvent(name, value1, value2)
         if scene == 2 then
             removeLuaSprite('approach')
             setProperty('closeupface.alpha', 1)
+            setProperty('unownreflection.alpha', 1)
             setProperty('closeuphair.alpha', 1)
+            playAnim('unownreflection', 'reflect', true)
         end
         if scene == 3 then
             removeLuaSprite('closeupface')
@@ -437,11 +446,12 @@ function onEvent(name, value1, value2)
             removeLuaSprite('prebloodlight')
             removeLuaSprite('prebloodfog')
 
-            setProperty('lightbg.alpha', 1)
+            setProperty('lightbg.alpha', 0.5)
             setProperty('collectorhand.alpha', 1)
             setProperty('reachforhand.alpha', 1)
             playAnim('collectorhand', 'idle', true)
             playAnim('reachforhand', 'reach', true)
+            doTweenAlpha('lightbgIn', 'lightbg', 1, 1.5, 'linear')
         end
         if scene == 12 then
             removeLuaSprite('lightbg')
@@ -510,6 +520,9 @@ end
 function onTweenCompleted(tag)
     if tag == 'camIn1' then
         doTweenZoom('camIn2', 'camGame', 0.66, 8, 'cubeInOut')
+    end
+    if tag == 'lightbgIn' then
+        setProperty('lightbg.alpha', 0.4)
     end
 end
 

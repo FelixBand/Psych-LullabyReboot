@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:046ef6428adf17fdea3c888e1271969e:33a421207f7c8d95489ccb8570d100bc:c59a9c4436ea2d8b0a9c2a0481842505$ -->
+<TextureAtlas imagePath="unown_reflection.png" width="427" height="486">
+    <SubTexture name="reflect0000" x="315" y="1" width="111" height="113"/>
+    <SubTexture name="reflect0001" x="315" y="116" width="111" height="113"/>
+    <SubTexture name="reflect0002" x="315" y="231" width="111" height="113"/>
+    <SubTexture name="reflect0003" x="315" y="346" width="111" height="113"/>
+    <SubTexture name="reflect0004" x="1" y="1" width="312" height="96" frameX="45" frameY="-10" frameWidth="312" frameHeight="96"/>
+    <SubTexture name="reflect0005" x="1" y="99" width="312" height="96" frameX="45" frameY="-10" frameWidth="312" frameHeight="96"/>
+    <SubTexture name="reflect0006" x="1" y="197" width="312" height="96" frameX="45" frameY="-10" frameWidth="312" frameHeight="96"/>
+    <SubTexture name="reflect0007" x="1" y="393" width="301" height="92" frameX="45" frameY="-10" frameWidth="301" frameHeight="92"/>
+    <SubTexture name="reflect0008" x="1" y="295" width="312" height="96" frameX="45" frameY="-10" frameWidth="312" frameHeight="96"/>
+    <SubTexture name="reflect0009" x="0" y="0" width="1" height="1"/>
+</TextureAtlas>
