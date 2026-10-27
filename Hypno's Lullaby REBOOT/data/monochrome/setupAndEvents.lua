@@ -208,7 +208,6 @@ function onEvent(name, value1, value2, strumTime)
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
     end
     if name == 'Notes Fade In' then
-        setProperty('camHUD.alpha', 1)
         for i = 0,getProperty('playerStrums.length') - 1 do
             noteTweenAlpha('strumIn'..i, getProperty('playerStrums.length') + i, 1, 3, 'linear')
         end

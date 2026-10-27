@@ -27,4 +27,5 @@
     <SubTexture name="arm0022" x="4729" y="941" rotated="true" width="304" height="395" frameX="-885" frameY="-416" frameWidth="1280" frameHeight="720"/>
     <SubTexture name="arm0023" x="2701" y="1758" rotated="true" width="235" height="243" frameX="-1037" frameY="-485" frameWidth="1280" frameHeight="720"/>
     <SubTexture name="arm0024" x="1979" y="1829" rotated="true" width="131" height="134" frameX="-1146" frameY="-589" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="arm0025" x="0" y="0" width="1" height="1"/>
 </TextureAtlas>

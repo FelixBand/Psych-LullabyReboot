@@ -229,7 +229,7 @@ function onCreate()
             addLuaSprite('collectorhand')
 
             makeAnimatedLuaSprite('reachforhand', 'monochrome/cutscenes/mid song/gold_reaches_out', 0, 0)
-            addAnimationByPrefix('reachforhand', 'reach', 'reachout', 7.5, false)
+            addAnimationByPrefix('reachforhand', 'reach', 'reachout', 8, false)
             setObjectCamera('reachforhand', 'other')
             scaleObject('reachforhand', 0.69, 0.69)
             setProperty('reachforhand.alpha', 0.0001)
@@ -238,15 +238,36 @@ function onCreate()
     --
 
     -- blood cutscene
+        makeLuaSprite('bloodbg', '', 0, 0)
+        makeGraphic('bloodbg', screenWidth, screenHeight, '060606')
+        setObjectCamera('bloodbg', 'hud')
+        setProperty('bloodbg.alpha', 0)
+        addLuaSprite('bloodbg')
+
+        makeAnimatedLuaSprite('handstransition', 'monochrome/cutscenes/blood/transition', 0, 0)
+        addAnimationByPrefix('handstransition', 'in', 'in', 12, false)
+        addAnimationByPrefix('handstransition', 'out', 'out', 12, false)
+        setObjectCamera('handstransition', 'hud')
+        setProperty('handstransition.alpha', 0.0001)
+        addLuaSprite('handstransition')
+
+        makeAnimatedLuaSprite('armfall', 'monochrome/cutscenes/blood/arm_fall', 0, 0)
+        addAnimationByPrefix('armfall', 'fall', 'arm', 12, false)
+        setObjectCamera('armfall', 'hud')
+        setProperty('armfall.alpha', 0.0001)
+        addLuaSprite('armfall')
+
         makeAnimatedLuaSprite('bloodcut1', 'monochrome/cutscenes/blood/blood_pour', 0, 0)
         addAnimationByPrefix('bloodcut1', 'pour', 'pour', 12, false)
-        setObjectCamera('bloodcut1', 'other')
-        --addLuaSprite('bloodcut1')
+        setObjectCamera('bloodcut1', 'hud')
+        setProperty('bloodcut1.alpha', 0.0001)
+        addLuaSprite('bloodcut1')
 
         makeAnimatedLuaSprite('bloodcut2', 'monochrome/cutscenes/blood/blood', 0, 0)
-        addAnimationByPrefix('bloodcut2', 'pour', 'atlasblood', 12, false)
-        setObjectCamera('bloodcut2', 'other')
-        --addLuaSprite('bloodcut2')
+        addAnimationByIndices('bloodcut2', 'pour', 'atlasblood', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,48,48,48,48,49,50,51,52,52,53,53,54,54,55,55,56,56,57,57,57,57,57,57,57,57,57,57,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,133,134,134,135,135,136,136,137,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158', 12, false)
+        setObjectCamera('bloodcut2', 'hud')
+        setProperty('bloodcut2.alpha', 0.0001)
+        addLuaSprite('bloodcut2')
     --
 end
 
@@ -420,6 +441,24 @@ function onEvent(name, value1, value2)
             removeLuaSprite('lightbg')
             removeLuaSprite('collectorhand')
             removeLuaSprite('reachforhand')
+            setProperty('bloodbg.alpha', 1)
+            setProperty('armfall.alpha', 1)
+            playAnim('armfall', 'fall', true)
+            setProperty('camHUD.alpha', 1)
+        end
+        if scene == 13 then
+            removeLuaSprite('armfall')
+            setProperty('bloodcut1.alpha', 1)
+            setProperty('bloodcut2.alpha', 1)
+            playAnim('bloodcut1', 'pour', true)
+            playAnim('bloodcut2', 'pour', true)
+        end
+        if scene == 14 then
+            setProperty('handstransition.alpha', 1)
+            playAnim('handstransition', 'in', true)
+        end
+        if scene == 15 then
+            -- golds head rips off
         end
     end
 end
