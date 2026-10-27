@@ -100,7 +100,7 @@ function onCreatePost()
             setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true) -- as to not interrupt the ending break animation
         end
         if strumTime >= 295818 and strumTime <= 328727 and not mustPress then
-            setPropertyFromGroup('unspawnNotes', i, 'noteType', 'GF Sing') -- as to not interrupt the ending break animation
+            setPropertyFromGroup('unspawnNotes', i, 'noteType', 'GF Sing') -- blood gold is gf
         end
     end
 end
