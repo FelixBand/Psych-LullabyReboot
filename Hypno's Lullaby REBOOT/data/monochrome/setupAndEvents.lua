@@ -59,9 +59,21 @@ function onCreatePost()
 
     setProperty('cameraSpeed', 2)
 
+    -- blood gold and bf
+        setObjectCamera('boyfriend', 'hud')
+        setProperty('boyfriend.x', 620)
+        setProperty('boyfriend.y', 45)
+
+        setObjectCamera('gf', 'hud')
+        setProperty('gf.x', 110)
+        setProperty('gf.y', 45)
+    --
+
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
+
     setProperty('dad.color', getColorFromHex('808080'))
+
     triggerEvent('Camera Follow Pos', '183', '312')
 
     debugPrint(getPlaysAsBF())
@@ -86,6 +98,9 @@ function onCreatePost()
         local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
         if strumTime >= 363536 and not mustPress then
             setPropertyFromGroup('unspawnNotes', i, 'noAnimation', true) -- as to not interrupt the ending break animation
+        end
+        if strumTime >= 295818 and strumTime <= 328727 and not mustPress then
+            setPropertyFromGroup('unspawnNotes', i, 'noteType', 'GF Sing') -- as to not interrupt the ending break animation
         end
     end
 end
@@ -214,6 +229,18 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'Game Fade In' then
         doTweenAlpha('gameIn', 'camGame', 1, 0.5, 'linear')
+    end
+    if name == 'Fade Out' then
+        doTweenAlpha('hudOut', 'camHUD', 0, 0.5, 'linear')
+    end
+    if name == 'Fade In' then
+        removeLuaSprite('bloodbg')
+        removeLuaSprite('bloodheadoff')
+        removeLuaSprite('handstransition')
+        setProperty('camHUD.alpha', 1)
+        setProperty('camOther.alpha', 1)
+        doTweenAlpha('gameIn', 'camGame', 1, 0.75, 'linear')
+        setProperty('gameHUDblurController.x', 0.02)
     end
     if name == 'Puke' then
         --runTimer('pukeEnd', 2.15)

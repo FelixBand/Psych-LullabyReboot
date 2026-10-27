@@ -104,6 +104,7 @@ function goodNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, noteType,
 
 function noteMiss(id, dir, noteType, isSus, charTag)
     sessions[sessionKey(charTag or 'boyfriend', dir)] = nil
+    sessions[sessionKey('gf', dir)] = nil   -- a missed "GF Sing" hold reports the player's tag, but animates gf
 end
 
 function onUpdate(elapsed)
@@ -129,3 +130,9 @@ end
 
 -- restarting the song / seeking backwards: drop stale sessions
 function onSongStart() sessions = {} end
+
+function onEvent(name, value1, value2)
+    if name == 'Change Jitter Interval' then
+        INTERVAL_STEPS = tonumber(value1)
+    end
+end

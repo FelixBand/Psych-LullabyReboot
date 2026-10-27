@@ -246,7 +246,7 @@ function onCreate()
 
         makeAnimatedLuaSprite('handstransition', 'monochrome/cutscenes/blood/transition', 0, 0)
         addAnimationByPrefix('handstransition', 'in', 'in', 12, false)
-        addAnimationByPrefix('handstransition', 'out', 'out', 12, false)
+        addAnimationByIndices('handstransition', 'out', 'out', '0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14', 12, false)
         setObjectCamera('handstransition', 'hud')
         setProperty('handstransition.alpha', 0.0001)
         addLuaSprite('handstransition')
@@ -264,10 +264,16 @@ function onCreate()
         addLuaSprite('bloodcut1')
 
         makeAnimatedLuaSprite('bloodcut2', 'monochrome/cutscenes/blood/blood', 0, 0)
-        addAnimationByIndices('bloodcut2', 'pour', 'atlasblood', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,48,48,48,48,49,50,51,52,52,53,53,54,54,55,55,56,56,57,57,57,57,57,57,57,57,57,57,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,133,134,134,135,135,136,136,137,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158', 12, false)
+        addAnimationByIndices('bloodcut2', 'pour', 'atlasblood', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,48,48,48,48,49,49,50,50,51,51,52,52,53,53,54,54,55,55,56,56,57,57,57,57,57,57,57,57,57,57,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,133,134,134,135,135,136,136,137,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158', 12, false)
         setObjectCamera('bloodcut2', 'hud')
         setProperty('bloodcut2.alpha', 0.0001)
         addLuaSprite('bloodcut2')
+
+        makeAnimatedLuaSprite('bloodheadoff', 'monochrome/cutscenes/blood/golds_head_rips_off', 0, 0)
+        addAnimationByIndices('bloodheadoff', 'rip', 'rip', '0,1,2,3,4,5,6,7,8,9,9,10,10,10,10,11,11,12,12,13,13,14,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28', 12, false)
+        setObjectCamera('bloodheadoff', 'hud')
+        setProperty('bloodheadoff.alpha', 0.0001)
+        addLuaSprite('bloodheadoff')
     --
 end
 
@@ -452,6 +458,7 @@ function onEvent(name, value1, value2)
             setProperty('bloodcut2.alpha', 1)
             playAnim('bloodcut1', 'pour', true)
             playAnim('bloodcut2', 'pour', true)
+            animEndTimer('bloodcutsceneEnd', 'bloodcut2')
         end
         if scene == 14 then
             setProperty('handstransition.alpha', 1)
@@ -459,6 +466,11 @@ function onEvent(name, value1, value2)
         end
         if scene == 15 then
             -- golds head rips off
+            setProperty('boyfriend.visible', false)
+            setProperty('gf.visible', false)
+            setProperty('bloodheadoff.alpha', 1)
+            playAnim('bloodheadoff', 'rip', true)
+            playAnim('handstransition', 'out', true)
         end
     end
 end
@@ -484,6 +496,14 @@ function onTimerCompleted(tag)
     if tag == 'celebi flown' then
         removeLuaSprite('celebifly')
         doTweenZoom('camIn1', 'camGame', 0.3, 8, 'smoothStepInOut')
+    end
+    if tag == 'bloodcutsceneEnd' then
+        removeLuaSprite('bloodcut1')
+        removeLuaSprite('bloodcut2')
+        setProperty('gf.visible', true)
+        setProperty('boyfriend.visible', true)
+        setObjectOrder('boyfriend', getObjectOrder('handstransition') + 1)
+        setObjectOrder('gf', getObjectOrder('handstransition') + 1)
     end
 end
 

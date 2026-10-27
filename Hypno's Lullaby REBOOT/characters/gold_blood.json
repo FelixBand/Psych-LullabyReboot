@@ -1,44 +1,44 @@
 {
 	"animations": [
 		{
-			"offsets": [0, 0],
-			"indices": [],
-			"fps": 8,
-			"anim": "idle",
 			"loop": true,
-			"name": "idle"
+			"offsets": [0, 0],
+			"anim": "idle",
+			"fps": 4,
+			"name": "idle",
+			"indices": []
 		},
 		{
-			"offsets": [0, -16],
-			"indices": [],
-			"fps": 8,
+			"loop": false,
+			"offsets": [-11, -6],
 			"anim": "singLEFT",
-			"loop": false,
-			"name": "left"
+			"fps": 4,
+			"name": "left",
+			"indices": []
 		},
 		{
-			"offsets": [27, 6],
-			"indices": [],
-			"fps": 8,
+			"loop": false,
+			"offsets": [-28, 4],
 			"anim": "singRIGHT",
-			"loop": false,
-			"name": "right"
+			"fps": 4,
+			"name": "right",
+			"indices": []
 		},
 		{
-			"offsets": [67, -13],
-			"indices": [],
-			"fps": 8,
+			"loop": false,
+			"offsets": [-23, -47],
 			"anim": "singDOWN",
-			"loop": false,
-			"name": "down"
+			"fps": 4,
+			"name": "down",
+			"indices": []
 		},
 		{
-			"offsets": [0, 62],
-			"indices": [],
-			"fps": 8,
-			"anim": "singUP",
 			"loop": false,
-			"name": "up"
+			"offsets": [-60, 32],
+			"anim": "singUP",
+			"fps": 4,
+			"name": "up",
+			"indices": []
 		}
 	],
 	"vocals_file": "",
@@ -46,7 +46,7 @@
 	"image": "characters/gold/gold_blood",
 	"position": [0, 0],
 	"healthicon": "dad",
-	"flip_x": true,
+	"flip_x": false,
 	"healthbar_colors": [175, 102, 206],
 	"camera_position": [0, 0],
 	"sing_duration": 8,

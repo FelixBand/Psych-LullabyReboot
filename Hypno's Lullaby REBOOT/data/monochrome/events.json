@@ -343,6 +343,30 @@
 			]
 		],
 		[
+			295272,
+			[
+				["Change Jitter Interval", "3", ""]
+			]
+		],
+		[
+			328272,
+			[
+				["Fade Out", "", ""]
+			]
+		],
+		[
+			328727,
+			[
+				["Change Jitter Interval", "1.5", ""]
+			]
+		],
+		[
+			329709,
+			[
+				["Fade In", "", ""]
+			]
+		],
+		[
 			297090,
 			[
 				["mid song cutscene", "", ""]
