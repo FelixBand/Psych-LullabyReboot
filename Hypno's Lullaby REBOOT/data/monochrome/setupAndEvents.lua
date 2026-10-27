@@ -1,6 +1,6 @@
 luaDebugMode = true
 
-local function getPlaysAsBF()
+local function getPlaysAsBF() -- returns true if not playing Psych Online for PE compat :)))
     if type(_G.playsAsBF) == "function" then
         local result = _G.playsAsBF()
         if result ~= nil then
@@ -66,7 +66,7 @@ function onCreatePost()
 
     debugPrint(getPlaysAsBF())
 
-    if getPlaysAsBF() then
+    if getPlaysAsBF() then -- hide opponent strums if not playing as opponent
         for i = 0,getProperty('opponentStrums.length') - 1 do
             setPropertyFromGroup('opponentStrums', i, 'x', -5000)
         end
@@ -319,10 +319,18 @@ function onTweenCompleted(tag)
     end
 end
 
-function goodNoteHit()
+local function setSplashOpacity(alpha)
     runHaxeCode([[
         for (s in game.grpNoteSplashes.members)
             if (s != null && s.exists && s.animation.curAnim != null && !s.animation.curAnim.finished)
-                s.alpha = 1;
+                s.alpha = ]]..alpha..[[;
     ]])
+end
+
+function goodNoteHit()
+    setSplashOpacity(1)
+end
+
+function opponentNoteHit()
+    setSplashOpacity(1)
 end
