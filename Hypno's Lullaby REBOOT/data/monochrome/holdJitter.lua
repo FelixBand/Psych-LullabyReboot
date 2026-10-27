@@ -53,9 +53,9 @@ local function afterHoldPiece(id, isSus, charTag)
     if getPropertyFromGroup('notes', id, 'gfNote') then charTag = 'gf' end
 
     local skipped = getPropertyFromGroup('notes', id, 'noAnimation')
-    if DISABLE_ENGINE_HOLD_FREEZE then
-        setProperty(charTag .. '.sustainTimer', 0)
-    end
+    -- if DISABLE_ENGINE_HOLD_FREEZE then
+    --     setProperty(charTag .. '.sustainTimer', 0)
+    -- end
     if skipped then
         setProperty(charTag .. '.holdTimer', 0)   -- skipped pieces skip the engine's holdTimer reset; keep the pose alive
     end

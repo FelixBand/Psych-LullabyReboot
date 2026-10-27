@@ -452,7 +452,7 @@ function onUpdate()
     celebiLiftFrame = getProperty('celebifly.animation.curAnim.curFrame')
     if getProperty('celebifly.animation.curAnim.name') == 'lift' then
         if celebiLiftFrame >= 6 then
-            setProperty('introbg4.y', 190 + ((celebiLiftFrame - 6) * 59))
+            setProperty('introbg4.y', 190 + ((celebiLiftFrame - 6) * 55))
         end
     end
 
