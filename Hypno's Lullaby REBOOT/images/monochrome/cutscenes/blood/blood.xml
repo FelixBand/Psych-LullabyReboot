@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:49dda5c549279c181ef3ea3fed428904:328537a02756c1508410033878eb69bd:8978cd31d4ef15ba4e37cfe8b737a89b$ -->
+<TextureAtlas imagePath="blood.png" width="9566" height="7510">
+    <SubTexture name="atlasblood0000" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0001" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0002" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0003" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0004" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0005" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0006" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0007" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0008" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0009" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0010" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0011" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0012" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0013" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0014" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0015" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0016" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0017" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0018" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0019" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0020" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0021" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0022" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0023" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0024" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0025" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0026" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0027" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0028" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0029" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0030" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0031" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0032" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0033" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0034" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0035" x="1" y="7436" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0036" x="708" y="7389" rotated="true" width="235" height="120" frameX="-571" frameY="-92" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0037" x="9434" y="3171" width="125" height="230" frameX="-572" frameY="-82" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0038" x="9434" y="2917" width="131" height="252" frameX="-571" frameY="-75" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0039" x="5879" y="7133" width="132" height="289" frameX="-569" frameY="-90" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0040" x="9207" y="499" width="137" height="615" frameX="-563" frameY="-105" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0041" x="6275" y="7331" rotated="true" width="422" height="166" frameX="-543" frameY="-163" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0042" x="9346" y="713" width="182" height="464" frameX="-531" frameY="-193" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0043" x="6275" y="7133" rotated="true" width="491" height="196" frameX="-523" frameY="-213" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0044" x="9346" y="499" width="219" height="212" frameX="-507" frameY="-223" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0045" x="8200" y="6421" width="226" height="222" frameX="-504" frameY="-229" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0046" x="8200" y="5947" width="238" height="226" frameX="-498" frameY="-236" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0047" x="8200" y="6175" rotated="true" width="236" height="244" frameX="-497" frameY="-234" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0048" x="8200" y="7262" width="248" height="246" frameX="-495" frameY="-229" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0049" x="8450" y="7262" width="255" height="243" frameX="-490" frameY="-231" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0050" x="9207" y="252" width="267" height="245" frameX="-480" frameY="-230" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0051" x="8156" y="3513" width="261" height="250" frameX="-490" frameY="-225" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0052" x="8156" y="4272" width="255" height="249" frameX="-495" frameY="-226" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0053" x="8156" y="4019" width="259" height="251" frameX="-495" frameY="-223" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0054" x="7948" y="7251" rotated="true" width="250" height="257" frameX="-496" frameY="-223" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0055" x="7696" y="7251" rotated="true" width="250" height="258" frameX="-498" frameY="-223" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0056" x="8156" y="3765" width="259" height="252" frameX="-497" frameY="-222" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0057" x="7442" y="7251" rotated="true" width="252" height="258" frameX="-498" frameY="-222" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0058" x="9207" y="1" width="267" height="249" frameX="-494" frameY="-224" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0059" x="6013" y="7133" rotated="true" width="260" height="281" frameX="-487" frameY="-221" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0060" x="5585" y="7133" width="292" height="295" frameX="-477" frameY="-209" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0061" x="2675" y="7133" rotated="true" width="344" height="371" frameX="-422" frameY="-189" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0062" x="7761" y="3059" width="493" height="433" frameX="-359" frameY="-168" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0063" x="7761" y="2420" rotated="true" width="538" height="637" frameX="-287" frameY="-154" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0064" x="1393" y="6411" rotated="true" width="626" height="778" frameX="-203" frameY="-94" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0065" x="708" y="6411" rotated="true" width="683" height="976" frameX="-65" frameY="-37" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0066" x="4555" y="6411" width="1167" height="720" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0067" x="1" y="1" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0068" x="1" y="1283" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0069" x="1" y="2565" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0070" x="1" y="3847" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0071" x="1" y="5129" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0072" x="723" y="1" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0073" x="723" y="1283" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0074" x="723" y="2565" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0075" x="723" y="3847" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0076" x="2021" y="6411" width="1265" height="720" frameX="-15" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0077" x="723" y="5129" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0078" x="3288" y="6411" width="1265" height="720" frameX="-15" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0079" x="1445" y="1" rotated="true" width="720" height="1280"/>
+    <SubTexture name="atlasblood0080" x="5724" y="6411" width="1127" height="720" frameX="-153" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0081" x="7754" y="4819" rotated="true" width="684" height="1126" frameX="-154" frameY="-9" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0082" x="8428" y="6578" width="1126" height="682" frameX="-154" frameY="-11" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0083" x="7100" y="4990" rotated="true" width="652" height="1130" frameX="-150" frameY="-41" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0084" x="8440" y="5321" width="1123" height="654" frameX="-157" frameY="-41" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0085" x="8440" y="5977" width="1122" height="599" frameX="-158" frameY="-95" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0086" x="8440" y="3513" width="1125" height="603" frameX="-155" frameY="-92" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0087" x="8440" y="4118" width="1125" height="602" frameX="-155" frameY="-93" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0088" x="8440" y="4722" width="1125" height="597" frameX="-155" frameY="-98" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0089" x="7442" y="6122" rotated="true" width="598" height="1127" frameX="-153" frameY="-98" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0090" x="7559" y="3688" rotated="true" width="595" height="1129" frameX="-151" frameY="-101" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0091" x="8301" y="2917" width="1131" height="594" frameX="-149" frameY="-103" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0092" x="8318" y="2342" width="1159" height="573" frameX="-121" frameY="-123" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0093" x="8318" y="1772" width="1178" height="568" frameX="-102" frameY="-129" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0094" x="8637" y="1" rotated="true" width="568" height="1186" frameX="-94" frameY="-129" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0095" x="8318" y="1195" width="1191" height="575" frameX="-89" frameY="-123" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0096" x="7176" y="2489" rotated="true" width="583" height="1197" frameX="-83" frameY="-115" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0097" x="8052" y="1" rotated="true" width="583" height="1192" frameX="-88" frameY="-116" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0098" x="7730" y="1222" rotated="true" width="586" height="1196" frameX="-84" frameY="-115" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0099" x="6853" y="6303" rotated="true" width="587" height="1204" frameX="-76" frameY="-114" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0100" x="6516" y="5089" rotated="true" width="582" height="1212" frameX="-68" frameY="-120" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0101" x="7475" y="1" rotated="true" width="575" height="1219" frameX="-61" frameY="-126" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0102" x="7163" y="1260" rotated="true" width="565" height="1227" frameX="-53" frameY="-137" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0103" x="6604" y="2553" rotated="true" width="570" height="1236" frameX="-44" frameY="-133" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0104" x="6276" y="3847" rotated="true" width="576" height="1240" frameX="-40" frameY="-129" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0105" x="5936" y="5129" rotated="true" width="578" height="1247" frameX="-33" frameY="-126" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0106" x="6892" y="1" rotated="true" width="581" height="1257" frameX="-23" frameY="-124" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0107" x="6578" y="1281" rotated="true" width="583" height="1270" frameX="-10" frameY="-123" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0108" x="6296" y="1" rotated="true" width="594" height="1278" frameX="-2" frameY="-112" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0109" x="2823" y="3847" rotated="true" width="606" height="1280" frameX="0" frameY="-105" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0110" x="2778" y="1283" rotated="true" width="610" height="1280" frameX="0" frameY="-103" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0111" x="3375" y="1" rotated="true" width="587" height="1280" frameX="0" frameY="-133" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0112" x="3958" y="1283" rotated="true" width="540" height="1280" frameX="0" frameY="-180" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0113" x="4947" y="3847" rotated="true" width="475" height="1280" frameX="0" frameY="-245" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0114" x="5865" y="1283" rotated="true" width="414" height="1280" frameX="0" frameY="-306" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0115" x="3021" y="7133" width="1280" height="363" frameX="0" frameY="-357" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0116" x="4528" y="5129" rotated="true" width="479" height="1280" frameX="0" frameY="-241" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0117" x="5436" y="1283" rotated="true" width="427" height="1280" frameX="0" frameY="-293" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0118" x="5424" y="3847" rotated="true" width="461" height="1280" frameX="0" frameY="-259" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0119" x="3949" y="3847" rotated="true" width="512" height="1280" frameX="0" frameY="-208" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0120" x="3390" y="1283" rotated="true" width="566" height="1280" frameX="0" frameY="-154" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0121" x="3416" y="2565" rotated="true" width="547" height="1280" frameX="0" frameY="-173" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0122" x="3431" y="3847" rotated="true" width="516" height="1280" frameX="0" frameY="-204" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0123" x="4499" y="1" rotated="true" width="531" height="1280" frameX="0" frameY="-189" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0124" x="4500" y="1283" rotated="true" width="489" height="1280" frameX="0" frameY="-231" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0125" x="5875" y="2565" rotated="true" width="389" height="1280" frameX="0" frameY="-331" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0126" x="4303" y="7133" width="1280" height="345" frameX="0" frameY="-375" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0127" x="1393" y="7191" width="1280" height="310" frameX="0" frameY="-410" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0128" x="6281" y="1283" rotated="true" width="295" height="1280" frameX="0" frameY="-425" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0129" x="6266" y="2565" rotated="true" width="336" height="1280" frameX="0" frameY="-384" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0130" x="5887" y="3847" rotated="true" width="387" height="1280" frameX="0" frameY="-333" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0131" x="5462" y="1" rotated="true" width="421" height="1280" frameX="0" frameY="-299" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0132" x="5483" y="5129" rotated="true" width="451" height="1280" frameX="0" frameY="-269" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0133" x="5009" y="5129" rotated="true" width="472" height="1280" frameX="0" frameY="-248" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0134" x="4463" y="3847" rotated="true" width="482" height="1280" frameX="0" frameY="-238" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0135" x="3965" y="2565" rotated="true" width="496" height="1280" frameX="0" frameY="-224" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0136" x="4017" y="5129" rotated="true" width="509" height="1280" frameX="0" frameY="-211" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0137" x="3499" y="5129" rotated="true" width="516" height="1280" frameX="0" frameY="-204" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0138" x="4463" y="2565" rotated="true" width="495" height="1280" frameX="0" frameY="-225" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0139" x="4960" y="2565" rotated="true" width="469" height="1280" frameX="0" frameY="-251" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0140" x="4991" y="1283" rotated="true" width="443" height="1280" frameX="0" frameY="-277" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0141" x="5032" y="1" rotated="true" width="428" height="1280" frameX="0" frameY="-292" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0142" x="5885" y="1" rotated="true" width="409" height="1280" frameX="0" frameY="-311" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0143" x="5431" y="2565" rotated="true" width="442" height="1280" frameX="0" frameY="-278" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0144" x="3964" y="1" rotated="true" width="533" height="1280" frameX="0" frameY="-187" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0145" x="2785" y="1" rotated="true" width="588" height="1280" frameX="0" frameY="-132" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0146" x="2807" y="2565" rotated="true" width="607" height="1280" frameX="0" frameY="-113" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0147" x="2167" y="1" rotated="true" width="616" height="1280" frameX="0" frameY="-104" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0148" x="2148" y="1283" rotated="true" width="628" height="1280" frameX="0" frameY="-92" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0149" x="2144" y="2565" rotated="true" width="661" height="1280" frameX="0" frameY="-59" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0150" x="2820" y="5129" rotated="true" width="677" height="1280" frameX="0" frameY="-43" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0151" x="2138" y="3847" rotated="true" width="683" height="1280" frameX="0" frameY="-37" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0152" x="2134" y="5129" rotated="true" width="684" height="1280" frameX="0" frameY="-36" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0153" x="1445" y="5129" rotated="true" width="687" height="1280" frameX="0" frameY="-33" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0154" x="1445" y="3847" rotated="true" width="691" height="1280" frameX="0" frameY="-29" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0155" x="1445" y="2565" rotated="true" width="697" height="1280" frameX="0" frameY="-23" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0156" x="1445" y="1283" rotated="true" width="701" height="1280" frameX="0" frameY="-19" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0157" x="6854" y="3791" rotated="true" width="703" height="1197" frameX="-11" frameY="-17" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="atlasblood0158" x="1" y="6411" rotated="true" width="705" height="1023" frameX="-115" frameY="-15" frameWidth="1280" frameHeight="720"/>
+</TextureAtlas>

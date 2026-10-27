@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:e5174ea134ff0fd4a0275f9a896d39a8:dee2e63a096650b8368458b7735e2441:dc622faf7463789a555a14b894abbda1$ -->
+<TextureAtlas imagePath="blood_pour.png" width="3802" height="5367">
+    <SubTexture name="pour0000" x="3756" y="1283" width="3" height="3" frameX="0" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0001" x="3287" y="4596" rotated="true" width="230" height="162" frameX="-607" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0002" x="3261" y="4793" width="163" height="412" frameX="-570" frameY="-69" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0003" x="3324" y="4009" width="228" height="585" frameX="-535" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0004" x="2037" y="4622" width="249" height="720" frameX="-458" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0005" x="2288" y="4622" width="249" height="720" frameX="-448" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0006" x="1742" y="4622" width="293" height="720" frameX="-390" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0007" x="3355" y="2565" width="399" height="720" frameX="-335" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0008" x="2565" y="4569" rotated="true" width="720" height="222" frameX="-521" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0009" x="3592" y="3287" width="194" height="720" frameX="-546" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0010" x="3355" y="3287" width="235" height="720" frameX="-501" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0011" x="2539" y="4995" rotated="true" width="720" height="195" frameX="-549" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0012" x="2539" y="4793" rotated="true" width="720" height="200" frameX="-536" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0013" x="3554" y="4009" width="175" height="720" frameX="-546" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0014" x="2539" y="5192" rotated="true" width="720" height="164" frameX="-549" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0015" x="1283" y="4622" width="457" height="720" frameX="-389" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0016" x="2565" y="3847" width="757" height="720" frameX="-219" frameY="0" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0017" x="1" y="1" width="1280" height="720"/>
+    <SubTexture name="pour0018" x="1" y="723" width="1280" height="720"/>
+    <SubTexture name="pour0019" x="1283" y="1" width="1280" height="720"/>
+    <SubTexture name="pour0020" x="1" y="1445" width="1280" height="720"/>
+    <SubTexture name="pour0021" x="1283" y="723" width="1280" height="720"/>
+    <SubTexture name="pour0022" x="2565" y="1" rotated="true" width="720" height="1280"/>
+    <SubTexture name="pour0023" x="1283" y="2167" width="1280" height="713" frameX="0" frameY="-7" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0024" x="1" y="2167" width="1280" height="720"/>
+    <SubTexture name="pour0025" x="1283" y="1445" width="1280" height="720"/>
+    <SubTexture name="pour0026" x="2565" y="1283" rotated="true" width="705" height="1280" frameX="0" frameY="-15" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0027" x="1" y="2889" width="1280" height="720"/>
+    <SubTexture name="pour0028" x="1" y="3611" width="1280" height="637" frameX="0" frameY="-83" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0029" x="3287" y="1" rotated="true" width="514" height="1280" frameX="0" frameY="-206" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0030" x="1283" y="3497" width="1280" height="463" frameX="0" frameY="-257" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0031" x="2565" y="2565" rotated="true" width="427" height="1280" frameX="0" frameY="-293" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0032" x="1" y="4854" width="1280" height="398" frameX="0" frameY="-322" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0033" x="3272" y="1283" rotated="true" width="482" height="1280" frameX="0" frameY="-238" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0034" x="1" y="4250" width="1280" height="602" frameX="0" frameY="-118" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0035" x="1283" y="2882" width="1280" height="613" frameX="0" frameY="-107" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0036" x="1283" y="3962" width="1280" height="397" frameX="0" frameY="-323" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0037" x="2994" y="2565" rotated="true" width="359" height="1280" frameX="0" frameY="-361" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0038" x="1283" y="4361" width="1280" height="259" frameX="0" frameY="-461" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0039" x="1" y="5254" width="1280" height="112" frameX="0" frameY="-608" frameWidth="1280" frameHeight="720"/>
+    <SubTexture name="pour0040" x="0" y="0" width="1" height="1"/>
+</TextureAtlas>
