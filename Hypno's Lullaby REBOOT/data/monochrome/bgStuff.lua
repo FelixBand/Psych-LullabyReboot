@@ -260,11 +260,6 @@ function onCreate()
     setProperty('pulse.alpha', 0)
     addLuaSprite('pulse', false)   -- added first, so it draws behind the eyes
 
-    makeAnimatedLuaSprite('bgunownsfly', 'monochrome/unowns_bg_fly', -300, -300)
-    addAnimationByPrefix('bgunownsfly', 'fly', 'unowns', 24, false)
-    setProperty('bgunownsfly.color', getColorFromHex('FF0000'))
-    addLuaSprite('bgunownsfly')
-
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
         for value in row:gmatch("[^,]+") do
@@ -306,6 +301,11 @@ function onCreate()
             scrollFactor = sf,
         }
     end
+
+    makeAnimatedLuaSprite('bgunownsfly', 'monochrome/unowns_bg_fly', -300, -300)
+    addAnimationByPrefix('bgunownsfly', 'fly', 'unowns', 24, false)
+    setProperty('bgunownsfly.color', getColorFromHex('FF0000'))
+    addLuaSprite('bgunownsfly')
 
     if shadersEnabled then
         makeLuaSprite('gameHUDblurController', '', 0, 0)
