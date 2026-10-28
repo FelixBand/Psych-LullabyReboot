@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:00d316302fe38eeb63d308d738e2dd43:4c9e2133cbddd22e06cea2f3d9105ad8:306d43302cead7c52a10e90f2bc81a28$ -->
+<TextureAtlas imagePath="kingseye.png" width="1721" height="5159">
+    <SubTexture name="open0000" x="1" y="3884" width="846" height="372" frameX="-52" frameY="-213" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0001" x="849" y="3941" width="846" height="372" frameX="-52" frameY="-213" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0002" x="1" y="4682" width="842" height="423" frameX="-55" frameY="-162" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0003" x="1270" y="4315" rotated="true" width="422" height="842" frameX="-51" frameY="-162" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0004" x="1" y="4258" width="843" height="422" frameX="-52" frameY="-162" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0005" x="846" y="4315" rotated="true" width="422" height="843" frameX="-51" frameY="-162" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0006" x="854" y="3499" width="850" height="440" frameX="-51" frameY="-145" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0007" x="1" y="3431" width="851" height="451" frameX="-49" frameY="-134" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0008" x="1" y="1" width="870" height="493" frameX="-34" frameY="-167" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0009" x="873" y="1" width="847" height="551" frameX="-47" frameY="-109" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0010" x="1" y="496" width="857" height="725" frameX="-43" frameY="-19" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0011" x="860" y="554" width="853" height="735" frameX="-47" frameY="-9" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0012" x="1" y="2696" width="852" height="733" frameX="-48" frameY="-11" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0013" x="1" y="1223" width="853" height="735" frameX="-47" frameY="-9" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0014" x="1" y="1960" width="853" height="734" frameX="-48" frameY="-9" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0015" x="855" y="2764" width="851" height="733" frameX="-49" frameY="-10" frameWidth="953" frameHeight="743"/>
+    <SubTexture name="open0016" x="856" y="1291" width="853" height="735" frameX="-47" frameY="-9" frameWidth="953" frameHeight="744"/>
+    <SubTexture name="open0017" x="856" y="2028" width="853" height="734" frameX="-48" frameY="-9" frameWidth="953" frameHeight="743"/>
+</TextureAtlas>

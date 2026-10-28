@@ -90,28 +90,32 @@ local function getTimelineValue(times, values, transitions, songTime, step)
     return values[#values]
 end
 
-local function getEyeTimelineState(songTime)
-    return {
-        progress = getTimelineValue(eyeProgressTimes, eyeProgressValues, eyeProgressTransitions, songTime),
-        holdProgress = getTimelineValue(eyeHoldTimes, eyeHoldValues, eyeHoldTransitions, songTime),
-        staggerAmount = getTimelineValue(eyeStaggerTimes, eyeStaggerValues, nil, songTime, true),
-        visible = getTimelineValue(eyeVisibleTimes, eyeVisibleValues, nil, songTime, true),
-    }
+-- Reused every frame (no tables/closures are created per frame, which is what used to feed the GC).
+local function fillTimelineState(state, songTime)
+    state.progress = getTimelineValue(eyeProgressTimes, eyeProgressValues, eyeProgressTransitions, songTime)
+    state.holdProgress = getTimelineValue(eyeHoldTimes, eyeHoldValues, eyeHoldTransitions, songTime)
+    state.staggerAmount = getTimelineValue(eyeStaggerTimes, eyeStaggerValues, nil, songTime, true)
+    state.visible = getTimelineValue(eyeVisibleTimes, eyeVisibleValues, nil, songTime, true)
+    return state
 end
 
-local function getEyeAlphaAt(eyeIndex, state)
+local function staggeredProgress(value, start, span)
+    local t = (value - start) / span
+    if t < 0 then t = 0 elseif t > 1 then t = 1 end
+    return t * t * (3 - 2 * t)
+end
+
+local function getEyeAlphaAt(eye, state)
     if not state.visible then return 0 end
-    local staggerIndex = (eyeIndex - 1) / math.max(#bgUnowns - 1, 1)
-
-    local function staggeredProgress(value)
-        local start = staggerIndex * state.staggerAmount
-        local finish = start + (1 - state.staggerAmount)
-        local t = math.max(0, math.min(1, (value - start) / (finish - start)))
-        return t * t * (3 - 2 * t)
-    end
-
-    return math.max(staggeredProgress(state.progress), staggeredProgress(state.holdProgress))
+    local start = eye.staggerIndex * state.staggerAmount
+    local span = 1 - state.staggerAmount
+    local a = staggeredProgress(state.progress, start, span)
+    local b = staggeredProgress(state.holdProgress, start, span)
+    return a > b and a or b
 end
+
+local atan2 = math.atan2 or function(y, x) return math.atan(y, x) end
+local frameState, stateBefore, stateAfter = {}, {}, {}
 
 -- ===== eye data ===========================================================
 -- Authored Monochrome background eyes: depth, rect x/y/size, wobble amount/speed/angle/side, eye variant.
@@ -250,6 +254,22 @@ local EYE_FADE_DURATION = 0.18
 function onCreate()
     bgUnowns = {}
 
+    makeAnimatedLuaSprite('kingseye', 'monochrome/kingseye', -110, -220)
+    addAnimationByIndices('kingseye', 'closed', 'open', '0', 1, false)
+    addAnimationByPrefix('kingseye', 'open', 'open', 8, false)
+    setScrollFactor('kingseye', 0, 0)
+    scaleObject('kingseye', 1.58, 1.58)
+    setProperty('kingseye.alpha', 0.0001)
+    --setProperty('kingseye.color', getColorFromHex('FFD4BD'))
+    addLuaSprite('kingseye')
+    playAnim('kingseye', 'closed', true)
+
+    makeLuaSprite('kingseyebloom', 'monochrome/unown_particle_bloom', -450, -450)
+    --setScrollFactor('kingseyebloom', 0, 0)
+    scaleObject('kingseyebloom', 2, 1.5)
+    setProperty('kingseyebloom.alpha', 0.5)
+    --addLuaSprite('kingseyebloom')
+
     -- Pulse: the source retriggers one of three authored frame rates at exact song times.
     makeAnimatedLuaSprite('pulse', 'monochrome/pulse', -270, -270)
     addAnimationByIndices('pulse', 'pulse', 'pulse', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 24, false)
@@ -260,6 +280,7 @@ function onCreate()
     setProperty('pulse.alpha', 0)
     addLuaSprite('pulse', false)   -- added first, so it draws behind the eyes
 
+
     for row in bgEyeData:gmatch("[^\n]+") do
         local values = {}
         for value in row:gmatch("[^,]+") do
@@ -268,38 +289,62 @@ function onCreate()
 
         local depth, x, y, width, height = values[1], values[2], values[3], values[4], values[5]
         local fill = eyeFill[values[10]] or 0.5
-        local spriteWidth = width * EYE_SCALE * fill
-        local spriteHeight = height * EYE_SCALE * fill
         local tag = "mono-bg-unown-" .. (#bgUnowns + 1)
         local bloomTag = tag .. "-bloom"
+        local sf = DEPTH_SCROLL[depth] or 0
 
         makeLuaSprite(bloomTag, "monochrome/unown_particle_bloom", 0, 0)
-        local sf = DEPTH_SCROLL[depth] or 0
         setScrollFactor(bloomTag, sf, sf)
         setProperty(bloomTag .. ".alpha", 0)
         addLuaSprite(bloomTag, false)
 
         makeLuaSprite(tag, "monochrome/unown_particle", 0, 0)
-        scaleObject(tag, spriteWidth / 134, spriteHeight / 134)
         setScrollFactor(tag, sf, sf)
         setProperty(tag .. ".alpha", 0)
         addLuaSprite(tag, false)
 
+        local w, h = width * EYE_SCALE, height * EYE_SCALE
+        local variantScale = bloomVariantScale[values[10]] or 1.0
+        local bloomWidth = math.max(w, h) * 3 * variantScale
+        local bloomScale = bloomWidth / 1280
+        local bloomHeight = 720 * bloomScale * 0.44
+
+        -- Sizes never change, so they are applied once here instead of every frame.
+        scaleObject(tag, w * fill / 134 * FIELD_SCALE, h * fill / 134 * FIELD_SCALE)
+        scaleObject(bloomTag, bloomScale * FIELD_SCALE, bloomScale * 0.44 * FIELD_SCALE)
+
         bgUnowns[#bgUnowns + 1] = {
             tag = tag,
             bloomTag = bloomTag,
+            -- property names built once (they used to be concatenated ~10x per eye per frame)
+            px = tag .. '.x', py = tag .. '.y', pa = tag .. '.alpha', pc = tag .. '.color',
+            bx = bloomTag .. '.x', by = bloomTag .. '.y', ba = bloomTag .. '.alpha', bang = bloomTag .. '.angle',
             x = x * EYE_SCALE,
             y = y * EYE_SCALE,
-            width = width * EYE_SCALE,
-            height = height * EYE_SCALE,
+            width = w,
+            height = h,
             amount = values[6] * EYE_SCALE,
             speed = values[7] * 2,
-            direction = math.rad(values[8]),
+            cosD = math.cos(math.rad(values[8])),
+            sinD = math.sin(math.rad(values[8])),
             side = values[9],
             fill = fill,
-            variantScale = bloomVariantScale[values[10]] or 1.0,
+            bloomHalfW = bloomWidth / 2,
+            bloomOffY = bloomHeight * 0.85,
+            -- constant parts of the position
+            baseX = x * EYE_SCALE + (w - w * fill) / 2,
+            baseY = y * EYE_SCALE + (h - h * fill) / 2,
+            halfW = w * fill / 2,
+            halfH = h * fill / 2,
             scrollFactor = sf,
+            -- state
+            alpha = 0, shownAlpha = 0, shownBloom = 0,
+            fading = false, fadeT = 0, fadeFrom = 0, fadeTo = 0,
+            lastX = nil, lastY = nil, lastAngle = nil,
         }
+    end
+    for i = 1, #bgUnowns do
+        bgUnowns[i].staggerIndex = (i - 1) / math.max(#bgUnowns - 1, 1)
     end
 
     makeAnimatedLuaSprite('bgunownsfly', 'monochrome/unowns_bg_fly', -300, -300)
@@ -339,15 +384,34 @@ function onCreate()
 end
 
 -- Where an authored position (1280x720 space) ends up after FIELD_SCALE / FIELD_X / FIELD_Y.
-local function fieldX(x) return screenWidth / 2 + (x - screenWidth / 2) * FIELD_SCALE + FIELD_X end
-local function fieldY(y) return screenHeight / 2 + (y - screenHeight / 2) * FIELD_SCALE + FIELD_Y end
+local fieldOffX = screenWidth / 2 * (1 - FIELD_SCALE) + FIELD_X
+local fieldOffY = screenHeight / 2 * (1 - FIELD_SCALE) + FIELD_Y
+
+local lastBlurGameHUD, lastBlurOther, lastZoom = nil, nil, nil
+local PI = math.pi
 
 function onUpdate(elapsed)
-    setShaderFloat('gameHUDblurController', 'blurWidth', getProperty('gameHUDblurController.x'))
-    setShaderFloat('otherBlurController', 'blurWidth', getProperty('otherBlurController.x'))
+    -- blur: only touch the shaders when their value actually changed (and never when shaders are off)
+    if shadersEnabled then
+        local b1 = getProperty('gameHUDblurController.x')
+        if b1 ~= lastBlurGameHUD then
+            lastBlurGameHUD = b1
+            setShaderFloat('gameHUDblurController', 'blurWidth', b1)
+        end
+        local b2 = getProperty('otherBlurController.x')
+        if b2 ~= lastBlurOther then
+            lastBlurOther = b2
+            setShaderFloat('otherBlurController', 'blurWidth', b2)
+        end
+    end
 
-    setProperty('pulse.scale.x', 2.5 - (getProperty('camGame.zoom') * 2))
-    setProperty('pulse.scale.y', 2.5 - (getProperty('camGame.zoom') * 2))
+    local zoom = getProperty('camGame.zoom')
+    if zoom ~= lastZoom then
+        lastZoom = zoom
+        local s = 2.5 - (zoom * 2)
+        setProperty('pulse.scale.x', s)
+        setProperty('pulse.scale.y', s)
+    end
 
     local songTime = getSongPosition() / 1000 + 1
     while nextPulseEvent <= #pulseEvents and pulseEvents[nextPulseEvent][1] <= songTime do
@@ -356,9 +420,8 @@ function onUpdate(elapsed)
         nextPulseEvent = nextPulseEvent + 1
     end
 
-    if #bgUnowns == 0 then return end
-
-    local k = FIELD_SCALE
+    local count = #bgUnowns
+    if count == 0 then return end
 
     local movementSpeed = 1
     if songTime >= 366.54166 then
@@ -377,24 +440,30 @@ function onUpdate(elapsed)
 
     local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272 or songTime >= 368.818
     if eyesBlackened ~= shouldBlackenEyes then
-        for i = 1, #bgUnowns do
-            setProperty(bgUnowns[i].tag .. '.color', shouldBlackenEyes and getColorFromHex('000000') or getColorFromHex('FFFFFF'))
+        local color = getColorFromHex(shouldBlackenEyes and '000000' or 'FFFFFF')
+        for i = 1, count do
+            setProperty(bgUnowns[i].pc, color)
         end
         eyesBlackened = shouldBlackenEyes
     end
 
-    local eyeTimeline = getEyeTimelineState(songTime)
+    local eyeTimeline = fillTimelineState(frameState, songTime)
+
+    -- fades are advanced here instead of with doTweenAlpha (same 0.18s sineInOut from the current alpha,
+    -- but with no engine tween objects, no completion callbacks and no getProperty per eye per frame)
     while nextEyeFadeEvent <= #eyeFadeEvents and eyeFadeEvents[nextEyeFadeEvent] <= songTime do
         local eventTime = eyeFadeEvents[nextEyeFadeEvent]
-        local beforeState = getEyeTimelineState(math.max(0, eventTime - 0.002))
-        local afterState = getEyeTimelineState(eventTime + 0.002)
-        for i = 1, #bgUnowns do
-            local beforeAlpha = getEyeAlphaAt(i, beforeState)
-            local targetAlpha = getEyeAlphaAt(i, afterState)
+        fillTimelineState(stateBefore, math.max(0, eventTime - 0.002))
+        fillTimelineState(stateAfter, eventTime + 0.002)
+        for i = 1, count do
+            local eye = bgUnowns[i]
+            local beforeAlpha = getEyeAlphaAt(eye, stateBefore)
+            local targetAlpha = getEyeAlphaAt(eye, stateAfter)
             if math.abs(targetAlpha - beforeAlpha) > 0.02 then
-                local eye = bgUnowns[i]
-                eye.alphaTweening = true
-                doTweenAlpha('bgUnownFade-' .. i, eye.tag, targetAlpha, EYE_FADE_DURATION, 'sineInOut')
+                eye.fading = true
+                eye.fadeT = 0
+                eye.fadeFrom = eye.alpha
+                eye.fadeTo = targetAlpha
             end
         end
         nextEyeFadeEvent = nextEyeFadeEvent + 1
@@ -405,44 +474,62 @@ function onUpdate(elapsed)
         intensity = math.max(1, 15 - (14 * math.max(0, songTime - 330.04166) / (382.09 - 330.04166)))
     end
 
-    for i = 1, #bgUnowns do
+    local blackened = eyesBlackened
+    for i = 1, count do
         local eye = bgUnowns[i]
-        local alpha = getEyeAlphaAt(i, eyeTimeline)
-        local time = wobblePhase * eye.speed
-        local direction = eye.direction
-        local side = eye.side
-        local wobbleX = (math.cos(direction) * math.sin(time)) - (math.sin(direction) * math.cos(time * 0.85) * side)
-        local wobbleY = (math.sin(direction) * math.sin(time)) + (math.cos(direction) * math.cos(time * 0.85) * side)
-        local width = eye.width * eye.fill
-        local height = eye.height * eye.fill
 
-        local screenX = eye.x + ((eye.width - width) / 2) + (wobbleX * eye.amount * intensity)
-        local screenY = eye.y + ((eye.height - height) / 2) + (wobbleY * eye.amount * intensity)
-        local centerX = screenX + (width / 2)
-        local centerY = screenY + (height / 2)
-
-        setProperty(eye.tag .. '.x', fieldX(screenX))
-        setProperty(eye.tag .. '.y', fieldY(screenY))
-        scaleObject(eye.tag, width / 134 * k, height / 134 * k)
-        if not eye.alphaTweening then
-            setProperty(eye.tag .. '.alpha', alpha)
+        -- while an eye is fading, its bloom follows the eye's alpha from the previous frame (as before)
+        local previousAlpha = eye.alpha
+        local wasFading = eye.fading
+        local alpha
+        if eye.fading then
+            eye.fadeT = eye.fadeT + elapsed
+            local t = eye.fadeT / EYE_FADE_DURATION
+            if t >= 1 then
+                eye.fading = false
+                alpha = eye.fadeTo
+            else
+                alpha = eye.fadeFrom + (eye.fadeTo - eye.fadeFrom) * (0.5 - math.cos(PI * t) / 2)
+            end
+        else
+            alpha = getEyeAlphaAt(eye, eyeTimeline)
         end
+        eye.alpha = alpha
 
-        local bloomWidth = math.max(eye.width, eye.height) * 3 * eye.variantScale
-        local bloomScale = bloomWidth / 1280
-        local bloomHeight = 720 * (bloomWidth / 1280) * 0.44
-        setProperty(eye.bloomTag .. '.x', fieldX(centerX - (bloomWidth / 2)))
-        setProperty(eye.bloomTag .. '.y', fieldY(centerY - (bloomHeight * 0.85)))
-        scaleObject(eye.bloomTag, bloomScale * k, bloomScale * 0.44 * k)
-        setProperty(eye.bloomTag .. '.angle', math.deg(math.atan2(360 - centerY, 640 - centerX)))
-        local renderedAlpha = getProperty(eye.tag .. '.alpha')
-        setProperty(eye.bloomTag .. '.alpha', eyesBlackened and 0 or renderedAlpha)
-    end
-end
+        -- completely invisible and already applied as invisible: nothing to move or draw
+        if alpha ~= 0 or eye.shownAlpha ~= 0 or eye.shownBloom ~= 0 then
+            local time = wobblePhase * eye.speed
+            local sinT, cosT = math.sin(time), math.cos(time * 0.85) * eye.side
+            local wobbleX = eye.cosD * sinT - eye.sinD * cosT
+            local wobbleY = eye.sinD * sinT + eye.cosD * cosT
+            local amt = eye.amount * intensity
 
-function onTweenCompleted(tag)
-    local eyeIndex = tonumber(tag:match('^bgUnownFade%-(%d+)$'))
-    if eyeIndex and bgUnowns[eyeIndex] then
-        bgUnowns[eyeIndex].alphaTweening = false
+            local screenX = eye.baseX + wobbleX * amt
+            local screenY = eye.baseY + wobbleY * amt
+
+            local sx = screenX * FIELD_SCALE + fieldOffX
+            local sy = screenY * FIELD_SCALE + fieldOffY
+            if sx ~= eye.lastX then eye.lastX = sx; setProperty(eye.px, sx) end
+            if sy ~= eye.lastY then eye.lastY = sy; setProperty(eye.py, sy) end
+
+            if alpha ~= eye.shownAlpha then
+                eye.shownAlpha = alpha
+                setProperty(eye.pa, alpha)
+            end
+
+            local centerX = screenX + eye.halfW
+            local centerY = screenY + eye.halfH
+            -- bloom position follows the eye, so it changes whenever the eye moved
+            setProperty(eye.bx, (centerX - eye.bloomHalfW) * FIELD_SCALE + fieldOffX)
+            setProperty(eye.by, (centerY - eye.bloomOffY) * FIELD_SCALE + fieldOffY)
+            local angle = math.deg(atan2(360 - centerY, 640 - centerX))
+            if angle ~= eye.lastAngle then eye.lastAngle = angle; setProperty(eye.bang, angle) end
+
+            local bloomAlpha = blackened and 0 or (wasFading and previousAlpha or alpha)
+            if bloomAlpha ~= eye.shownBloom then
+                eye.shownBloom = bloomAlpha
+                setProperty(eye.ba, bloomAlpha)
+            end
+        end
     end
 end

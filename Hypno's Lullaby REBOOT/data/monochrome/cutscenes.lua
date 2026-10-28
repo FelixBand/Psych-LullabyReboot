@@ -296,7 +296,7 @@ function onEvent(name, value1, value2)
             --triggerEvent('Alt Idle Animation', 'dad', '-backshot')
         end
         if scene == 1 then
-            removeLuaSprite('introbg0')
+            removeLuaSprite('introbg0', true)
             setProperty('introbg1.alpha', 1)
             setProperty('introbg2.alpha', 1)
 
@@ -310,8 +310,8 @@ function onEvent(name, value1, value2)
             doTweenX('handmoveright', 'introbg2', getProperty('introbg2.x') + 10, 2.5, 'linear')
         end
         if scene == 2 then
-            removeLuaSprite('introbg1')
-            removeLuaSprite('introbg2')
+            removeLuaSprite('introbg1', true)
+            removeLuaSprite('introbg2', true)
             setProperty('introbg3.alpha', 1)
             setProperty('bflift.alpha', 1)
         end
@@ -321,9 +321,9 @@ function onEvent(name, value1, value2)
             setProperty('unownslift.alpha', 1)
         end
         if scene == 4 then
-            removeLuaSprite('introbg3')
-            removeLuaSprite('bflift')
-            removeLuaSprite('unownslift')
+            removeLuaSprite('introbg3', true)
+            removeLuaSprite('bflift', true)
+            removeLuaSprite('unownslift', true)
             setProperty('introbg4.y', 190)
             setProperty('introbg4.alpha', 1)
             setProperty('unownsflyby.alpha', 1)
@@ -340,8 +340,8 @@ function onEvent(name, value1, value2)
             setProperty('gameHUDblurController.x', 0.035)
             doTweenX('screamerBlurUp', 'gameHUDblurController', 0.09, 1, 'cubeIn')
         elseif value1 == '0' then
-            setProperty('bfbg.alpha', 0)
             setProperty('bfscream.alpha', 0)
+            removeLuaSprite('bfbg', true)
             cancelTween('screamerBlurUp')
             setProperty('gameHUDblurController.x', 0)
         end
@@ -367,22 +367,22 @@ function onEvent(name, value1, value2)
             playAnim('approach', '1', true)
         end
         if scene == 2 then
-            removeLuaSprite('approach')
+            removeLuaSprite('approach', true)
             setProperty('closeupface.alpha', 1)
             setProperty('unownreflection.alpha', 1)
             setProperty('closeuphair.alpha', 1)
             playAnim('unownreflection', 'reflect', true)
         end
         if scene == 3 then
-            removeLuaSprite('closeupface')
-            removeLuaSprite('closeuphair')
+            removeLuaSprite('closeupface', true)
+            removeLuaSprite('closeuphair', true)
             setProperty('crawlbg.alpha', 1)
             setProperty('goldcrawl.alpha', 1)
             playAnim('goldcrawl', 'crawl', true)
         end
         if scene == 4 then
-            removeLuaSprite('crawlbg')
-            removeLuaSprite('goldcrawl')
+            removeLuaSprite('crawlbg', true)
+            removeLuaSprite('goldcrawl', true)
             setProperty('crawlbgabove.alpha', 1)
             setProperty('goldcrawlabove.alpha', 1)
             setProperty('vultures.alpha', 1)
@@ -390,40 +390,40 @@ function onEvent(name, value1, value2)
             playAnim('vultures', 'circle', true)
         end
         if scene == 5 then
-            removeLuaSprite('crawlbgabove')
-            removeLuaSprite('goldcrawlabove')
+            removeLuaSprite('crawlbgabove', true)
+            removeLuaSprite('goldcrawlabove', true)
             removeLuaSprite('vultures')
             setProperty('redflash.alpha', 1)
         end
         if scene == 6 then
-            removeLuaSprite('redflash')
+            removeLuaSprite('redflash', true)
             setProperty('goldcloseup.alpha', 1)
         end
         if scene == 7 then
-            removeLuaSprite('goldcloseup')
+            removeLuaSprite('goldcloseup', true)
             setProperty('lookupbg.alpha', 1)
             setProperty('goldlookup.alpha', 1)
             playAnim('goldlookup', 'lookup', true)
         end
         if scene == 8 then
-            removeLuaSprite('lookupbg')
-            removeLuaSprite('goldlookup')
+            removeLuaSprite('lookupbg', true)
+            removeLuaSprite('goldlookup', true)
             setProperty('typhoflash.alpha', 1)
         end
         if scene == 9 then
             setProperty('camOther.zoom', 1.05)
             doTweenZoom('camotherzoomout', 'camOther', 1, 5, 'linear')
 
-            removeLuaSprite('typhoflash')
+            removeLuaSprite('typhoflash', true)
             setProperty('handbg.alpha', 1)
             setProperty('handfront.alpha', 1)
             setProperty('goldbehind.alpha', 1)
             playAnim('handfront', 'idle', true)
         end
         if scene == 10 then
-            removeLuaSprite('handbg')
-            removeLuaSprite('handfront')
-            removeLuaSprite('goldbehind')
+            removeLuaSprite('handbg', true)
+            removeLuaSprite('handfront', true)
+            removeLuaSprite('goldbehind', true)
             cancelTween('camotherzoomout')
             setProperty('camOther.zoom', 1.05)
             doTweenZoom('camotherzoomout', 'camOther', 1, 5, 'linear')
@@ -441,12 +441,12 @@ function onEvent(name, value1, value2)
             cancelTween('camotherzoomout')
             setProperty('camOther.zoom', 1)
 
-            removeLuaSprite('lookupbgside')
-            removeLuaSprite('goldside')
-            removeLuaSprite('handside')
-            removeLuaSprite('unownsleave')
-            removeLuaSprite('prebloodlight')
-            removeLuaSprite('prebloodfog')
+            removeLuaSprite('lookupbgside', true)
+            removeLuaSprite('goldside', true)
+            removeLuaSprite('handside', true)
+            removeLuaSprite('unownsleave', true)
+            removeLuaSprite('prebloodlight', true)
+            removeLuaSprite('prebloodfog', true)
 
             setProperty('lightbg.alpha', 0.5)
             setProperty('collectorhand.alpha', 1)
@@ -456,16 +456,16 @@ function onEvent(name, value1, value2)
             doTweenAlpha('lightbgIn', 'lightbg', 1, 1.5, 'linear')
         end
         if scene == 12 then
-            removeLuaSprite('lightbg')
-            removeLuaSprite('collectorhand')
-            removeLuaSprite('reachforhand')
+            removeLuaSprite('lightbg', true)
+            removeLuaSprite('collectorhand', true)
+            removeLuaSprite('reachforhand', true)
             setProperty('bloodbg.alpha', 1)
             setProperty('armfall.alpha', 1)
             playAnim('armfall', 'fall', true)
             setProperty('camHUD.alpha', 1)
         end
         if scene == 13 then
-            removeLuaSprite('armfall')
+            removeLuaSprite('armfall', true)
             setProperty('bloodcut1.alpha', 1)
             setProperty('bloodcut2.alpha', 1)
             playAnim('bloodcut1', 'pour', true)
@@ -480,6 +480,8 @@ function onEvent(name, value1, value2)
             -- golds head rips off
             setProperty('boyfriend.visible', false)
             setProperty('gf.visible', false)
+            setProperty('goldbloodsplatter.alpha', 0)
+            setProperty('bfbloodsplatter.alpha', 0)
             setProperty('bloodheadoff.alpha', 1)
             playAnim('bloodheadoff', 'rip', true)
             playAnim('handstransition', 'out', true)
@@ -497,7 +499,7 @@ function onTimerCompleted(tag)
         playAnim('celebifly', 'fly', true)
         setProperty('celebifly.x', 0)
         setProperty('celebifly.y', 0)
-        removeLuaSprite('introbg4')
+        removeLuaSprite('introbg4', true)
         animEndTimer('celebi flown', 'celebifly')
         runTimer('camGame on', 1.65)
     end
@@ -506,16 +508,22 @@ function onTimerCompleted(tag)
         setProperty('camGame.alpha', 1)
     end
     if tag == 'celebi flown' then
-        removeLuaSprite('celebifly')
+        removeLuaSprite('celebifly', true)
         doTweenZoom('camIn1', 'camGame', 0.3, 8, 'smoothStepInOut')
     end
     if tag == 'bloodcutsceneEnd' then
-        removeLuaSprite('bloodcut1')
-        removeLuaSprite('bloodcut2')
+        removeLuaSprite('bloodcut1', true)
+        removeLuaSprite('bloodcut2', true)
         setProperty('gf.visible', true)
         setProperty('boyfriend.visible', true)
         setObjectOrder('boyfriend', getObjectOrder('handstransition') + 1)
         setObjectOrder('gf', getObjectOrder('handstransition') + 1)
+
+        setObjectOrder('bfbloodsplatter', getObjectOrder('boyfriend') + 1)
+        setObjectOrder('goldbloodsplatter', getObjectOrder('gf') + 1)
+
+        setProperty('goldbloodsplatter.alpha', 1)
+        setProperty('bfbloodsplatter.alpha', 1)
     end
 end
 

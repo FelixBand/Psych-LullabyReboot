@@ -51,6 +51,27 @@ function onCreate()
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
     addLuaSprite('jumpscareP2', true)
+
+    -- blood splatters on gold and bf's blood characters
+    makeAnimatedLuaSprite('goldbloodsplatter', 'characters/gold/gold_blood_splatter', 100, 50)
+    addAnimationByPrefix('goldbloodsplatter', 'idle', 'idle', 8, true)
+    addAnimationByPrefix('goldbloodsplatter', 'singLEFT', 'left', 8, false)
+    addAnimationByPrefix('goldbloodsplatter', 'singDOWN', 'down', 8, false)
+    addAnimationByPrefix('goldbloodsplatter', 'singUP', 'up', 8, false)
+    addAnimationByPrefix('goldbloodsplatter', 'singRIGHT', 'right', 8, false)
+    setObjectCamera('goldbloodsplatter', 'hud')
+    setProperty('goldbloodsplatter.alpha', 0.00001)
+    addLuaSprite('goldbloodsplatter')
+
+    makeAnimatedLuaSprite('bfbloodsplatter', 'characters/bf/bf_blood_splatter', 650, 50)
+    addAnimationByPrefix('bfbloodsplatter', 'idle', 'idle', 8, true)
+    addAnimationByPrefix('bfbloodsplatter', 'singLEFT', 'left', 8, false)
+    addAnimationByPrefix('bfbloodsplatter', 'singDOWN', 'down', 8, false)
+    addAnimationByPrefix('bfbloodsplatter', 'singUP', 'up', 8, false)
+    addAnimationByPrefix('bfbloodsplatter', 'singRIGHT', 'right', 8, false)
+    setObjectCamera('bfbloodsplatter', 'hud')
+    setProperty('bfbloodsplatter.alpha', 0.00001)
+    addLuaSprite('bfbloodsplatter')
 end
 
 function onCreatePost()
@@ -239,8 +260,9 @@ function onEvent(name, value1, value2, strumTime)
         removeLuaSprite('handstransition')
         setProperty('camHUD.alpha', 1)
         setProperty('camOther.alpha', 1)
-        doTweenAlpha('gameIn', 'camGame', 1, 0.75, 'linear')
-        setProperty('gameHUDblurController.x', 0.02)
+        doTweenAlpha('gameIn', 'camGame', 1, 0.6, 'cubeIn')
+        setProperty('gameHUDblurController.x', 0.0175)
+        setProperty('kingseye.alpha', 1)
     end
     if name == 'Puke' then
         --runTimer('pukeEnd', 2.15)
@@ -293,6 +315,9 @@ function onEvent(name, value1, value2, strumTime)
         setProperty('bgunownsfly.x', tonumber(splitX))
         setProperty('bgunownsfly.y', tonumber(splitY))
         playAnim('bgunownsfly', 'fly', true)
+    end
+    if name == 'open kingseye' then
+        playAnim('kingseye', 'open', true)
     end
 end
 
@@ -353,10 +378,18 @@ local function setSplashOpacity(alpha)
     ]])
 end
 
-function goodNoteHit()
+function goodNoteHit(id, direction, noteType, isSustainNote)
     setSplashOpacity(1)
+
+    if not isSustainNote then
+        playAnim('bfbloodsplatter', getProperty('singAnimations')[direction+1])
+    end
 end
 
-function opponentNoteHit()
+function opponentNoteHit(id, direction, noteType, isSustainNote)
     setSplashOpacity(1)
+
+    if not isSustainNote then
+        playAnim('goldbloodsplatter', getProperty('singAnimations')[direction+1])
+    end
 end

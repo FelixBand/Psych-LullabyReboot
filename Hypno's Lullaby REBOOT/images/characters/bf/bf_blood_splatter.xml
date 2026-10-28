@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
 <!-- $TexturePacker:SmartUpdate:1bbf44fbb6feb339ccd1125ce51df649:200eb286036ef58088481a9d52a6e5f0:914ba2c3a9b247a6b4a7370b09f75eec$ -->
-<TextureAtlas imagePath="bf_blood_splashes.png" width="1958" height="2691">
+<TextureAtlas imagePath="bf_blood_splatter.png" width="1958" height="2691">
     <SubTexture name="down0000" x="682" y="1255" rotated="true" width="668" height="433" frameX="0" frameY="0" frameWidth="434" frameHeight="675"/>
     <SubTexture name="down0001" x="1" y="1651" rotated="true" width="658" height="433" frameX="-1" frameY="-17" frameWidth="434" frameHeight="675"/>
     <SubTexture name="down0002" x="1356" y="960" rotated="true" width="601" height="421" frameX="-9" frameY="-56" frameWidth="434" frameHeight="675"/>
