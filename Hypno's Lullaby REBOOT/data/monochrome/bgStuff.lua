@@ -254,7 +254,7 @@ local EYE_FADE_DURATION = 0.18
 function onCreate()
     bgUnowns = {}
 
-    makeAnimatedLuaSprite('kingseye', 'monochrome/kingseye', -110, -220)
+    makeAnimatedLuaSprite('kingseye', 'monochrome/kingseye', -570, -275)
     addAnimationByIndices('kingseye', 'closed', 'open', '0', 1, false)
     addAnimationByPrefix('kingseye', 'open', 'open', 8, false)
     --setScrollFactor('kingseye', 0, 0)
@@ -264,11 +264,11 @@ function onCreate()
     addLuaSprite('kingseye')
     playAnim('kingseye', 'closed', true)
 
-    makeLuaSprite('kingseyebloom', 'monochrome/unown_particle_bloom', -450, -450)
-    --setScrollFactor('kingseyebloom', 0, 0)
-    scaleObject('kingseyebloom', 2, 1.5)
-    setProperty('kingseyebloom.alpha', 0.5)
-    --addLuaSprite('kingseyebloom')
+    -- makeLuaSprite('kingseyebloom', 'monochrome/unown_particle_bloom', -450, -450)
+    -- setScrollFactor('kingseyebloom', 0, 0)
+    -- scaleObject('kingseyebloom', 2, 1.5)
+    -- setProperty('kingseyebloom.alpha', 0.5)
+    -- addLuaSprite('kingseyebloom')
 
     -- Pulse: the source retriggers one of three authored frame rates at exact song times.
     makeAnimatedLuaSprite('pulse', 'monochrome/pulse', -270, -270)

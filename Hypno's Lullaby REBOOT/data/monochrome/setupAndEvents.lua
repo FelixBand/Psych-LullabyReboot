@@ -110,6 +110,7 @@ function onCreatePost()
     setProperty('scoreTxt.visible', false)
     setProperty('timeBar.visible', false)
     setProperty('timeTxt.visible', false)
+    runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]])
 
     setProperty('showRating', false)
     setProperty('showComboNum', false)

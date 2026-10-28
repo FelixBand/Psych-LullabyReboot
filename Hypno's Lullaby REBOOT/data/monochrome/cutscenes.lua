@@ -356,6 +356,9 @@ function onEvent(name, value1, value2)
             curColor = 0
         end
     end
+    if name == 'Fade In' then
+        swapOff()
+    end
 
     if name == 'intro cutscene' then
         scene = scene + 1
@@ -409,7 +412,7 @@ function onEvent(name, value1, value2)
             doTweenX('screamerBlurUp', 'gameHUDblurController', 0.09, 1, 'cubeIn')
         elseif value1 == '0' then
             setProperty('bfscream.alpha', 0)
-            removeLuaSprite('bfbg', true)
+            setProperty('bfbg.alpha', 0)
             cancelTween('screamerBlurUp')
             setProperty('gameHUDblurController.x', 0)
         end
@@ -598,7 +601,8 @@ end
 
 function onTweenCompleted(tag)
     if tag == 'swapMix' then
-        setShaderFloat('swapController', 'uMix', 1)
+        local finalMix = getProperty('swapController.x')
+        setShaderFloat('swapController', 'uMix', finalMix)
         mixTweening = false
     end
 
@@ -610,11 +614,11 @@ function onTweenCompleted(tag)
     end
 end
 
-function onUpdate()
-    if mixTweening then
-        setShaderFloat('swapController', 'uMix', getProperty('swapController.x'))
-    end
+function onUpdatePost()
+    setShaderFloat('swapController', 'uMix', getProperty('swapController.x'))
+end
 
+function onUpdate()
     goldLookUpFrame = getProperty('goldlookup.animation.curAnim.curFrame')
     if getProperty('goldlookup.animation.curAnim.name') == 'lookup' then
         if goldLookUpFrame >= 10 then
@@ -654,28 +658,25 @@ end
 
 local function c(r, g, b) return {r / 255, g / 255, b / 255} end
 
-local mixTweening = false
-
 function swapOn()
+    setProperty('swapController.x', 0)
     setShaderFloat('swapController', 'uMix', 0)
     setShaderFloat('swapController', 'uOn', 1)
     markHud(true)
 end
 
-function swapToWhite(duration)          -- the little tween
+function swapToWhite(duration)
     setProperty('swapController.x', 0)
-    mixTweening = true
     doTweenX('swapMix', 'swapController', 1, duration or 0.6, 'sineInOut')
 end
-
-function swapToBlack(duration)          -- the little tween
+function swapToBlack(duration)
     setProperty('swapController.x', 1)
-    mixTweening = true
     doTweenX('swapMix', 'swapController', 0, duration or 0.6, 'sineInOut')
 end
 
 function swapOff()
-    mixTweening = false
+    cancelTween('swapMix')
+    setProperty('swapController.x', 0)
     setShaderFloat('swapController', 'uOn', 0)
     setShaderFloat('swapController', 'uMix', 0)
     markHud(false)
