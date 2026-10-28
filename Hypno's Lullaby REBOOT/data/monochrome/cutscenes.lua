@@ -37,9 +37,66 @@ local function makeCutsceneObj(tag, path, fullscreen, visible, camera)
     addLuaSprite(tag)
 end
 
+function onCreatePost()
+    if not shadersEnabled then return end
+
+    makeLuaSprite('swapController', '', 0, 0)
+    initLuaShader('swapBehind')
+    runHaxeCode([[
+        var sw = game.createRuntimeShader('swapBehind');
+        game.getLuaObject('swapController').shader = sw;
+
+        var filters = [new ShaderFilter(sw)];
+        var blurController = game.getLuaObject('gameHUDblurController');
+        if (blurController != null && blurController.shader != null)
+            filters.push(new ShaderFilter(blurController.shader));
+        game.camHUD.setFilters(filters);
+    ]])
+    setShaderFloat('swapController', 'gain', 77 / 255)
+    setShaderFloat('swapController', 'thr', 0.03)
+    setShaderFloat('swapController', 'uOn', 0)
+
+    makeLuaSprite('markController', '', 0, 0)
+    initLuaShader('solidMark')
+    runHaxeCode([[
+        var ms = game.createRuntimeShader('solidMark');
+        game.getLuaObject('markController').shader = ms;
+        var saved = [];
+        function markOne(o) { if (o == null) return; saved.push({o: o, s: o.shader}); o.shader = ms; }
+        function markAll() {
+            for (s in game.strumLineNotes.members) markOne(s);
+            for (n in game.notes.members) markOne(n);
+        }
+        function markNewest() { markOne(game.notes.members[0]); }
+        function unmarkAll() { for (e in saved) e.o.shader = e.s; saved = []; }
+    ]])
+    setShaderFloatArray('markController', 'uMark', {0, 0, 77 / 255})
+    setShaderFloat('swapController', 'thr', 0.01)   -- replaces the old 0.03, since coverage is exact now
+
+    local function c(r, g, b) return {r / 255, g / 255, b / 255} end
+
+    -- backdrop colours, sorted by red
+    setShaderFloatArray('swapController', 's0', c(6, 6, 6))
+    setShaderFloatArray('swapController', 's1', c(81, 20, 20))
+    setShaderFloatArray('swapController', 's2', c(108, 27, 27))
+    setShaderFloatArray('swapController', 's3', c(166, 163, 163))
+    -- mode A (before the tween)
+    setShaderFloatArray('swapController', 'a0', c(108, 27, 27))
+    setShaderFloatArray('swapController', 'a1', c(33, 13, 13))
+    setShaderFloatArray('swapController', 'a2', c(6, 6, 6))
+    setShaderFloatArray('swapController', 'a3', c(6, 6, 6))
+    -- mode B (after the tween)
+    setShaderFloatArray('swapController', 'b0', c(108, 27, 27))
+    setShaderFloatArray('swapController', 'b1', c(193, 170, 170))
+    setShaderFloatArray('swapController', 'b2', c(166, 163, 163))
+    setShaderFloatArray('swapController', 'b3', c(108, 27, 27))
+    setShaderFloat('swapController', 'uMix', 0)
+end
+
 function onCreate()
     setProperty('camHUD.alpha', 0.0001)
     setProperty('camGame.alpha', 0.0001)
+
     -- intro cutscene
     for i = 0,4 do
         makeCutsceneObj('introbg' .. i, 'monochrome/cutscenes/intro/cut_mono_intro_bg_' .. i, false)
@@ -288,7 +345,18 @@ end
 
 local scene = -1
 
+local curColor = 0
 function onEvent(name, value1, value2)
+    if name == 'Swap Tween' then 
+        if curColor == 0 then
+            swapToWhite(tonumber(value1) or 0.6) 
+            curColor = 1
+        elseif curColor == 1 then
+            swapToBlack(tonumber(value1) or 0.6) 
+            curColor = 0
+        end
+    end
+
     if name == 'intro cutscene' then
         scene = scene + 1
         if scene == 0 then
@@ -463,6 +531,7 @@ function onEvent(name, value1, value2)
             setProperty('armfall.alpha', 1)
             playAnim('armfall', 'fall', true)
             setProperty('camHUD.alpha', 1)
+            swapOn()
         end
         if scene == 13 then
             removeLuaSprite('armfall', true)
@@ -528,6 +597,11 @@ function onTimerCompleted(tag)
 end
 
 function onTweenCompleted(tag)
+    if tag == 'swapMix' then
+        setShaderFloat('swapController', 'uMix', 1)
+        mixTweening = false
+    end
+
     if tag == 'camIn1' then
         doTweenZoom('camIn2', 'camGame', 0.66, 8, 'cubeInOut')
     end
@@ -537,6 +611,10 @@ function onTweenCompleted(tag)
 end
 
 function onUpdate()
+    if mixTweening then
+        setShaderFloat('swapController', 'uMix', getProperty('swapController.x'))
+    end
+
     goldLookUpFrame = getProperty('goldlookup.animation.curAnim.curFrame')
     if getProperty('goldlookup.animation.curAnim.name') == 'lookup' then
         if goldLookUpFrame >= 10 then
@@ -571,5 +649,63 @@ function onUpdate()
                 );
             ]])
         end
+    end
+end
+
+local function c(r, g, b) return {r / 255, g / 255, b / 255} end
+
+local mixTweening = false
+
+function swapOn()
+    setShaderFloat('swapController', 'uMix', 0)
+    setShaderFloat('swapController', 'uOn', 1)
+    markHud(true)
+end
+
+function swapToWhite(duration)          -- the little tween
+    setProperty('swapController.x', 0)
+    mixTweening = true
+    doTweenX('swapMix', 'swapController', 1, duration or 0.6, 'sineInOut')
+end
+
+function swapToBlack(duration)          -- the little tween
+    setProperty('swapController.x', 1)
+    mixTweening = true
+    doTweenX('swapMix', 'swapController', 0, duration or 0.6, 'sineInOut')
+end
+
+function swapOff()
+    mixTweening = false
+    setShaderFloat('swapController', 'uOn', 0)
+    setShaderFloat('swapController', 'uMix', 0)
+    markHud(false)
+end
+
+local active = false
+local orig = {}
+local BLUE = getColorFromHex('00004D')
+
+function markNote(i)
+    local p = 'notes.members[' .. i .. ']'
+    setBlendMode(p, 'add')
+    setProperty(p .. '.rgbShader.r', BLUE)
+    setProperty(p .. '.rgbShader.g', BLUE)
+    setProperty(p .. '.rgbShader.b', BLUE)
+end
+
+local active = false
+
+function markHud(on)
+    active = on
+    local mode = on and 'add' or 'normal'
+    for i = 0, 7 do setBlendMode('strumLineNotes.members[' .. i .. ']', mode) end
+    for i = 0, getProperty('notes.length') - 1 do setBlendMode('notes.members[' .. i .. ']', mode) end
+    runHaxeFunction(on and 'markAll' or 'unmarkAll')
+end
+
+function onSpawnNote()
+    if active then
+        setBlendMode('notes.members[0]', 'add')
+        runHaxeFunction('markNewest')
     end
 end
