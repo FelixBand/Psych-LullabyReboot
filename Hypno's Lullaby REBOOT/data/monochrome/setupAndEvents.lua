@@ -352,6 +352,10 @@ function onTimerCompleted(tag, loops, loopsLeft)
     end
     if tag == 'showGoldP2' then
         setProperty('dadGroup.visible', true)
+
+        removeLuaSprite('goldPukeBody', true)
+        removeLuaSprite('goldPukeHead', true)
+        removeLuaSprite('jumpscareP1', true)
     end
     if tag == 'correctHeadY' then
         setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
