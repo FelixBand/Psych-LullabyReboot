@@ -3,427 +3,991 @@
 		[
 			3363.63636363636,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			7272.72727272727,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			9818.18181818182,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			12545.4545454545,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			13909.0909090909,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			18636.3636363636,
 			[
-				["Play Animation", "sing", "dad"]
+				[
+					"Play Animation",
+					"sing",
+					"dad"
+				]
 			]
 		],
 		[
 			18909.0909090909,
 			[
-				["intro cutscene", "", ""]
+				[
+					"intro cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			20363.6363636364,
 			[
-				["Unowns Flutter", "0,1.75", "-300,-300"]
+				[
+					"Unowns Flutter",
+					"0,1.75",
+					"-300,-300"
+				]
 			]
 		],
 		[
 			30545.4545454546,
 			[
-				["HUD Fade In", "", ""]
+				[
+					"HUD Fade In",
+					"",
+					""
+				]
 			]
 		],
 		[
 			33000.0909090909,
 			[
-				["Gold Fade In", "", ""]
+				[
+					"Gold Fade In",
+					"",
+					""
+				]
 			]
 		],
 		[
 			34909,
 			[
-				["End Intro Cutscene", "", ""]
+				[
+					"End Intro Cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			69818.1818181819,
 			[
-				["Puke", "", ""]
+				[
+					"Puke",
+					"",
+					""
+				]
+			]
+		],
+		[
+			90541.664,
+			[
+				[
+					"Eyes Stagger",
+					"0.561",
+					""
+				],
+				[
+					"Eyes Visible",
+					"1",
+					""
+				],
+				[
+					"Eyes Progress",
+					"0,1",
+					"0.291672,0.5"
+				]
+			]
+		],
+		[
+			91666.67,
+			[
+				[
+					"Eyes Progress",
+					"1,0",
+					"0.416666,0.5"
+				]
+			]
+		],
+		[
+			91958.336,
+			[
+				[
+					"Eyes Visible",
+					"0",
+					""
+				],
+				[
+					"Eyes Blacken",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			99909.090909091,
 			[
-				["Puke", "", ""]
+				[
+					"Puke",
+					"",
+					""
+				]
 			]
 		],
 		[
 			106909.090909091,
 			[
-				["Jumpscare", "0", ""]
+				[
+					"Jumpscare",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			121404.545454546,
 			[
-				["Jumpscare", "1", ""]
+				[
+					"Jumpscare",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			121586.363636364,
 			[
-				["Jumpscare", "2", ""]
+				[
+					"Jumpscare",
+					"2",
+					""
+				]
 			]
 		],
 		[
 			121768.181818182,
 			[
-				["Jumpscare", "3", ""]
+				[
+					"Jumpscare",
+					"3",
+					""
+				]
 			]
 		],
 		[
 			134939,
 			[
-				["Puke", "-alt", ""]
+				[
+					"Puke",
+					"-alt",
+					""
+				]
 			]
 		],
 		[
 			135272.727272727,
 			[
-				["Change Character", "dad", "goldp1-alt"]
+				[
+					"Change Character",
+					"dad",
+					"goldp1-alt"
+				]
 			]
 		],
 		[
 			144000,
 			[
-				["Jumpscare", "4", ""]
+				[
+					"Jumpscare",
+					"4",
+					""
+				]
 			]
 		],
 		[
 			145363.636363636,
 			[
-				["Change Character", "dad", "goldp2"]
+				[
+					"Change Character",
+					"dad",
+					"goldp2"
+				]
 			]
 		],
 		[
 			149818.181818182,
 			[
-				["Unowns Flutter", "0,1.5", "-300,-300"]
+				[
+					"Unowns Flutter",
+					"0,1.5",
+					"-300,-300"
+				]
+			]
+		],
+		[
+			150916.67,
+			[
+				[
+					"Eyes Visible",
+					"1",
+					""
+				],
+				[
+					"Eyes Progress",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			154181.818181818,
 			[
-				["Unowns Flutter", "270,1.5", "-300,-300"]
+				[
+					"Unowns Flutter",
+					"270,1.5",
+					"-300,-300"
+				]
 			]
 		],
 		[
 			158545.454545454,
 			[
-				["Unowns Flutter", "270,1", "-100,-300"]
+				[
+					"Unowns Flutter",
+					"270,1",
+					"-100,-300"
+				]
 			]
 		],
 		[
 			162909.090909091,
 			[
-				["Unowns Flutter", "0,1.5", "-300,-300"]
+				[
+					"Unowns Flutter",
+					"0,1.5",
+					"-300,-300"
+				]
 			]
 		],
 		[
 			196363.636363636,
 			[
-				["Unowns Flutter", "0,1", "-600,-150"]
+				[
+					"Unowns Flutter",
+					"0,1",
+					"-600,-150"
+				]
 			]
 		],
 		[
 			200727.272727272,
 			[
-				["Unowns Flutter", "0,1", "-400,-400"]
+				[
+					"Unowns Flutter",
+					"0,1",
+					"-400,-400"
+				]
+			]
+		],
+		[
+			204375.0,
+			[
+				[
+					"Eyes Visible",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			205090.909090909,
 			[
-				["Unowns Flutter", "0,1", "-100,-400"]
+				[
+					"Unowns Flutter",
+					"0,1",
+					"-100,-400"
+				]
 			]
 		],
 		[
 			209454.545454545,
 			[
-				["Unowns Flutter", "0,1", "-100,-400"]
+				[
+					"Unowns Flutter",
+					"0,1",
+					"-100,-400"
+				]
 			]
 		],
 		[
 			213818.181818181,
 			[
-				["JumpscareP2", "0", ""]
+				[
+					"JumpscareP2",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			217859.09090909,
 			[
-				["JumpscareP2", "1", ""]
+				[
+					"JumpscareP2",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			218040.909090908,
 			[
-				["JumpscareP2", "2", ""]
+				[
+					"JumpscareP2",
+					"2",
+					""
+				]
 			]
 		],
 		[
 			218222.727272727,
 			[
-				["JumpscareP2", "fakeout", ""]
+				[
+					"JumpscareP2",
+					"fakeout",
+					""
+				]
 			]
 		],
 		[
 			222500,
 			[
-				["start zooming", "", ""]
+				[
+					"start zooming",
+					"",
+					""
+				]
+			]
+		],
+		[
+			230272.0,
+			[
+				[
+					"Eyes Blacken",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			230495.454545454,
 			[
-				["undo zoom", "", ""]
+				[
+					"undo zoom",
+					"",
+					""
+				]
 			]
 		],
 		[
 			230495.454545454,
 			[
-				["JumpscareP2", "1", ""]
+				[
+					"JumpscareP2",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			230768.181818181,
 			[
-				["JumpscareP2", "2", ""]
+				[
+					"JumpscareP2",
+					"2",
+					""
+				]
 			]
 		],
 		[
 			231040.909090908,
 			[
-				["JumpscareP2", "3", ""]
+				[
+					"JumpscareP2",
+					"3",
+					""
+				]
 			]
 		],
 		[
 			231222.727272726,
 			[
-				["JumpscareP2", "4", ""]
+				[
+					"JumpscareP2",
+					"4",
+					""
+				]
+			]
+		],
+		[
+			231375.0,
+			[
+				[
+					"Eyes Stagger",
+					"0.706",
+					""
+				],
+				[
+					"Eyes Motion",
+					"2",
+					""
+				]
+			]
+		],
+		[
+			231416.67,
+			[
+				[
+					"Eyes Visible",
+					"1",
+					""
+				],
+				[
+					"Eyes Progress",
+					"0,1",
+					"0.08333,0.5"
+				]
+			]
+		],
+		[
+			232041.67,
+			[
+				[
+					"Eyes Progress",
+					"1,0",
+					"0.375,1"
+				],
+				[
+					"Eyes Hold",
+					"0,0.5",
+					"0.375,1"
+				]
 			]
 		],
 		[
 			235636.363636363,
 			[
-				["JumpscareP2", "0", ""]
+				[
+					"JumpscareP2",
+					"0",
+					""
+				]
+			]
+		],
+		[
+			235708.34,
+			[
+				[
+					"Eyes Progress",
+					"0,1",
+					"0.08333,0.5"
+				],
+				[
+					"Eyes Hold",
+					"0.5,1",
+					"0.24999,1"
+				]
+			]
+		],
+		[
+			236333.34,
+			[
+				[
+					"Eyes Hold",
+					"1,0.75",
+					"0.375,1"
+				]
+			]
+		],
+		[
+			236416.67,
+			[
+				[
+					"Eyes Progress",
+					"1,0",
+					"0.33335,1"
+				]
 			]
 		],
 		[
 			239999,
 			[
-				["BF Screamer", "1", ""]
+				[
+					"BF Screamer",
+					"1",
+					""
+				]
+			]
+		],
+		[
+			240000.0,
+			[
+				[
+					"Eyes Visible",
+					"0",
+					""
+				]
+			]
+		],
+		[
+			241083.33,
+			[
+				[
+					"Eyes Visible",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			241090,
 			[
-				["BF Screamer", "0", ""]
+				[
+					"BF Screamer",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			248727.272727272,
 			[
-				["JumpscareP2", "0", ""]
+				[
+					"JumpscareP2",
+					"0",
+					""
+				]
+			]
+		],
+		[
+			248833.36,
+			[
+				[
+					"Eyes Progress",
+					"0,1",
+					"0.08333,0.5"
+				],
+				[
+					"Eyes Hold",
+					"0.75,1",
+					"0.24998,1"
+				]
+			]
+		],
+		[
+			249541.69,
+			[
+				[
+					"Eyes Progress",
+					"1,0",
+					"0.33334,1"
+				]
+			]
+		],
+		[
+			264625.0,
+			[
+				[
+					"Eyes Hold",
+					"1,0",
+					"0.91666,0.5"
+				]
+			]
+		],
+		[
+			265541.66,
+			[
+				[
+					"Eyes Visible",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			265636.363636363,
 			[
-				["mid song cutscene", "0", ""]
+				[
+					"mid song cutscene",
+					"0",
+					""
+				]
 			]
 		],
 		[
 			265999.999999999,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			266181.818181817,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			269818.181818181,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			273454.545454544,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			277090.909090908,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			277454.545454545,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			279999.999999999,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			284363.636363635,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			284727.272727272,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			287999.999999999,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			291636.363636363,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			293545,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			293818,
 			[
-				["Notes Fade In", "", ""]
+				[
+					"Notes Fade In",
+					"",
+					""
+				]
 			]
 		],
 		[
 			295272,
 			[
-				["Change Jitter Interval", "3", ""]
-			]
-		],
-		[
-			312272,
-			[
-				["Swap Tween", "", ""]
-			]
-		],
-		[
-			327090,
-			[
-				["Swap Tween", "", ""]
-			]
-		],
-		[
-			328272,
-			[
-				["Fade Out", "", ""]
-			]
-		],
-		[
-			328727,
-			[
-				["Change Jitter Interval", "1.5", ""]
-			]
-		],
-		[
-			329709,
-			[
-				["Fade In", "", ""]
+				[
+					"Change Jitter Interval",
+					"3",
+					""
+				]
 			]
 		],
 		[
 			297090,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
 			]
 		],
 		[
 			311636,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
+			]
+		],
+		[
+			312272,
+			[
+				[
+					"Swap Tween",
+					"",
+					""
+				]
 			]
 		],
 		[
 			325454,
 			[
-				["mid song cutscene", "", ""]
+				[
+					"mid song cutscene",
+					"",
+					""
+				]
+			]
+		],
+		[
+			327090,
+			[
+				[
+					"Swap Tween",
+					"",
+					""
+				]
+			]
+		],
+		[
+			328272,
+			[
+				[
+					"Fade Out",
+					"",
+					""
+				]
+			]
+		],
+		[
+			328583.34,
+			[
+				[
+					"Eyes Progress",
+					"0,1",
+					"0.45832,1"
+				]
+			]
+		],
+		[
+			328727,
+			[
+				[
+					"Change Jitter Interval",
+					"1.5",
+					""
+				]
+			]
+		],
+		[
+			328958.34,
+			[
+				[
+					"Eyes Hold",
+					"0,1",
+					"0.08332,1"
+				]
+			]
+		],
+		[
+			329041.66,
+			[
+				[
+					"Eyes Visible",
+					"1",
+					""
+				],
+				[
+					"Eyes Intensity",
+					"15,1",
+					"52.04834"
+				]
+			]
+		],
+		[
+			329709,
+			[
+				[
+					"Fade In",
+					"",
+					""
+				]
 			]
 		],
 		[
 			329818,
 			[
-				["Game Fade In", "", ""]
+				[
+					"Game Fade In",
+					"",
+					""
+				]
 			]
 		],
 		[
 			362545,
 			[
-				["open kingseye", "", ""]
+				[
+					"open kingseye",
+					"",
+					""
+				]
 			]
 		],
 		[
 			363636,
 			[
-				["Play Animation", "break", "dad"]
+				[
+					"Play Animation",
+					"break",
+					"dad"
+				]
 			]
 		],
 		[
 			363636,
 			[
-				["Alt Idle Animation", "dad", "-disabled"]
+				[
+					"Alt Idle Animation",
+					"dad",
+					"-disabled"
+				]
+			]
+		],
+		[
+			365541.66,
+			[
+				[
+					"Eyes Motion",
+					"0",
+					""
+				]
+			]
+		],
+		[
+			367818.0,
+			[
+				[
+					"Eyes Blacken",
+					"1",
+					""
+				]
 			]
 		],
 		[
 			368000,
 			[
-				["Set Property", "dadGroup.color", "000000"]
+				[
+					"Set Property",
+					"dadGroup.color",
+					"000000"
+				]
 			]
 		]
 	],

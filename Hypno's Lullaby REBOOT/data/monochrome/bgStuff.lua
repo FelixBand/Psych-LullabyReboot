@@ -1,4 +1,5 @@
--- background eyes & pulsing BG
+-- this script handles all the fuckin background stuff.
+-- Used the original .gd scripts for reference and man that shit's dense
 
 -- ===== config =============================================================
 local EYE_SCALE = 2 / 3
@@ -13,35 +14,38 @@ local DEPTH_SCROLL = {[1] = 1.0, [2] = 1.0, [3] = 1.0} -- had a cool per layer p
 
 -- ===== state ==============================================================
 local bgUnowns = {}
--- Wobble phase is accumulated instead of computed as songTime * speed, so changing the speed
--- never makes the eyes teleport (songTime * 2 -> songTime * 0 used to jump them to phase 0).
-local wobblePhase = 0
-local lastSongTime = nil
-local eyesBlackened = false
 
-local eyeProgressTimes = {0, 91.541664, 91.833336, 92.66667, 93.083336, 151.9167, 232.41667, 232.5, 233.04167, 233.41667, 236.70834, 236.79167, 237.41667, 237.75002, 249.83336, 249.91669, 250.54169, 250.87503, 329.58334, 330.04166, 362.5417, 382.09}
-local eyeProgressValues = {0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1}
-local eyeProgressTransitions = {1, 0.5, 1, 0.5, 0, 0, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 2, 1}
-local eyeHoldTimes = {0, 151.91667, 232.41667, 233.04167, 233.41667, 236.70834, 236.95833, 237.33334, 237.70834, 249.83336, 250.08334, 250.45836, 250.83336, 265.625, 266.54166, 329.95834, 330.04166}
-local eyeHoldValues = {0, 0, 0, 0, 0.5, 0.5, 1, 1, 0.75, 0.75, 1, 1, 1, 1, 0, 0, 1}
-local eyeHoldTransitions = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1}
-local eyeStaggerTimes = {0, 91.541664, 232.375}
-local eyeStaggerValues = {0.65, 0.561, 0.706}
-local eyeVisibleTimes = {0, 91.541664, 92.958336, 151.91667, 205.375, 232.41667, 241, 242.08333, 266.54166, 330.04166}
-local eyeVisibleValues = {false, true, false, true, false, true, false, true, false, true}
-local eyeFadeEvents = {}
-for _, times in ipairs({eyeProgressTimes, eyeHoldTimes, eyeStaggerTimes, eyeVisibleTimes}) do
-    for _, time in ipairs(times) do
-        if time > 0 then eyeFadeEvents[#eyeFadeEvents + 1] = time end
-    end
-end
-table.sort(eyeFadeEvents)
-for i = #eyeFadeEvents, 2, -1 do
-    if math.abs(eyeFadeEvents[i] - eyeFadeEvents[i - 1]) < 0.001 then
-        table.remove(eyeFadeEvents, i)
-    end
-end
-local nextEyeFadeEvent = 1
+-- The eyes no longer look anything up on a timeline every frame. The chart says WHEN something changes
+-- (events.json, see the list below) and the script only does work while something is actually changing:
+--   * the eye loop is skipped completely while all eyes are hidden, or shown but standing still
+--   * eye alphas are only recomputed while a fade-in/out wave or an eye fade is running
+--   * the bloom glow is not moved at all while the eyes are blackened (it is invisible then)
+--
+-- ===== chart events this script listens for ================================
+--   Eyes Visible    1 / 0                  eyes may be shown / are hidden
+--   Eyes Stagger    amount                 how far apart the eyes' fade-ins are spread (0 = all at once)
+--   Eyes Progress   to  or  from,to        main fade wave.   value2 = duration,transition (leave empty = instant)
+--   Eyes Hold       to  or  from,to        second wave.      value2 = duration,transition
+--   Eyes Blacken    1 / 0                  eyes (and their glow) turn black / back to white
+--   Eyes Motion     speed                  wobble speed multiplier (0 = standing still)
+--   Eyes Intensity  from,to                wobble amount eases from "from" to "to".  value2 = duration in seconds
+-- transition: 1 = linear, 0.5 = fast start / slow end (ease-out), 2 = slow start (ease-in)
+
+local function newRamp(from, to, t0, dur, tr) return {from = from, to = to, t0 = t0, dur = dur, tr = tr} end
+local state = {P = newRamp(0, 0, 0, 0, 1), H = newRamp(0, 0, 0, 0, 1), S = 0.65, V = false}
+local prevState, pendingT = nil, nil   -- the moment currently being collected (several events can share one)
+local pendingBlacken = nil
+local alphaActive = false   -- true while a wave is running or an eye is fading, i.e. alphas can still change
+local rampEnd = 0
+local fadingCount = 0
+local anyShown = false      -- at least one eye is visible (or still has a glow on screen)
+local needPass = false      -- ask for one more run of the eye loop even though nothing is moving
+local blackened = false
+
+local speed, phaseBase, phaseT = 1, 0, 0       -- wobble phase = phaseBase + speed * (songTime - phaseT)
+local intensity = {from = 1, to = 1, t0 = 0, dur = 0}
+local intensityRamping, intensityEnd = false, 0
+
 local pulseEventData = [[
 152.00000p 153.62500r 153.83333r 154.04167r 154.25000r 154.45833r 154.66667r 154.87500r 155.08333r 155.29167r 155.50000r 155.70834r 155.91667r 156.12500r 156.33334r 156.54167r
 156.75000r 156.95833r 157.16666r 157.37500r 157.58333r 157.79166r 158.00000r 158.20833r 158.41666r 158.62500r 158.83333r 159.04167r 159.25000r 159.45833r 159.66667r 159.87500r
@@ -69,53 +73,61 @@ for event in pulseEventData:gmatch("%S+") do
 end
 local nextPulseEvent = 1
 
--- ===== timeline helpers ===================================================
-local function getTimelineValue(times, values, transitions, songTime, step)
-    if songTime <= times[1] then return values[1] end
-    for i = 1, #times - 1 do
-        if songTime < times[i + 1] then
-            if step then return values[i] end
-            local t = math.max(0, math.min(1, (songTime - times[i]) / (times[i + 1] - times[i])))
-            local transition = transitions and transitions[i] or 1
-            if transition == 0 then
-                t = 0
-            elseif transition < 1 then
-                t = 1 - (1 - t) ^ (1 / transition)
-            else
-                t = t ^ transition
-            end
-            return values[i] + (values[i + 1] - values[i]) * t
-        end
+-- ===== helpers ============================================================
+-- value of a ramp (from -> to over dur seconds starting at t0) at time t
+local function rampAt(r, t)
+    if t >= r.t0 + r.dur then return r.to end
+    if t <= r.t0 then return r.from end
+    local x = (t - r.t0) / r.dur
+    local tr = r.tr
+    if tr == 0 then
+        x = 0
+    elseif tr < 1 then
+        x = 1 - (1 - x) ^ (1 / tr)
+    else
+        x = x ^ tr
     end
-    return values[#values]
+    return r.from + (r.to - r.from) * x
 end
 
--- Reused every frame (no tables/closures are created per frame, which is what used to feed the GC).
-local function fillTimelineState(state, songTime)
-    state.progress = getTimelineValue(eyeProgressTimes, eyeProgressValues, eyeProgressTransitions, songTime)
-    state.holdProgress = getTimelineValue(eyeHoldTimes, eyeHoldValues, eyeHoldTransitions, songTime)
-    state.staggerAmount = getTimelineValue(eyeStaggerTimes, eyeStaggerValues, nil, songTime, true)
-    state.visible = getTimelineValue(eyeVisibleTimes, eyeVisibleValues, nil, songTime, true)
-    return state
+local function intensityAt(t)
+    local r = intensity
+    if r.dur <= 0 or t >= r.t0 + r.dur then return r.to end
+    if t <= r.t0 then return r.from end
+    return r.from + (r.to - r.from) * (t - r.t0) / r.dur
 end
 
-local function staggeredProgress(value, start, span)
-    local t = (value - start) / span
-    if t < 0 then t = 0 elseif t > 1 then t = 1 end
-    return t * t * (3 - 2 * t)
+local function smooth01(x)
+    if x < 0 then x = 0 elseif x > 1 then x = 1 end
+    return x * x * (3 - 2 * x)
 end
 
-local function getEyeAlphaAt(eye, state)
-    if not state.visible then return 0 end
-    local start = eye.staggerIndex * state.staggerAmount
-    local span = 1 - state.staggerAmount
-    local a = staggeredProgress(state.progress, start, span)
-    local b = staggeredProgress(state.holdProgress, start, span)
+-- alpha of one eye for a given state (p / h = the two wave values at the moment in question)
+local function alphaFor(eye, visible, stagger, p, h)
+    if not visible then return 0 end
+    local start = eye.staggerIndex * stagger
+    local span = 1 - stagger
+    local a = smooth01((p - start) / span)
+    local b = smooth01((h - start) / span)
     return a > b and a or b
 end
 
+local function nums(s)   -- "0,1" -> {0, 1}
+    local out = {}
+    if s ~= nil then
+        for x in tostring(s):gmatch('[^,%s]+') do out[#out + 1] = tonumber(x) end
+    end
+    return out
+end
+
+local function makeRamp(value1, value2, t0)
+    local v, d = nums(value1), nums(value2)
+    local from = v[1] or 0
+    local to = v[2] or from            -- a single number = jump straight to it
+    return newRamp(from, to, t0, d[1] or 0, d[2] or 1)
+end
+
 local atan2 = math.atan2 or function(y, x) return math.atan(y, x) end
-local frameState, stateBefore, stateAfter = {}, {}, {}
 
 -- ===== eye data ===========================================================
 -- Authored Monochrome background eyes: depth, rect x/y/size, wobble amount/speed/angle/side, eye variant.
@@ -341,6 +353,7 @@ function onCreate()
             alpha = 0, shownAlpha = 0, shownBloom = 0,
             fading = false, fadeT = 0, fadeFrom = 0, fadeTo = 0,
             lastX = nil, lastY = nil, lastAngle = nil,
+            bloomStale = true,
         }
     end
     for i = 1, #bgUnowns do
@@ -390,6 +403,99 @@ local fieldOffY = screenHeight / 2 * (1 - FIELD_SCALE) + FIELD_Y
 local lastBlurGameHUD, lastBlurOther, lastZoom = nil, nil, nil
 local PI = math.pi
 
+-- ===== event handling =====================================================
+-- A "moment" is one chart time. Several events can share it (e.g. Visible + Progress + Stagger when the eyes
+-- appear), so their changes are collected first and handled together on the next frame (processKey).
+-- At that moment every eye whose alpha JUMPS by more than 0.02 gets a short 0.18s sineInOut fade instead of
+-- popping, exactly like before; everything else follows the waves.
+local function processKey()
+    local T = pendingT
+    local before, after = prevState, state
+    local tb = T - 0.002
+    if tb < 0 then tb = 0 end
+    local ta = T + 0.002
+    local pb, hb = rampAt(before.P, tb), rampAt(before.H, tb)
+    local pa, ha = rampAt(after.P, ta), rampAt(after.H, ta)
+    for i = 1, #bgUnowns do
+        local eye = bgUnowns[i]
+        local beforeAlpha = alphaFor(eye, before.V, before.S, pb, hb)
+        local targetAlpha = alphaFor(eye, after.V, after.S, pa, ha)
+        if math.abs(targetAlpha - beforeAlpha) > 0.02 then
+            if not eye.fading then fadingCount = fadingCount + 1 end
+            eye.fading = true
+            eye.fadeT = 0
+            eye.fadeFrom = eye.alpha
+            eye.fadeTo = targetAlpha
+        end
+    end
+    pendingT, prevState = nil, nil
+    alphaActive = true
+    local e1 = after.P.t0 + after.P.dur
+    local e2 = after.H.t0 + after.H.dur
+    rampEnd = e1 > e2 and e1 or e2
+end
+
+local function beginMoment(T)
+    if pendingT ~= nil and math.abs(T - pendingT) > 0.0001 then processKey() end   -- a different moment: finish the old one
+    if pendingT == nil then
+        prevState = {P = state.P, H = state.H, S = state.S, V = state.V}
+        pendingT = T
+    end
+end
+
+local function eventTime(strumTime)
+    local ms = tonumber(strumTime)
+    if ms == nil then ms = getSongPosition() end
+    return ms / 1000 + 1   -- the same clock the eye data was authored in
+end
+
+local function applyBlacken(black)
+    if black == blackened then return end
+    blackened = black
+    local color = getColorFromHex(black and '000000' or 'FFFFFF')
+    for i = 1, #bgUnowns do
+        local eye = bgUnowns[i]
+        setProperty(eye.pc, color)
+        if not black then eye.bloomStale = true end   -- the glow stood still while it was hidden
+    end
+    needPass = true
+end
+
+function onEvent(name, value1, value2, strumTime)
+    if name == 'Eyes Visible' then
+        beginMoment(eventTime(strumTime))
+        state.V = (tonumber(value1) or 0) ~= 0
+    elseif name == 'Eyes Stagger' then
+        beginMoment(eventTime(strumTime))
+        state.S = tonumber(value1) or state.S
+    elseif name == 'Eyes Progress' then
+        local T = eventTime(strumTime)
+        beginMoment(T)
+        state.P = makeRamp(value1, value2, T)
+    elseif name == 'Eyes Hold' then
+        local T = eventTime(strumTime)
+        beginMoment(T)
+        state.H = makeRamp(value1, value2, T)
+    elseif name == 'Eyes Blacken' then
+        pendingBlacken = (tonumber(value1) or 0) ~= 0
+    elseif name == 'Eyes Motion' then
+        local T = eventTime(strumTime)
+        phaseBase = phaseBase + speed * (T - phaseT)   -- keep the wobble phase continuous across the speed change
+        phaseT = T
+        speed = tonumber(value1) or speed
+        needPass = true
+    elseif name == 'Eyes Intensity' then
+        local T = eventTime(strumTime)
+        local v, dur = nums(value1), tonumber(value2) or 0
+        local from = v[1] or 1
+        intensity = {from = from, to = v[2] or from, t0 = T, dur = dur}
+        intensityRamping = dur > 0
+        intensityEnd = T + dur
+        needPass = true
+    end
+end
+
+-- ===== per frame ==========================================================
 function onUpdate(elapsed)
     -- blur: only touch the shaders when their value actually changed (and never when shaders are off)
     if shadersEnabled then
@@ -423,113 +529,104 @@ function onUpdate(elapsed)
     local count = #bgUnowns
     if count == 0 then return end
 
-    local movementSpeed = 1
-    if songTime >= 366.54166 then
-        movementSpeed = 0
-    elseif songTime >= 232.375 then
-        movementSpeed = 2
+    -- hand over what the chart events asked for since last frame
+    if pendingBlacken ~= nil then
+        local b = pendingBlacken
+        pendingBlacken = nil
+        applyBlacken(b)
+    end
+    if pendingT ~= nil then processKey() end
+    if intensityRamping and songTime >= intensityEnd then
+        intensityRamping = false
+        needPass = true   -- one last pass at the final wobble amount
     end
 
-    if lastSongTime == nil then
-        wobblePhase = songTime
-    else
-        local dt = songTime - lastSongTime
-        if dt > 0 and dt < 0.25 then wobblePhase = wobblePhase + dt * movementSpeed end
+    -- nothing to do: all eyes hidden, or shown but standing still, and no wave / fade / change pending
+    local doAlpha = alphaActive
+    if not (doAlpha or needPass or (anyShown and (speed ~= 0 or intensityRamping))) then return end
+    needPass = false
+
+    local fadingAtStart = fadingCount > 0
+    local visible, stagger = state.V, state.S
+    local pv, hv = 0, 0
+    if doAlpha then
+        pv = rampAt(state.P, songTime)
+        hv = rampAt(state.H, songTime)
     end
-    lastSongTime = songTime
+    local phase = phaseBase + speed * (songTime - phaseT)
+    local amtScale = intensityAt(songTime)
+    local blk = blackened
+    local shown = false
 
-    local shouldBlackenEyes = songTime >= 92.958336 and songTime < 231.272 or songTime >= 368.818
-    if eyesBlackened ~= shouldBlackenEyes then
-        local color = getColorFromHex(shouldBlackenEyes and '000000' or 'FFFFFF')
-        for i = 1, count do
-            setProperty(bgUnowns[i].pc, color)
-        end
-        eyesBlackened = shouldBlackenEyes
-    end
-
-    local eyeTimeline = fillTimelineState(frameState, songTime)
-
-    -- fades are advanced here instead of with doTweenAlpha (same 0.18s sineInOut from the current alpha,
-    -- but with no engine tween objects, no completion callbacks and no getProperty per eye per frame)
-    while nextEyeFadeEvent <= #eyeFadeEvents and eyeFadeEvents[nextEyeFadeEvent] <= songTime do
-        local eventTime = eyeFadeEvents[nextEyeFadeEvent]
-        fillTimelineState(stateBefore, math.max(0, eventTime - 0.002))
-        fillTimelineState(stateAfter, eventTime + 0.002)
-        for i = 1, count do
-            local eye = bgUnowns[i]
-            local beforeAlpha = getEyeAlphaAt(eye, stateBefore)
-            local targetAlpha = getEyeAlphaAt(eye, stateAfter)
-            if math.abs(targetAlpha - beforeAlpha) > 0.02 then
-                eye.fading = true
-                eye.fadeT = 0
-                eye.fadeFrom = eye.alpha
-                eye.fadeTo = targetAlpha
-            end
-        end
-        nextEyeFadeEvent = nextEyeFadeEvent + 1
-    end
-
-    local intensity = 1
-    if songTime >= 330.04166 then
-        intensity = math.max(1, 15 - (14 * math.max(0, songTime - 330.04166) / (382.09 - 330.04166)))
-    end
-
-    local blackened = eyesBlackened
     for i = 1, count do
         local eye = bgUnowns[i]
 
         -- while an eye is fading, its bloom follows the eye's alpha from the previous frame (as before)
         local previousAlpha = eye.alpha
         local wasFading = eye.fading
-        local alpha
-        if eye.fading then
-            eye.fadeT = eye.fadeT + elapsed
-            local t = eye.fadeT / EYE_FADE_DURATION
-            if t >= 1 then
-                eye.fading = false
-                alpha = eye.fadeTo
+        local alpha = previousAlpha
+        if doAlpha then
+            if eye.fading then
+                eye.fadeT = eye.fadeT + elapsed
+                local t = eye.fadeT / EYE_FADE_DURATION
+                if t >= 1 then
+                    eye.fading = false
+                    fadingCount = fadingCount - 1
+                    alpha = eye.fadeTo
+                else
+                    alpha = eye.fadeFrom + (eye.fadeTo - eye.fadeFrom) * (0.5 - math.cos(PI * t) / 2)
+                end
             else
-                alpha = eye.fadeFrom + (eye.fadeTo - eye.fadeFrom) * (0.5 - math.cos(PI * t) / 2)
+                alpha = alphaFor(eye, visible, stagger, pv, hv)
             end
-        else
-            alpha = getEyeAlphaAt(eye, eyeTimeline)
+            eye.alpha = alpha
         end
-        eye.alpha = alpha
 
         -- completely invisible and already applied as invisible: nothing to move or draw
         if alpha ~= 0 or eye.shownAlpha ~= 0 or eye.shownBloom ~= 0 then
-            local time = wobblePhase * eye.speed
+            shown = true
+            local time = phase * eye.speed
             local sinT, cosT = math.sin(time), math.cos(time * 0.85) * eye.side
             local wobbleX = eye.cosD * sinT - eye.sinD * cosT
             local wobbleY = eye.sinD * sinT + eye.cosD * cosT
-            local amt = eye.amount * intensity
+            local amt = eye.amount * amtScale
 
             local screenX = eye.baseX + wobbleX * amt
             local screenY = eye.baseY + wobbleY * amt
 
             local sx = screenX * FIELD_SCALE + fieldOffX
             local sy = screenY * FIELD_SCALE + fieldOffY
-            if sx ~= eye.lastX then eye.lastX = sx; setProperty(eye.px, sx) end
-            if sy ~= eye.lastY then eye.lastY = sy; setProperty(eye.py, sy) end
+            local moved = false
+            if sx ~= eye.lastX then eye.lastX = sx; setProperty(eye.px, sx); moved = true end
+            if sy ~= eye.lastY then eye.lastY = sy; setProperty(eye.py, sy); moved = true end
 
             if alpha ~= eye.shownAlpha then
                 eye.shownAlpha = alpha
                 setProperty(eye.pa, alpha)
             end
 
-            local centerX = screenX + eye.halfW
-            local centerY = screenY + eye.halfH
-            -- bloom position follows the eye, so it changes whenever the eye moved
-            setProperty(eye.bx, (centerX - eye.bloomHalfW) * FIELD_SCALE + fieldOffX)
-            setProperty(eye.by, (centerY - eye.bloomOffY) * FIELD_SCALE + fieldOffY)
-            local angle = math.deg(atan2(360 - centerY, 640 - centerX))
-            if angle ~= eye.lastAngle then eye.lastAngle = angle; setProperty(eye.bang, angle) end
+            -- the glow only follows the eye when it actually moved, and not at all while the eyes are black
+            if blk then
+                if moved then eye.bloomStale = true end
+            elseif moved or eye.bloomStale then
+                eye.bloomStale = false
+                local centerX = screenX + eye.halfW
+                local centerY = screenY + eye.halfH
+                setProperty(eye.bx, (centerX - eye.bloomHalfW) * FIELD_SCALE + fieldOffX)
+                setProperty(eye.by, (centerY - eye.bloomOffY) * FIELD_SCALE + fieldOffY)
+                local angle = math.deg(atan2(360 - centerY, 640 - centerX))
+                if angle ~= eye.lastAngle then eye.lastAngle = angle; setProperty(eye.bang, angle) end
+            end
 
-            local bloomAlpha = blackened and 0 or (wasFading and previousAlpha or alpha)
+            local bloomAlpha = blk and 0 or (wasFading and previousAlpha or alpha)
             if bloomAlpha ~= eye.shownBloom then
                 eye.shownBloom = bloomAlpha
                 setProperty(eye.ba, bloomAlpha)
             end
         end
     end
+    anyShown = shown
+
+    -- waves are over and every eye has settled on its timeline value: stop recomputing alphas
+    if doAlpha and not fadingAtStart and songTime >= rampEnd then alphaActive = false end
 end
