@@ -27,7 +27,7 @@ function onCreate()
     addLuaSprite('mono_healthBar')
     addLuaSprite('mono_healthBarMask')
     playAnim('mono_healthBar', 'full', true)
-    playAnim('mono_healthBar', 'full', true)
+    playAnim('mono_healthBarMask', 'full', true)
 end
 
 function onUpdate(elapsed)
