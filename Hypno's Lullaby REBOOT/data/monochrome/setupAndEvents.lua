@@ -47,6 +47,7 @@ function onCreate()
     addAnimationByIndices('jumpscareP2', 'buildup1', 'buildup', '3,4,5', 12, false)
     addAnimationByIndices('jumpscareP2', 'buildup2', 'buildup', '6,7,8', 12, false)
     addAnimationByIndices('jumpscareP2', 'jump', 'jumpscare', '0,1,2,3,2,3,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17', 12, false)
+    addAnimationByIndices('jumpscareP2', 'jumpFaster', 'jumpscare', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17', 12, false)
     setObjectCamera('jumpscareP2', 'other')
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
@@ -210,12 +211,16 @@ local function jumpscare(type)
         elseif type == 'fakeout' then
             setProperty('jumpscareP2.alpha', 0)
             setProperty('dadGroup.visible', true)
-        elseif type == '4' or type == '0' then
+        elseif type == '4' or type == '5' or type == '0' then
             setProperty('jumpscareP2.x', 212)
             setProperty('jumpscareP2.y', -33)
             setProperty('jumpscareP2.scale.x', 0.95)
             setProperty('jumpscareP2.scale.y', 0.95)
-            playAnim('jumpscareP2', 'jump', true)
+            if type == '5' then
+                playAnim('jumpscareP2', 'jumpFaster', true)
+            else
+                playAnim('jumpscareP2', 'jump', true)
+            end
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, 1.75)
@@ -285,7 +290,7 @@ function onEvent(name, value1, value2, strumTime)
     end
 
     if name == 'JumpscareP2' then
-        if value1 ~= '0' then
+        if value1 ~= '0' and value1 ~= '5' then
             tripleScare(value1, 0.05)
         else
             jumpscare(value1)
