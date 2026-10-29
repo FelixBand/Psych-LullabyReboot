@@ -14,7 +14,7 @@ end
 function onCreate()
     setProperty('skipCountdown', true)
 
-    makeAnimatedLuaSprite('goldPukeBody', 'characters/gold/gold_puke', getProperty('dad.x') + 57, getProperty('dad.y') - 73)
+    makeAnimatedLuaSprite('goldPukeBody', 'characters/gold/gold_puke', (getProperty('dad.x') - 43) + 57, (getProperty('dad.y') - 47) - 73)
     addAnimationByPrefix('goldPukeBody', 'puke', 'body', 24, false)
     scaleObject('goldPukeBody', 1.13, 1.13)
     setProperty('goldPukeBody.alpha', 0.0001)
@@ -27,7 +27,7 @@ function onCreate()
     setProperty('goldPukeHead.alpha', 0.0001)
     addLuaSprite('goldPukeHead', true)
 
-    makeAnimatedLuaSprite('headrip', 'characters/gold/head_rip', (getProperty('dad.x') - 357) + 50, getProperty('dad.y') - 370)
+    makeAnimatedLuaSprite('headrip', 'characters/gold/head_rip', ((getProperty('dad.x') - 43) - 357) + 50, (getProperty('dad.y') - 47) - 370)
     addAnimationByPrefix('headrip', 'rip', 'mono_head_rip', 24, false)
     setProperty('headrip.alpha', 0.0001)
     addLuaSprite('headrip', true)
@@ -92,8 +92,6 @@ function onCreatePost()
 
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
-
-    setProperty('dad.color', getColorFromHex('808080'))
 
     triggerEvent('Camera Follow Pos', '183', '312')
 
@@ -238,9 +236,6 @@ function onEvent(name, value1, value2, strumTime)
         setProperty('camGame.alpha', 1)
     end
 
-    if name == 'Gold Fade In' then
-        doTweenColor('goldIn', 'dad', 'FFFFFF', 1, 'cubeIn')
-    end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
     end

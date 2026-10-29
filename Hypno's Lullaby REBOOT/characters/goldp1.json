@@ -1,79 +1,79 @@
 {
 	"animations": [
 		{
+			"loop": false,
 			"offsets": [150, -44],
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
-			"indices": [],
-			"name": "mono_left"
-		},
-		{
-			"offsets": [1, -42],
-			"loop": false,
 			"fps": 24,
-			"anim": "singDOWN",
-			"indices": [],
-			"name": "mono_down"
-		},
-		{
-			"offsets": [83, 337],
-			"loop": false,
-			"fps": 24,
-			"anim": "singUP",
-			"indices": [],
-			"name": "mono_up"
-		},
-		{
-			"offsets": [0, 0],
-			"loop": true,
-			"fps": 24,
-			"anim": "idle",
-			"indices": [],
-			"name": "mono_idle"
-		},
-		{
-			"loop": false,
-			"offsets": [33, 40],
-			"anim": "singRIGHT",
-			"fps": 24,
-			"name": "mono_right",
+			"name": "mono_left",
 			"indices": []
 		},
 		{
 			"loop": false,
-			"offsets": [33, 40],
-			"anim": "jumpscareEnd",
+			"offsets": [1, -42],
+			"anim": "singDOWN",
 			"fps": 24,
-			"name": "mono_right",
-			"indices": [15, 16, 17, 18, 19, 20, 21]
+			"name": "mono_down",
+			"indices": []
 		},
 		{
-			"offsets": [-237, -152],
-			"indices": [],
-			"fps": 24,
-			"anim": "idle-backshot",
-			"loop": true,
-			"name": "mono_backshot_idle"
-		},
-		{
-			"offsets": [11, -30],
-			"indices": [],
-			"fps": 24,
-			"anim": "sing",
 			"loop": false,
-			"name": "mono_backshot_sing"
+			"offsets": [83, 337],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "mono_up",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [0, 0],
+			"anim": "idle",
+			"fps": 24,
+			"name": "mono_idle",
+			"indices": []
+		},
+		{
+			"offsets": [33, 40],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "mono_right"
+		},
+		{
+			"offsets": [33, 40],
+			"loop": false,
+			"fps": 24,
+			"anim": "jumpscareEnd",
+			"indices": [15, 16, 17, 18, 19, 20, 21],
+			"name": "mono_right"
+		},
+		{
+			"loop": false,
+			"offsets": [11, -30],
+			"anim": "sing",
+			"fps": 24,
+			"name": "mono_backshot_sing",
+			"indices": []
+		},
+		{
+			"offsets": [-80, 50],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle-alt",
+			"loop": true,
+			"name": "mono_body_rip_idle"
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/gold/goldp1",
-	"position": [-270, -120],
+	"position": [-227, -73],
 	"healthicon": "dad",
 	"flip_x": false,
 	"healthbar_colors": [175, 102, 206],
 	"camera_position": [0, 0],
 	"sing_duration": 8,
-	"scale": 1,
+	"scale": 1.125,
 	"_editor_isPlayer": false
 }
