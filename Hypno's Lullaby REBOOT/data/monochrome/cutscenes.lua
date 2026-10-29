@@ -100,7 +100,11 @@ function onCreate()
     -- intro cutscene
     for i = 0,4 do
         makeCutsceneObj('introbg' .. i, 'monochrome/cutscenes/intro/cut_mono_intro_bg_' .. i, false)
-        scaleObject('introbg' .. i, 2/3, 2/3)
+        if i == 1 or i == 2 or i == 4 then
+            scaleObject('introbg' .. i, 2/3, 2/3)
+        else
+            fillScreen('introbg'..i)
+        end
     end
 
     -- intro cutscene
@@ -628,8 +632,8 @@ function onUpdate()
 
     celebiLiftFrame = getProperty('celebifly.animation.curAnim.curFrame')
     if getProperty('celebifly.animation.curAnim.name') == 'lift' then
-        if celebiLiftFrame >= 6 then
-            setProperty('introbg4.y', 190 + ((celebiLiftFrame - 6) * 55))
+        if celebiLiftFrame >= 7 then
+            setProperty('introbg4.y', 190 + ((celebiLiftFrame - 7) * 55))
         end
     end
 
