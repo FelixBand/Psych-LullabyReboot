@@ -429,6 +429,8 @@ function onEvent(name, value1, value2)
         end
         if scene == 0 then
             setProperty('camHUD.alpha', 0)
+            setProperty('mono_healthBar.visible', false)
+            setProperty('mono_healthBarMask.visible', false)
             for i = 0,getProperty('playerStrums.length') - 1 do
                 setPropertyFromGroup('playerStrums', i, 'alpha', 0)
             end
@@ -538,8 +540,6 @@ function onEvent(name, value1, value2)
             setProperty('armfall.alpha', 1)
             playAnim('armfall', 'fall', true)
             setProperty('camHUD.alpha', 1)
-            setProperty('mono_healthBar.visible', false)
-            setProperty('mono_healthBarMask.visible', false)
             swapOn()
         end
         if scene == 13 then
