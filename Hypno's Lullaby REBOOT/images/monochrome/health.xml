@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:da95c554dbcc61f0fc0f931b8aa189af:6253047010585b595997b738fb260a66:9d66c36d5e4c001fd0bc5ee69bcd1c83$ -->
+<TextureAtlas imagePath="health.png" width="991" height="1601">
+    <SubTexture name="bar_full0000" x="1" y="144" width="601" height="223" frameX="-2" frameY="0" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_first0000" x="603" y="530" rotated="true" width="216" height="596" frameX="-7" frameY="-7" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_first0001" x="1" y="369" width="600" height="203" frameX="-3" frameY="-20" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_first0002" x="1" y="711" width="596" height="161" frameX="-7" frameY="-62" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_first0003" x="1" y="874" width="590" height="148" frameX="-13" frameY="-75" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_first0004" x="1" y="1" width="602" height="141" frameX="-1" frameY="-82" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_second0000" x="821" y="590" rotated="true" width="135" height="521" frameX="-9" frameY="-88" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_second0001" x="434" y="1321" width="506" height="121" frameX="-9" frameY="-102" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_second0002" x="881" y="94" rotated="true" width="109" height="494" frameX="-12" frameY="-114" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_second0003" x="1" y="1024" width="490" height="90" frameX="-14" frameY="-133" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="bar_split_second0004" x="605" y="1" width="317" height="91" frameX="-7" frameY="-132" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_full0000" x="434" y="1128" width="543" height="191" frameX="-60" frameY="-32" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_first0000" x="434" y="1444" width="490" height="151" frameX="-50" frameY="-72" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_first0001" x="284" y="1116" rotated="true" width="148" height="475" frameX="-51" frameY="-75" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_first0002" x="137" y="1128" rotated="true" width="145" height="467" frameX="-51" frameY="-78" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_first0003" x="1" y="1128" rotated="true" width="134" height="472" frameX="-54" frameY="-89" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_first0004" x="137" y="574" width="463" height="135" frameX="-53" frameY="-88" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_second0000" x="605" y="94" width="274" height="86" frameX="-55" frameY="-137" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_second0001" x="604" y="269" width="261" height="85" frameX="-55" frameY="-138" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_second0002" x="604" y="356" width="259" height="85" frameX="-57" frameY="-138" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_second0003" x="603" y="443" width="259" height="85" frameX="-59" frameY="-138" frameWidth="603" frameHeight="223"/>
+    <SubTexture name="mask_split_second0004" x="604" y="182" width="267" height="85" frameX="-54" frameY="-138" frameWidth="603" frameHeight="223"/>
+</TextureAtlas>
