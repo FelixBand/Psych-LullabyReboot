@@ -453,6 +453,7 @@ function onEvent(name, value1, value2)
         if scene == 3 then
             removeLuaSprite('closeupface', true)
             removeLuaSprite('closeuphair', true)
+            removeLuaSprite('unownreflection', true)
             setProperty('crawlbg.alpha', 1)
             setProperty('goldcrawl.alpha', 1)
             playAnim('goldcrawl', 'crawl', true)
