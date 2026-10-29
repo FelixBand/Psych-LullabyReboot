@@ -146,7 +146,7 @@ local function jumpBlur(amount, duration, cam)
         doTweenX('gameBlurUp', 'gameHUDblurController', amount, duration, 'linear')
     end
     if cam == 'other' or cam == 'both' then
-        doTweenX('otherBlurUp', 'otherBlurController', amount, duration, 'linear')
+        doTweenX('otherBlurUp', 'otherBlurController', amount / 1.5, duration, 'linear')
     end
 end
 
