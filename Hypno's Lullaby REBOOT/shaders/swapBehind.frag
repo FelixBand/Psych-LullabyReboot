@@ -1,14 +1,17 @@
 #pragma header
 
 // Recolours marked notes/strums pixel by pixel, based on the colour behind them.
-// Marked sprites are drawn with ADD blending and flat marker colour, so they only add `gain` to BLUE.
-// Red and green still show the real backdrop; red alone is enough to look the backdrop up in the palette
-// s0..s3 (sorted by red, ascending). A note is where blue is higher than the backdrop allows, and its
-// exact coverage is (excess blue / gain).
+// Marked sprites are drawn with ADD blending and a flat marker colour, so they only add `gain` to BLUE.
+// Red and green are therefore still the real backdrop. Every backdrop colour in this effect has blue == green
+// (060606, 511414, 6C1B1B, A6A3A3, and any blend between them), so:
+//   * a note is wherever blue is higher than green:  cover = (blue - green) / gain
+//   * the backdrop under it is simply (red, green, green)
+// Which backdrop it is = the NEAREST palette colour (s0..s3, compared on red+green only). No exact shades or
+// colour paths are needed, so anti-aliased edges, the diagonal wipe and in-between shades all pick the closest one.
+// (Pixels far from every palette colour AND every line between two of them are other sprites and are ignored.)
 //
-// What a marked pixel becomes depends on the backdrop colour:
-//   a0..a3  = result in mode A (before the tween)
-//   b0..b3  = result in mode B (after the tween)
+//   a0..a3  = what a marked pixel becomes over each backdrop in mode A (before the tween)
+//   b0..b3  = same in mode B (after the tween)
 //   uMix    = 0 -> mode A, 1 -> mode B (tween this for the little colour change)
 uniform vec3 s0;
 uniform vec3 s1;
@@ -24,53 +27,53 @@ uniform vec3 b2;
 uniform vec3 b3;
 uniform float uMix;
 uniform float gain;     // blue added by a marked sprite (77/255 = 0.302)
-uniform float thr;      // smallest blue excess counted as a note (0.01)
+uniform float thr;      // smallest (blue - green) counted as a note (0.01)
 uniform float uOn;      // 1 = effect on, 0 = pass-through
+
+const float TOL = 0.06; // backdrop must lie within this (red/green distance) of some palette colour OR of a line between two of
+                        // them (anti-aliased edges, wipes), otherwise it's some other blue-ish sprite and is left alone
+
+float segDist(vec2 p, vec2 a, vec2 b)
+{
+    vec2 ab = b - a;
+    float t = clamp(dot(p - a, ab) / dot(ab, ab), 0.0, 1.0);
+    return distance(p, a + ab * t);
+}
 
 void main()
 {
     vec4 c = flixel_texture2D(bitmap, openfl_TextureCoordv);
-    float r = c.r;
+    float extra = c.b - c.g;
 
-    if (uOn < 0.5 || c.a < 0.99 || r < s0.r - 0.03 || r > s3.r + 0.03)
+    if (uOn < 0.5 || c.a < 0.99 || extra < thr)
     {
         gl_FragColor = c;
         return;
     }
 
-    vec3 o0 = mix(a0, b0, uMix);
-    vec3 o1 = mix(a1, b1, uMix);
-    vec3 o2 = mix(a2, b2, uMix);
-    vec3 o3 = mix(a3, b3, uMix);
+    vec2 rg = c.rg;
+    float d0 = distance(rg, s0.rg);
+    float d1 = distance(rg, s1.rg);
+    float d2 = distance(rg, s2.rg);
+    float d3 = distance(rg, s3.rg);
 
-    vec3 bg;
-    vec3 result;
-    if (r <= s1.r)
-    {
-        float t = clamp((r - s0.r) / (s1.r - s0.r), 0.0, 1.0);
-        bg = mix(s0, s1, t);
-        result = mix(o0, o1, t);
-    }
-    else if (r <= s2.r)
-    {
-        float t = clamp((r - s1.r) / (s2.r - s1.r), 0.0, 1.0);
-        bg = mix(s1, s2, t);
-        result = mix(o1, o2, t);
-    }
-    else
-    {
-        float t = clamp((r - s2.r) / (s3.r - s2.r), 0.0, 1.0);
-        bg = mix(s2, s3, t);
-        result = mix(o2, o3, t);
-    }
+    float best = d0;
+    vec3 result = mix(a0, b0, uMix);
+    if (d1 < best) { best = d1; result = mix(a1, b1, uMix); }
+    if (d2 < best) { best = d2; result = mix(a2, b2, uMix); }
+    if (d3 < best) { best = d3; result = mix(a3, b3, uMix); }
 
-    float extra = c.b - bg.b;
-    if (extra < thr || abs(c.g - bg.g) > 0.03)
+    float edge = min(min(segDist(rg, s0.rg, s1.rg), segDist(rg, s1.rg, s2.rg)),
+                     min(segDist(rg, s2.rg, s3.rg), segDist(rg, s0.rg, s3.rg)));
+    edge = min(edge, min(segDist(rg, s0.rg, s2.rg), segDist(rg, s1.rg, s3.rg)));
+
+    if (min(best, edge) > TOL)
     {
-        gl_FragColor = c;
+        gl_FragColor = c;     // not one of our backdrops (some other blue-ish sprite): leave it
         return;
     }
 
     float cover = clamp(extra / gain, 0.0, 1.0);
-    gl_FragColor = vec4(mix(bg, result, cover), 1.0);
+    vec3 backdrop = vec3(c.r, c.g, c.g);
+    gl_FragColor = vec4(mix(backdrop, result, cover), 1.0);
 }
