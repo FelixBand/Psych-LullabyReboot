@@ -230,6 +230,8 @@ local function jumpscare(type)
     end
 end
 
+local healthSplit = false
+
 function onEvent(name, value1, value2, strumTime)
     if name == 'End Intro Cutscene' then -- for debug
         cancelTween('camIn1')
@@ -240,7 +242,13 @@ function onEvent(name, value1, value2, strumTime)
         removeLuaSprite('introbg4')
         setProperty('camGame.alpha', 1)
     end
-
+    if name == 'Phase 2' then
+        local healthAnim = getProperty('mono_healthBar.animation.curAnim.anim')
+        if healthAnim ~= 'split2' then
+            playAnim('mono_healthBar', 'split1', true)
+            playAnim('mono_healthBarMask', 'split1', true)
+        end
+    end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
     end
@@ -254,6 +262,9 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'Fade Out' then
         doTweenAlpha('hudOut', 'camHUD', 0, 0.5, 'linear')
+        healthSplit = true
+        playAnim('mono_healthBar', 'split2', true)
+        playAnim('mono_healthBarMask', 'split2', true)
     end
     if name == 'Fade In' then
         removeLuaSprite('bloodbg')
@@ -361,6 +372,14 @@ function onTimerCompleted(tag, loops, loopsLeft)
     end
     if tag == 'correctHeadY' then
         setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
+    end
+end
+
+function onUpdatePost()
+    if healthSplit then
+        if getHealth() > 1 then
+            setHealth(1)
+        end
     end
 end
 
