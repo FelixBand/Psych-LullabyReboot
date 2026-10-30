@@ -273,7 +273,7 @@ local function jumpscare(type)
 end
 
 
-local healthSplit = false
+local healthSplit = 0
 local fgEyesPhase = 0
 
 local function fgEyesNextPhase()
@@ -309,6 +309,7 @@ function onEvent(name, value1, value2, strumTime)
         setProperty('camGame.alpha', 1)
     end
     if name == 'Phase 2' then
+        healthSplit = 1
         local healthAnim = getProperty('mono_healthBar.animation.curAnim.name')
         if healthAnim ~= 'split2' then
             playAnim('mono_healthBar', 'split1', true)
@@ -330,7 +331,7 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'Fade Out' then
         doTweenAlpha('hudOut', 'camHUD', 0, 0.5, 'linear')
-        healthSplit = true
+        healthSplit = 2
         playAnim('mono_healthBar', 'split2', true)
         playAnim('mono_healthBarMask', 'split2', true)
         fgEyesNextPhase()
@@ -447,9 +448,13 @@ function onTimerCompleted(tag, loops, loopsLeft)
 end
 
 function onUpdatePost()
-    if healthSplit then
-        if getHealth() > 1 then
-            setHealth(1)
+    if healthSplit == 1 then
+        if getHealth() > 1.8 then
+            setHealth(1.8)
+        end
+    elseif healthSplit == 2 then
+        if getHealth() > 1.1 then
+            setHealth(1.1)
         end
     end
 end
