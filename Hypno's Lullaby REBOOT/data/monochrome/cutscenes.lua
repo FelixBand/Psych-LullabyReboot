@@ -350,6 +350,14 @@ end
 local scene = -1
 
 local curColor = 0
+
+function setFGeyesVisibility(state)
+    for i = 0,4 do
+        setProperty('fgunown' .. i .. '.visible', state)
+        setProperty('fgunownbloom' .. i .. '.visible', state)
+    end
+end
+
 function onEvent(name, value1, value2)
     if name == 'Swap Tween' then 
         if curColor == 0 then
@@ -362,6 +370,10 @@ function onEvent(name, value1, value2)
     end
     if name == 'Fade In' then
         swapOff()
+        setFGeyesVisibility(true)
+    end
+    if name == 'FG Eyes invisible' then
+        setFGeyesVisibility(false)
     end
 
     if name == 'intro cutscene' then
@@ -409,6 +421,7 @@ function onEvent(name, value1, value2)
 
     if name == 'BF Screamer' then
         if value1 == '1' then
+            setFGeyesVisibility(false)
             setProperty('bfbg.alpha', 1)
             setProperty('bfscream.alpha', 1)
             playAnim('bfscream', 'scream', true)
@@ -419,6 +432,7 @@ function onEvent(name, value1, value2)
             setProperty('bfbg.alpha', 0)
             cancelTween('screamerBlurUp')
             setProperty('gameHUDblurController.x', 0)
+            setFGeyesVisibility(true)
         end
     end
 
@@ -428,6 +442,8 @@ function onEvent(name, value1, value2)
             scene = 0
         end
         if scene == 0 then
+            setFGeyesVisibility(false)
+
             setProperty('camHUD.alpha', 0)
             setProperty('mono_healthBar.visible', false)
             setProperty('mono_healthBarMask.visible', false)
@@ -588,6 +604,7 @@ function onTimerCompleted(tag)
     end
     if tag == 'celebi flown' then
         removeLuaSprite('celebifly', true)
+        removeLuaSprite('unownsflyby', true)
         doTweenZoom('camIn1', 'camGame', 0.3, 8, 'smoothStepInOut')
     end
     if tag == 'bloodcutsceneEnd' then

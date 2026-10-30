@@ -11,6 +11,9 @@ local function getPlaysAsBF() -- returns true if not playing Psych Online for PE
     return true
 end
 
+local fgUnownX = {'-55', '150', '515', '1050', '1050'}
+local fgUnownY = {'-35', '550', '-35',  '-35',  '515'}
+
 function onCreate()
     setProperty('skipCountdown', true)
 
@@ -32,6 +35,30 @@ function onCreate()
     setProperty('headrip.alpha', 0.0001)
     addLuaSprite('headrip', true)
 
+    -- foreground unowns
+    for i = 0,4 do
+        makeAnimatedLuaSprite('fgunown'..i, 'monochrome/unown_fg_eyeballs', fgUnownX[i + 1], fgUnownY[i + 1])
+        addAnimationByPrefix('fgunown'..i, 'idle', 'eyeball_' .. i+1 .. '0', '24', true)
+        addAnimationByPrefix('fgunown'..i, 'enter', 'eyeball_' .. i+1 .. '_enter', '8', false)
+        setObjectCamera('fgunown'..i, 'other')
+        setProperty('fgunown'..i..'.alpha', 0.0001)
+        addLuaSprite('fgunown'..i)
+
+        makeLuaSprite('fgunownbloom'..i, 'monochrome/unown_particle_bloom', fgUnownX[i + 1] - 100, fgUnownY[i + 1] - 225)
+        if i == 0 then
+            setProperty('fgunownbloom'..i..'.y', -100)
+        elseif i == 3 then
+            setProperty('fgunownbloom'..i..'.x', 890)
+            setProperty('fgunownbloom'..i..'.y', -120)
+        end
+        setObjectCamera('fgunownbloom'..i, 'other')
+        scaleObject('fgunownbloom'..i, 0.5, 0.5)
+        setProperty('fgunownbloom'..i..'.alpha', 0.0001)
+        setBlendMode('fgunownbloom'..i, 'add')
+        addLuaSprite('fgunownbloom'..i)
+    end
+
+    -- jumpscares
     makeAnimatedLuaSprite('jumpscareP1', 'characters/gold/jumpscarep1', 70, -60)
     addAnimationByPrefix('jumpscareP1', 'triple0', 'triple_first', 24, false)
     addAnimationByPrefix('jumpscareP1', 'triple1', 'triple_second', 24, false)
@@ -126,8 +153,21 @@ function onCreatePost()
     end
 end
 
+local shakeJumpscare = false
+
 function onUpdate(elapsed)
     setProperty('camZooming', false)
+
+    if shakeJumpscare then
+        setProperty('jumpscareP2.x', 212 + getRandomInt(-5,5))
+        setProperty('jumpscareP2.y', -33 + getRandomInt(-5,5))
+    end
+
+    for i = 0,4 do
+        if getProperty('fgunown'..i..'.animation.curAnim.name') == 'enter' and getProperty('fgunown'..i..'.animation.curAnim.finished') then
+            playAnim('fgunown'..i, 'idle')           
+        end
+    end
 end
 
 local scareType = 0
@@ -135,7 +175,8 @@ local scareType = 0
 local function tripleScare(which, duration)
     setProperty('camGame.visible', false)
     setProperty('camHUD.visible', false)
-    setProperty('camOther.visible', false)
+    setProperty('jumpscareP1.visible', false)
+    setProperty('jumpscareP2.visible', false)
     scareType = which
     runTimer('darkFlashEnd', duration)
 end
@@ -224,13 +265,38 @@ local function jumpscare(type)
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, 1.75)
-            cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
+            --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
+            shakeJumpscare = true
             jumpBlur(0.15, 0.1, 'game')
         end
     end
 end
 
+
 local healthSplit = false
+local fgEyesPhase = 0
+
+local function fgEyesNextPhase()
+    fgEyesPhase = fgEyesPhase + 1
+    debugPrint('                        '..fgEyesPhase)
+    if fgEyesPhase == 1 then
+        for i = 0,4 do
+            if i == 1 or i == 2 or i == 3 then
+                setProperty('fgunown' .. i .. '.alpha', 1)
+                setProperty('fgunownbloom' .. i .. '.alpha', 0.25)
+                playAnim('fgunown'..i, 'enter', true)
+            end
+        end
+    elseif fgEyesPhase == 2 then
+        for i = 0,4 do
+            if i == 0 or i == 4 then
+                setProperty('fgunown' .. i .. '.alpha', 1)
+                setProperty('fgunownbloom' .. i .. '.alpha', 0.25)
+                playAnim('fgunown'..i, 'enter', true)
+            end
+        end
+    end
+end
 
 function onEvent(name, value1, value2, strumTime)
     if name == 'End Intro Cutscene' then -- for debug
@@ -243,11 +309,13 @@ function onEvent(name, value1, value2, strumTime)
         setProperty('camGame.alpha', 1)
     end
     if name == 'Phase 2' then
-        local healthAnim = getProperty('mono_healthBar.animation.curAnim.anim')
+        local healthAnim = getProperty('mono_healthBar.animation.curAnim.name')
         if healthAnim ~= 'split2' then
             playAnim('mono_healthBar', 'split1', true)
             playAnim('mono_healthBarMask', 'split1', true)
         end
+
+        fgEyesNextPhase()
     end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
@@ -265,6 +333,7 @@ function onEvent(name, value1, value2, strumTime)
         healthSplit = true
         playAnim('mono_healthBar', 'split2', true)
         playAnim('mono_healthBarMask', 'split2', true)
+        fgEyesNextPhase()
     end
     if name == 'Fade In' then
         removeLuaSprite('bloodbg')
@@ -339,7 +408,8 @@ function onTimerCompleted(tag, loops, loopsLeft)
     if tag == 'darkFlashEnd' then
         setProperty('camGame.visible', true)
         setProperty('camHUD.visible', true)
-        setProperty('camOther.visible', true)
+        setProperty('jumpscareP1.visible', true)
+        setProperty('jumpscareP2.visible', true)
 
         jumpscare(scareType)
     end
@@ -354,6 +424,7 @@ function onTimerCompleted(tag, loops, loopsLeft)
         triggerEvent('Play Animation', 'jumpscareEnd', 'dad')
         setProperty('jumpscareP1.alpha', 0)
         setProperty('jumpscareP2.alpha', 0)
+        shakeJumpscare = false
     end
     if tag == 'startP2' then
         playAnim('headrip', 'rip')
