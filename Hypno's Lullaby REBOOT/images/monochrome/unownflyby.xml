@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:db021bfd5028a562ac52ba7733140850:0b4b7f23fd721db9d60241c0eb0f962d:9abde69daf52726bb68079cc756a18ff$ -->
+<TextureAtlas imagePath="unownflyby.png" width="1969" height="1818">
+    <SubTexture name="unownflyby_copy0000" x="487" y="1720" width="86" height="88" frameX="-20" frameY="-755" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0001" x="487" y="1720" width="86" height="88" frameX="-20" frameY="-755" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0002" x="1063" y="1477" width="192" height="186" frameX="-23" frameY="-654" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0003" x="1228" y="1670" width="172" height="132" frameX="-23" frameY="-654" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0004" x="1622" y="1531" width="169" height="208" frameX="-22" frameY="-527" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0005" x="1063" y="1670" width="163" height="145" frameX="-22" frameY="-527" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0006" x="257" y="1353" width="228" height="409" frameX="-10" frameY="-435" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0007" x="487" y="1309" width="228" height="409" frameX="-10" frameY="-435" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0008" x="1624" y="1" width="344" height="569" frameX="-15" frameY="-352" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0009" x="717" y="1239" width="344" height="578" frameX="-15" frameY="-343" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0010" x="1624" y="572" width="329" height="547" frameX="-21" frameY="-311" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0011" x="1293" y="1" width="329" height="573" frameX="-21" frameY="-247" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0012" x="1" y="1" width="320" height="689" frameX="-24" frameY="-187" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0013" x="649" y="1" width="320" height="621" frameX="-24" frameY="-255" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0014" x="655" y="624" width="320" height="613" frameX="-30" frameY="-175" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0015" x="971" y="1" width="320" height="613" frameX="-30" frameY="-175" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0016" x="335" y="662" width="318" height="645" frameX="-22" frameY="-91" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0017" x="1" y="692" width="332" height="659" frameX="-8" frameY="-9" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0018" x="323" y="1" width="324" height="659" frameX="-8" frameY="-9" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0019" x="977" y="616" width="324" height="597" frameX="-8" frameY="-9" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0020" x="1303" y="576" width="317" height="545" frameX="-8" frameY="-9" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0021" x="1303" y="1123" width="317" height="545" frameX="-8" frameY="-9" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0022" x="1" y="1353" width="254" height="458" frameX="-122" frameY="-36" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0023" x="1622" y="1326" rotated="true" width="271" height="203" frameX="-114" frameY="-144" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0024" x="1622" y="1121" rotated="true" width="323" height="203" frameX="-114" frameY="-92" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0025" x="1063" y="1215" width="229" height="260" frameX="-98" frameY="-87" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0026" x="1063" y="1215" width="229" height="260" frameX="-98" frameY="-87" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0027" x="575" y="1720" width="86" height="88" frameX="-94" frameY="-181" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0028" x="575" y="1720" width="86" height="88" frameX="-88" frameY="-87" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0029" x="575" y="1720" width="86" height="88" frameX="-78" frameY="-15" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0030" x="1" y="1813" width="3" height="3" frameX="0" frameY="0" frameWidth="404" frameHeight="934"/>
+    <SubTexture name="unownflyby_copy0031" x="1" y="1813" width="3" height="3" frameX="0" frameY="0" frameWidth="404" frameHeight="934"/>
+</TextureAtlas>
