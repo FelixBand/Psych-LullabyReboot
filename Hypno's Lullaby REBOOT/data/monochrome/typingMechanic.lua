@@ -62,7 +62,7 @@ local LETTER_W, LETTER_H = 196, 248      -- size of one letter frame in the shee
 local WAITING_COLOR = 'BDBDBD'           -- letters you still have to type
 local DONE_COLOR = '6E6E6E'              -- letters you already typed
 local GLOW_SIZE = 2.6                    -- glow diameter, in letter heights
-local GLOW_ALPHA, GLOW_DONE_ALPHA = 0.65, 0.25
+local GLOW_ALPHA = 0.65
 
 -- fly-by that plays when a challenge starts
 local FLYBY_W, FLYBY_H = 404, 934
@@ -307,7 +307,7 @@ local function unownSucceed(i)
     u.done = true
     doTweenColor('mech' .. 'c' .. i, u.tag, DONE_COLOR, 0.2, 'quadOut')
     doTweenAlpha('mech' .. 'a' .. i, u.tag, 0.7, 0.2, 'quadOut')
-    doTweenAlpha('mechg' .. i, u.glow, GLOW_DONE_ALPHA, 0.2, 'quadOut')
+    doTweenAlpha('mechg' .. i, u.glow, 0, 0.2, 'quadOut')
     tweenScale(u.tag, 'u' .. i, u.scale * 0.9, 0.2, 'quadOut')
 end
 
