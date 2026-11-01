@@ -57,7 +57,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [-80, 50],
+			"offsets": [-110, -45],
 			"indices": [],
 			"fps": 24,
 			"anim": "idle-alt",

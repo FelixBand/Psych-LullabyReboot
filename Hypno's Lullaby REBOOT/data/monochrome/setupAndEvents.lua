@@ -30,7 +30,7 @@ function onCreate()
     setProperty('goldPukeHead.alpha', 0.0001)
     addLuaSprite('goldPukeHead', true)
 
-    makeAnimatedLuaSprite('headrip', 'characters/gold/head_rip', ((getProperty('dad.x') - 43) - 357) + 50, (getProperty('dad.y') - 47) - 370)
+    makeAnimatedLuaSprite('headrip', 'characters/gold/head_rip', ((getProperty('dad.x') - 43) - 357) + 50, (getProperty('dad.y') - 47) - 340)
     addAnimationByPrefix('headrip', 'rip', 'mono_head_rip', 24, false)
     setProperty('headrip.alpha', 0.0001)
     addLuaSprite('headrip', true)
@@ -355,8 +355,8 @@ function onEvent(name, value1, value2, strumTime)
         playAnim('goldPukeBody', 'puke', true)
         playAnim('goldPukeHead', 'puke' .. value1, true)
         if value1 == '-alt' then
-            runTimer('correctHeadY', 1.6)
-            setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 115)
+            runTimer('correctBodyY', 0.7)
+            --setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 115)
         else
             setProperty('goldPukeHead.x', getProperty('goldPukeBody.x') - 88)
             setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 120)
@@ -441,8 +441,10 @@ function onTimerCompleted(tag, loops, loopsLeft)
         removeLuaSprite('goldPukeHead', true)
         removeLuaSprite('jumpscareP1', true)
     end
-    if tag == 'correctHeadY' then
-        setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
+    if tag == 'correctBodyY' then
+        --setProperty('goldPukeHead.y', getProperty('goldPukeBody.y') - 215)
+        setProperty('goldPukeBody.y', getProperty('goldPukeBody.y') + 92)
+        setProperty('goldPukeBody.x', getProperty('goldPukeBody.x') + 30)
     end
 end
 
