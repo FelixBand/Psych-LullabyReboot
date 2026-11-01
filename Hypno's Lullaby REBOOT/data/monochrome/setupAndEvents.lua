@@ -278,7 +278,6 @@ local fgEyesPhase = 0
 
 local function fgEyesNextPhase()
     fgEyesPhase = fgEyesPhase + 1
-    debugPrint('                        '..fgEyesPhase)
     if fgEyesPhase == 1 then
         for i = 0,4 do
             if i == 1 or i == 2 or i == 3 then
