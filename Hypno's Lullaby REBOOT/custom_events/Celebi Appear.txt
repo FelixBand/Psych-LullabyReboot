@@ -1,0 +1,3 @@
+Celebi rises and sings the Perish Song: music notes (red, turning white) spiral out of her until the typing challenge starts.
+
+No values. Put it a few seconds before the "Unown Typing" event (the chart has it 6 seconds before).
