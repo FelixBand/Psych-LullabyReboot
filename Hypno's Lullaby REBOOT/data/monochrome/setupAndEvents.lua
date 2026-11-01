@@ -282,7 +282,7 @@ end
 local healthSplit = 0
 local fgEyesPhase = 0
 
-local function fgEyesNextPhase()
+function fgEyesNextPhase()
     fgEyesPhase = fgEyesPhase + 1
     if fgEyesPhase == 1 then
         for i = 0,4 do

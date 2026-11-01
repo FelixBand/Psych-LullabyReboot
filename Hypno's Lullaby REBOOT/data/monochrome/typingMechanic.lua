@@ -1,16 +1,18 @@
 -- Monochrome typing mechanic (port of typing_challenge.gd / unown_letter.gd)
 --
+-- Chart event "Celebi Perish Song": Celebi appears and sings before the typing event.
 -- Chart event "Unown Typing":
 --   value1 = seconds from the event until Celebi runs out of time   (empty = 2.5 s + 0.4 s per letter)
 --   value2 = which word list to use: a file name from UnownWords/ ("Normal", "Hard", ...)   (empty = Normal)
 --            or "=SOME WORDS" to force one specific word
 --
 -- What happens (same order as the original):
---   1. event: a word is picked, Celebi appears, the Unowns fly by and the (still blank) letters pop in
---   2. PROMPT_DELAY later the letters get their faces and you can type. Celebi grows and brightens until time is up
---   3. right key -> next letter. wrong key -> the letter shakes and you lose 0.5 s (the original takes 0.25 s twice)
---   4. whole word typed = Celebi returns. time up = Celebi sings, one more fail. 1st/2nd fail split the health bar,
---      3rd fail kills you
+--   1. Perish Song cue: Celebi appears, notes spiral outward, and the scene darkens
+--   2. typing event: a word is picked, the Unowns fly by, and the (still blank) letters pop in
+--   3. PROMPT_DELAY later the letters get their faces and you can type. Celebi grows and brightens until time is up
+--   4. right key -> next letter. wrong key -> the letter shakes and you lose 0.5 s (the original takes 0.25 s twice)
+--   5. whole word typed = Celebi returns. time up = Celebi sings, one more fail. The first fail takes the second split;
+--      the second fail kills you
 --
 -- Only A-Z are typeable. Spaces and anything else (? ! ' ...) are skipped automatically, like spaces were originally.
 
@@ -20,9 +22,12 @@ local UI = screenWidth / 1920            -- the Godot project is 1920x1080, ever
 local WORD_DIR = 'UnownWords/'
 local DEFAULT_LIST = 'Normal'
 local PROMPT_DELAY = 1.0                 -- seconds between the event and the moment you can start typing
+local PERISH_NOTE_COUNT = 8
+local PERISH_DURATION = 1.8
+local PERISH_SPIRAL_TURNS = 1.5
 local TIME_BASE, TIME_PER_LETTER = 2.5, 0.4   -- time limit when the event has no value1
 local MISTAKE_PENALTY = 0.5              -- time lost per wrong key (original: 0.25 + 0.25)
-local MAX_FAILS = 3
+local MAX_FAILS = 2
 
 local TICK_OFFSET = 0.5                  -- Celebi ticks half a second before each whole second left
 local DANGER_SECONDS = 3                 -- below this many seconds the tick gets the danger sound / strong shake
@@ -31,22 +36,22 @@ local BLOCK_STRUMS = true                -- the player's note keys do nothing wh
 local AUTOPLAY = false                   -- types the word for you, one letter every 0.2 s (the original's autoplay flag)
 
 -- Celebi (Godot values: scale 0.7 -> 1.2, grey 0x3F -> white over the time limit)
-local CELEBI_X, CELEBI_Y = screenWidth / 2, screenHeight / 2     -- centre of Celebi on screen
-local CELEBI_START_SCALE, CELEBI_END_SCALE = 0.7 * UI, 1.2 * UI
+local CELEBI_X, CELEBI_Y = (screenWidth / 2) - 1080, (screenHeight / 2) - 20     -- centre of Celebi on screen
+local CELEBI_START_SCALE, CELEBI_END_SCALE = 1.5 * UI, 2.1 * UI
 local CELEBI_START_COLOR = '3F3F3F'
 local CELEBI_EASE = 'quadIn'             -- the original uses a Curve resource that isn't in the repo; tweak to taste
 local CELEBI_W, CELEBI_H = 407, 771      -- size of one Celebi frame in the sheet
 
 -- Unown letters
 local LETTER_SPACING = 160 * UI
-local LETTER_CENTER_X, LETTER_CENTER_Y = screenWidth / 2, screenHeight / 2
+local LETTER_CENTER_X, LETTER_CENTER_Y = (screenWidth / 2) - 420, (screenHeight / 2) - 100
 local LETTER_W, LETTER_H = 196, 248      -- size of one letter frame in the sheet
 local WAITING_COLOR = 'BDBDBD'           -- letters you still have to type
 local DONE_COLOR = '6E6E6E'              -- letters you already typed
 
 -- fly-by that plays when a challenge starts
 local FLYBY_W, FLYBY_H = 404, 934
-local FLYBY_X, FLYBY_Y = screenWidth / 2, screenHeight / 2
+local FLYBY_X, FLYBY_Y = (screenWidth / 2) - 400, (screenHeight / 2) - 100
 
 -- sounds (put .ogg files in sounds/ with these names; missing files are simply skipped)
 local SND_TICK, SND_TICK_DANGER, SND_FAIL = 'celebiTick', 'celebiTickDanger', 'celebiFail'
@@ -64,6 +69,8 @@ local failCount = 0
 local failSoundPlayed = false
 local celebiAnim = ''
 local shakes = {}
+local perishActive = false
+local perishNotes = {}
 local autoTimer = 0
 local prevNoReset = nil
 local haveSound = {}
@@ -146,12 +153,19 @@ end
 local function ensureLetter(i)
     while pool <= i do
         local tag = 'mechanic_unown' .. pool
+        local bloom = 'mechanic_unown_bloom' .. pool
+        makeLuaSprite(bloom, 'monochrome/unown_particle_bloom', 0, 0)
+        setObjectCamera(bloom, 'game')
+        setBlendMode(bloom, 'add')
+        setProperty(bloom .. '.alpha', 0)
+        addLuaSprite(bloom, true)
+
         makeAnimatedLuaSprite(tag, 'monochrome/UnownLetters', 0, 0)
         addAnimationByIndices(tag, 'none', 'UnownA Act_', '0', 24, false)   -- the plain orb, before it shows its letter
         playAnim(tag, 'none', true)
-        setObjectCamera(tag, 'other')
+        setObjectCamera(tag, 'game')
         setProperty(tag .. '.alpha', 0)
-        addLuaSprite(tag)
+        addLuaSprite(tag, true)
         pool = pool + 1
     end
     return 'mechanic_unown' .. i
@@ -166,10 +180,13 @@ end
 local function unownEnter(i)
     local u = letters[i]
     if not u or not u.ch then return end
+    local bloom = 'mechanic_unown_bloom' .. i
     setProperty(u.tag .. '.alpha', 1)
     setProperty(u.tag .. '.color', getColorFromHex(WAITING_COLOR))
     setScale(u.tag, 0)
     tweenScale(u.tag, 'u' .. i, u.scale, 0.3, 'backOut')
+    setProperty(bloom .. '.alpha', 0)
+    doTweenAlpha('mechBloom' .. i, bloom, 0.28, 0.5, 'quadOut')
 end
 
 local function unownActivate(i)
@@ -198,6 +215,7 @@ end
 local function unownExit(i)
     local u = letters[i]
     doTweenAlpha('mech' .. 'a' .. i, u.tag, 0, 0.2, 'quadIn')
+    doTweenAlpha('mechBloom' .. i, 'mechanic_unown_bloom' .. i, 0, 0.2, 'quadIn')
     tweenScale(u.tag, 'u' .. i, 0, 0.2, 'backIn')
 end
 
@@ -214,7 +232,7 @@ local function updateUnowns()
         if u.ch then
             if i == lettersPassed then
                 removeLuaSprite(u.tag, false)      -- re-adding puts it in front (move_to_front)
-                addLuaSprite(u.tag)
+                addLuaSprite(u.tag, true)
                 unownActivate(i)
             elseif i < lettersPassed then
                 unownSucceed(i)
@@ -237,9 +255,15 @@ local function onChallengeFail(n)
         setHealth(0)
         return
     end
-    local anim = n == 1 and 'split1' or 'split2'
+    local anim = 'split2'
     if luaSpriteExists('mono_healthBar') then playAnim('mono_healthBar', anim, true) end
     if luaSpriteExists('mono_healthBarMask') then playAnim('mono_healthBarMask', anim, true) end
+end
+
+local function fadeDarkOverlay(alpha)
+    if luaSpriteExists('darkOverlay') then
+        doTweenAlpha('mechDarkOverlay', 'darkOverlay', alpha, 0.5, 'linear')
+    end
 end
 
 local function finish()
@@ -247,6 +271,7 @@ local function finish()
     active = false
     blockStrums(false)
     lockReset(false)
+    fadeDarkOverlay(0)
 end
 
 local function succeed()
@@ -274,6 +299,7 @@ local function fail()
         if isLetter(i) then unownSucceed(i) end
     end
     failCount = failCount + 1
+    callOnLuas('fgEyesNextPhase', {})
     onChallengeFail(failCount)
     if failCount ~= MAX_FAILS then runTimer('mechExitAll', 0.5) end
     finish()
@@ -349,11 +375,14 @@ local function initiate(eventSec, duration, spec)
     shakes = {}
     deadline = eventSec + (duration or (TIME_BASE + TIME_PER_LETTER * wordLen))
 
-    -- Celebi enters
-    setProperty('mechanic_celebi.alpha', 1)
-    setScale('mechanic_celebi', CELEBI_START_SCALE)
-    setProperty('mechanic_celebi.color', getColorFromHex(CELEBI_START_COLOR))
+    -- If the earlier cue ran, Celebi is already visible from her song.
+    if not perishActive then
+        setProperty('mechanic_celebi.alpha', 1)
+        setScale('mechanic_celebi', CELEBI_START_SCALE)
+        setProperty('mechanic_celebi.color', getColorFromHex(CELEBI_START_COLOR))
+    end
     playCelebi('idle')
+    perishActive = false
     cancelTimer('mechCelebiHide')
 
     -- fly-by
@@ -383,6 +412,12 @@ local function initiate(eventSec, duration, spec)
         letters[i] = u
         setProperty(tag .. '.x', u.x)
         setProperty(tag .. '.y', u.y)
+        local bloom = 'mechanic_unown_bloom' .. i
+        setProperty(bloom .. '.x', (u.x + LETTER_W / 2 - getProperty(bloom .. '.width') * UI * 0.175) - 470)
+        setProperty(bloom .. '.y', (u.y + LETTER_H / 2 - getProperty(bloom .. '.height') * UI * 0.35) - 370)
+        setProperty(bloom .. '.scale.x', 0.35 * UI)
+        setProperty(bloom .. '.scale.y', 0.7 * UI)
+        setProperty(bloom .. '.alpha', 0)
         playAnim(tag, 'none', true)
         setProperty(tag .. '.alpha', 0)
         setScale(tag, s)
@@ -400,6 +435,8 @@ function onCreate()
     math.randomseed(os.time())
 
     precacheImage('monochrome/UnownLetters')
+    precacheImage('monochrome/unown_particle_bloom')
+    precacheImage('monochrome/celebi_note')
 
     makeAnimatedLuaSprite('mechanic_celebi', 'monochrome/celebi', CELEBI_X - CELEBI_W / 2, CELEBI_Y - CELEBI_H / 2)
     addAnimationByPrefix('mechanic_celebi', 'idle', 'idle', 24, true)
@@ -407,21 +444,55 @@ function onCreate()
     addAnimationByPrefix('mechanic_celebi', 'shakelight', 'shakelight', 25, false)
     addAnimationByPrefix('mechanic_celebi', 'pass', 'pass', 24, false)
     addAnimationByPrefix('mechanic_celebi', 'fail', 'fail', 24, false)
-    setObjectCamera('mechanic_celebi', 'other')
+    setObjectCamera('mechanic_celebi', 'game')
     setProperty('mechanic_celebi.alpha', 0)
-    addLuaSprite('mechanic_celebi')
+    addLuaSprite('mechanic_celebi', true)
+
+    for i = 1, PERISH_NOTE_COUNT do
+        local tag = 'mechanic_perish_note' .. i
+        makeLuaSprite(tag, 'monochrome/celebi_note', 0, 0)
+        setObjectCamera(tag, 'game')
+        setProperty(tag .. '.alpha', 0)
+        setProperty(tag .. '.angle', 0)
+        setScale(tag, 0.28 * UI)
+        addLuaSprite(tag, true)
+        perishNotes[i] = {tag = tag, age = PERISH_DURATION, phase = 0}
+    end
 
     makeAnimatedLuaSprite('mechanic_unownflyby', 'monochrome/unownflyby', FLYBY_X - FLYBY_W / 2, FLYBY_Y - FLYBY_H / 2)
     addAnimationByPrefix('mechanic_unownflyby', 'fly', 'unownflyby_copy', 24, false)
-    setObjectCamera('mechanic_unownflyby', 'other')
+    setObjectCamera('mechanic_unownflyby', 'game')
     setProperty('mechanic_unownflyby.alpha', 0)
     setScale('mechanic_unownflyby', UI)
-    addLuaSprite('mechanic_unownflyby')
+    addLuaSprite('mechanic_unownflyby', true)
 
     for i = 0, 11 do ensureLetter(i) end
 end
 
 function onEvent(name, value1, value2, strumTime)
+    if name == 'Celebi Perish Song' then
+        if active then return end
+        perishActive = true
+        setProperty('mechanic_celebi.alpha', 1)
+        setScale('mechanic_celebi', CELEBI_START_SCALE)
+        setProperty('mechanic_celebi.color', getColorFromHex(CELEBI_START_COLOR))
+        playCelebi('rise')
+        cancelTimer('mechCelebiHide')
+        fadeDarkOverlay(0.28)
+
+        for i = 1, PERISH_NOTE_COUNT do
+            local note = perishNotes[i]
+            note.age = 0
+            note.phase = ((i - 1) / PERISH_NOTE_COUNT) * math.pi * 2
+            local tag = note.tag
+            removeLuaSprite(tag, false)
+            addLuaSprite(tag, true)
+            setProperty(tag .. '.color', getColorFromHex('D31D35'))
+            setProperty(tag .. '.alpha', 1)
+            doTweenColor('mechPerishColor' .. i, tag, 'FFFFFF', PERISH_DURATION, 'linear')
+        end
+        return
+    end
     if name ~= 'Unown Typing' then return end
     if active then return end
     local ms = tonumber(strumTime)
@@ -448,6 +519,22 @@ function onTimerCompleted(tag)
 end
 
 function onUpdate(elapsed)
+    for i = 1, #perishNotes do
+        local note = perishNotes[i]
+        if note.age < PERISH_DURATION then
+            note.age = note.age + elapsed
+            local progress = math.min(note.age / PERISH_DURATION, 1)
+            local angle = note.phase + progress * PERISH_SPIRAL_TURNS * math.pi * 2
+            local radius = (20 + progress * 150) * UI
+            local tag = note.tag
+            local width = getProperty(tag .. '.width') * 0.14 * UI
+            local height = getProperty(tag .. '.height') * 0.14 * UI
+            setProperty(tag .. '.x', CELEBI_X - width / 2 + math.cos(angle) * radius)
+            setProperty(tag .. '.y', CELEBI_Y - height / 2 + math.sin(angle) * radius)
+            setProperty(tag .. '.alpha', math.max(0, 1 - progress))
+        end
+    end
+
     if next(shakes) ~= nil then
         for i, t in pairs(shakes) do
             t = t + elapsed
@@ -511,5 +598,6 @@ end
 
 function onDestroy()
     pcall(blockStrums, false)
+    fadeDarkOverlay(0)
     lockReset(false)            -- noReset is a saved preference: always give it back
 end
