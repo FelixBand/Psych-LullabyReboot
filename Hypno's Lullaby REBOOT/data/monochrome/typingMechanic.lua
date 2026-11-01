@@ -23,7 +23,7 @@ local UI = screenWidth / 1920            -- the Godot project is 1920x1080, ever
 
 local WORD_DIR = 'UnownWords/'
 local DEFAULT_LIST = 'Normal'
-local PROMPT_DELAY = 1.0                 -- seconds between the Unown Typing event and the moment you can start typing
+local PROMPT_DELAY = 2.0                 -- seconds between the Unown Typing event and the moment you can start typing
 local TIME_BASE, TIME_PER_LETTER = 2.5, 0.4   -- time limit when the event has no value1
 local MISTAKE_PENALTY = 0.5              -- time lost per wrong key (original: 0.25 + 0.25)
 local MAX_FAILS = 2                      -- this many failed challenges = instant death
