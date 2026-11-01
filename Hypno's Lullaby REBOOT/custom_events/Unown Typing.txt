@@ -1,0 +1,6 @@
+Starts the Celebi typing challenge: Celebi appears, Unown letters spell a word and you have to type it before time runs out.
+
+Value 1 (number) = seconds from this event until time runs out. Leave empty for 2.5 s + 0.4 s per letter.
+
+Value 2 (text) = word list from the UnownWords folder ("Normal", "Hard", "Rare"...). Empty = Normal.
+Start it with = to force one exact word, e.g. =GET OUT
