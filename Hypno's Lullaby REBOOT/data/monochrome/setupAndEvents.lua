@@ -100,6 +100,12 @@ function onCreate()
     setObjectCamera('bfbloodsplatter', 'hud')
     setProperty('bfbloodsplatter.alpha', 0.00001)
     addLuaSprite('bfbloodsplatter')
+
+    -- dark overlay for ending fade out
+    makeLuaSprite('darkOverlay', '', -1000, -400)
+    makeGraphic('darkOverlay', 2500, 2000, '000000')
+    setProperty('darkOverlay.alpha', 0)
+    addLuaSprite('darkOverlay', true)
 end
 
 function onCreatePost()
@@ -401,6 +407,13 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'open kingseye' then
         playAnim('kingseye', 'open', true)
+    end
+    if name == 'End Fade Out' then
+        doTweenAlpha('dark', 'darkOverlay', 1, 5, 'linear')
+    end
+    if name == 'End Tweens' then
+        doTweenZoom('gameZoomOut', 'camGame', 0.3, 5, 'smoothStepInOut')
+        doTweenY('goldDown', 'dad', 500, 5, 'smoothStepInOut')
     end
 end
 
