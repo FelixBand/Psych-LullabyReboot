@@ -1,4 +1,4 @@
-luaDebugMode = true
+--luaDebugMode = true
 
 local function getPlaysAsBF() -- returns true if not playing Psych Online for PE compat :)))
     if type(_G.playsAsBF) == "function" then
