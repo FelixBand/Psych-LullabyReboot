@@ -386,8 +386,8 @@ function onEvent(name, value1, value2, strumTime)
     end
 
     if name == 'start zooming' then
-        setProperty('defaultCamZoom', 0.8)
-        doTweenZoom('zoomIn', 'camGame', 0.8, 8, 'cubeInOut')
+        setProperty('defaultCamZoom', 0.9)
+        doTweenZoom('zoomIn', 'camGame', 0.9, 8, 'cubeInOut')
     end
     if name == 'undo zoom' then
         cancelTween('zoomIn')

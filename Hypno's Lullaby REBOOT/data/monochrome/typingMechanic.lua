@@ -163,7 +163,6 @@ local function celebiAppear(sing)
     runTimer('mechCelebiIdle', RISE_TIME)
     if sing then
         runTimer('mechNotes', RISE_TIME - 0.5)       -- the song starts once she is up
-        sfx(SND_PERISH, 'mechPerish')
     end
 end
 
@@ -298,7 +297,7 @@ local function fail()
     over = true
     cancelTween('mechCelebiSX'); cancelTween('mechCelebiSY'); cancelTween('mechCelebiCol')
     if celebiAnim ~= 'fail' then
-        if not failSound then failSound = true; sfx(SND_FAIL, 'mechFail') end
+        if not failSound then failSound = true; playSound('celebiFail', 1) end
         playCelebi('fail')
         runTimer('mechCelebiHide', 48 / 24)
     end
@@ -460,7 +459,7 @@ function onCreatePost()
     end
     for _, tag in ipairs(tags) do
         removeLuaSprite(tag, false)
-        addLuaSprite(tag, true)
+        addLuaSprite(tag, false)
         setObjectCamera(tag, 'game')
         setScrollFactor(tag, 0, 0)
     end
@@ -538,11 +537,11 @@ function onUpdate(elapsed)
     if second ~= lastSecond then
         if second == -1 then
             failSound = true
-            sfx(SND_FAIL, 'mechFail')
+            playSound('celebiFail')
             playCelebi('fail')
             runTimer('mechCelebiHide', 48 / 24 + 0.5)
         else
-            sfx(second < DANGER_SECONDS and SND_DANGER or SND_TICK, second < DANGER_SECONDS and 'mechTickDanger' or 'mechTick')
+            playSound(second < DANGER_SECONDS and SND_DANGER or SND_TICK, second < DANGER_SECONDS and 'mechTickDanger' or 'celebiTick')
             playCelebi(second < DANGER_SECONDS and 'shake' or 'shakelight')
         end
     end
