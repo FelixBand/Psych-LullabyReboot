@@ -192,7 +192,7 @@ function onCreate()
             makeCutsceneObj('crawlbg', 'monochrome/cutscenes/mid song/crawl_bg')
 
             makeAnimatedLuaSprite('goldcrawl', 'monochrome/cutscenes/mid song/gold_crawl_side', 0, 0)
-            addAnimationByPrefix('goldcrawl', 'crawl', 'crawl', 8, false)
+            addAnimationByPrefix('goldcrawl', 'crawl', 'crawl', 7.5, false)
             setObjectCamera('goldcrawl', 'other')
             scaleObject('goldcrawl', 0.9, 0.9)
             setProperty('goldcrawl.alpha', 0.0001)
