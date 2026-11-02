@@ -409,7 +409,7 @@ function onEvent(name, value1, value2, strumTime)
         playAnim('kingseye', 'open', true)
     end
     if name == 'End Fade Out' then
-        doTweenAlpha('dark', 'darkOverlay', 1, 5, 'linear')
+        doTweenAlpha('dark', 'darkOverlay', 1, 4, 'linear')
     end
     if name == 'End Tweens' then
         doTweenZoom('gameZoomOut', 'camGame', 0.3, 5, 'smoothStepInOut')

@@ -1,7 +1,7 @@
 -- Monochrome typing mechanic (port of typing_challenge.gd / unown_letter.gd)
 --
 -- Chart events:
---   "Celebi Appear"  - Celebi rises and sings the Perish Song: music notes spiral out of her until the typing starts.
+--   "Celebi Appear"  - Celebi rises and sings the Perish Song: music notes spiral outward from one point above her head until the typing starts.
 --                      (no values). Put it a few seconds before "Unown Typing". If you forget, Unown Typing makes her appear.
 --   "Unown Typing"   - the typing challenge itself.
 --        value1 = seconds from the event until Celebi runs out of time   (empty = 2.5 s + 0.4 s per letter)
@@ -27,6 +27,7 @@ local PROMPT_DELAY = 2.0                 -- seconds between the Unown Typing eve
 local TIME_BASE, TIME_PER_LETTER = 2.5, 0.4   -- time limit when the event has no value1
 local MISTAKE_PENALTY = 0.5              -- time lost per wrong key (original: 0.25 + 0.25)
 local MAX_FAILS = 2                      -- this many failed challenges = instant death
+local RESET_UNLOCK_DELAY = 0.1           -- let the final R keypress clear before restoring quick restart
 
 local TICK_OFFSET = 0.5                  -- Celebi ticks half a second before each whole second left
 local DANGER_SECONDS = 3                 -- below this many seconds the tick gets the danger sound / strong shake
@@ -43,14 +44,22 @@ local CELEBI_START_SCALE, CELEBI_END_SCALE = 1.025 * UI, 1.325 * UI
 local CELEBI_START_COLOR = '3F3F3F'
 local CELEBI_EASE = 'quadIn'             -- the original uses a Curve resource that isn't in the repo; tweak to taste
 local CELEBI_W, CELEBI_H = 407, 771      -- size of one Celebi frame in the sheet
+-- Celebi is placed ONCE, the moment she appears, and this script never moves or rescales her again (the camera's own zoom
+-- still carries her along like everything else on camGame). The screen-pixel values above are converted to camGame
+-- coordinates at that moment from the camera zoom - or from CELEBI_REF_ZOOM if you set a number here, which makes her
+-- position a pure constant that doesn't depend on what the camera is doing at all.
+local CELEBI_REF_ZOOM = nil
 
--- Perish Song music notes
+-- Perish Song music notes: all of them start at ONE point (NOTE_ORIGIN, relative to Celebi's centre) and spiral outward,
+-- each note riding its own arm of the spiral.
 local NOTE_POOL = 7
-local NOTE_LIFE = 2.2                    -- seconds a note lives
-local NOTE_R0, NOTE_R1 = 70, 320         -- distance from Celebi (screen px) at birth / at death
-local NOTE_ORBIT_RADIUS = 18             -- small circular drift around each note's spawn point
-local NOTE_ORBIT_TURNS = 1.0              -- linear orbit rotations over the note's lifetime
-local NOTE_ORIGIN_Y = -90                -- where the notes come from, relative to Celebi's centre (up = towards her head)
+local NOTE_LIFE = 1.7                    -- seconds a note lives
+local NOTE_SPEED = 120                    -- outward speed, screen px per second (LINEAR, no easing)
+local NOTE_SPIN = 0.80                   -- spin around the origin, radians per second (LINEAR); negative = other direction
+local NOTE_FADE_IN = 0.5                -- seconds a note takes to fade in after it spawns
+local NOTE_FADE_OUT = 0.8                -- seconds of fading out at the end of its life
+local NOTE_SQUASH = 0.75                 -- below 1 flattens the spiral vertically, 1 = perfectly round
+local NOTE_ORIGIN_X, NOTE_ORIGIN_Y = 0, -70   -- where the notes come from, relative to Celebi's centre (up = towards her head)
 local NOTE_SCALE = 0.45 * UI
 local NOTE_W, NOTE_H = 142, 174
 local NOTE_START_COLOR = 'FF2020'        -- red, fades to white while flying
@@ -109,6 +118,16 @@ local function worldX(px) return screenWidth / 2 + (px - screenWidth / 2) / view
 local function worldY(py) return screenHeight / 2 + (py - screenHeight / 2) / viewZoom end
 local function K() return 1 / viewZoom end   -- sizes get the same compensation
 
+-- Celebi (and the notes that come out of her) use their OWN conversion, captured once when she appears and never refreshed.
+local celebiZoom = 1
+local function captureCelebiView()
+    local z = CELEBI_REF_ZOOM or getProperty('camGame.zoom')
+    celebiZoom = (type(z) == 'number' and z > 0) and z or 1
+end
+local function cWorldX(px) return screenWidth / 2 + (px - screenWidth / 2) / celebiZoom end
+local function cWorldY(py) return screenHeight / 2 + (py - screenHeight / 2) / celebiZoom end
+local function cK() return 1 / celebiZoom end
+
 -- ===== helpers ============================================================
 local function playSfx(name, tag)
     if haveSound[name] == nil then haveSound[name] = checkFileExists('sounds/' .. name .. '.ogg') end
@@ -128,6 +147,7 @@ end
 -- quick restart is bound to R, which is also a letter
 local function lockReset(on)
     if on then
+        cancelTimer('mechUnlockReset')
         if prevNoReset == nil then prevNoReset = getPropertyFromClass('backend.ClientPrefs', 'data.noReset') end
         setPropertyFromClass('backend.ClientPrefs', 'data.noReset', true)
     elseif prevNoReset ~= nil then
@@ -217,18 +237,18 @@ local function playCelebi(name)
 end
 
 local function placeCelebi()
-    setProperty('mechanic_celebi.x', worldX(CELEBI_X) - CELEBI_W / 2)
-    setProperty('mechanic_celebi.y', worldY(CELEBI_Y) - CELEBI_H / 2)
+    setProperty('mechanic_celebi.x', cWorldX(CELEBI_X) - CELEBI_W / 2)
+    setProperty('mechanic_celebi.y', cWorldY(CELEBI_Y) - CELEBI_H / 2)
 end
 
 -- ===== Celebi + Perish Song ===============================================
 local RISE_TIME = 26 / 24
 
 local function celebiAppear(sing)
-    refreshView()
+    captureCelebiView()                        -- the one and only time her position and scale are worked out
     celebiOut = true
     placeCelebi()
-    setScale('mechanic_celebi', CELEBI_START_SCALE * K())
+    setScale('mechanic_celebi', CELEBI_START_SCALE * cK())
     setProperty('mechanic_celebi.color', getColorFromHex(CELEBI_START_COLOR))
     setProperty('mechanic_celebi.alpha', 1)
     cancelTimer('mechCelebiHide')
@@ -246,10 +266,9 @@ local function spawnNote(angle)
     for i = 0, NOTE_POOL - 1 do
         local n = notes[i]
         if not n.on then
-            n.on, n.t, n.a0 = true, 0, angle
-            n.startX = CELEBI_X + math.cos(angle) * NOTE_R0
-            n.startY = CELEBI_Y + NOTE_ORIGIN_Y + math.sin(angle) * NOTE_R0 * 0.75
+            n.on, n.t, n.a0 = true, 0, angle      -- angle = which arm of the spiral this note rides
             noteActive = noteActive + 1
+            setProperty(n.tag .. '.alpha', 0)
             setProperty(n.tag .. '.color', getColorFromHex(NOTE_START_COLOR))
             doTweenColor('mechNoteC' .. i, n.tag, 'FFFFFF', NOTE_LIFE * 0.8, 'linear')   -- red -> white
             return
@@ -258,6 +277,7 @@ local function spawnNote(angle)
 end
 
 local function updateNotes(elapsed)
+    local originX, originY = CELEBI_X + NOTE_ORIGIN_X, CELEBI_Y + NOTE_ORIGIN_Y
     for i = 0, NOTE_POOL - 1 do
         local n = notes[i]
         if n.on then
@@ -268,16 +288,16 @@ local function updateNotes(elapsed)
                 noteActive = noteActive - 1
                 setProperty(n.tag .. '.alpha', 0)
             else
-                local travel = (NOTE_R1 - NOTE_R0) * p
-                local orbit = p * NOTE_ORBIT_TURNS * math.pi * 2
-                local sx = n.startX + math.cos(n.a0) * travel
-                    + NOTE_ORBIT_RADIUS * (math.cos(orbit) - 1)
-                local sy = n.startY + math.sin(n.a0) * travel * 0.75
-                    + NOTE_ORBIT_RADIUS * math.sin(orbit)
-                setProperty(n.tag .. '.x', worldX(sx) - NOTE_W / 2)
-                setProperty(n.tag .. '.y', worldY(sy) - NOTE_H / 2)
-                setScale(n.tag, NOTE_SCALE * K() * (0.6 + 0.4 * math.min(1, p * 4)))
-                setProperty(n.tag .. '.alpha', p < 0.45 and 1 or math.max(0, 1 - (p - 0.45) / 0.55))
+                local r = NOTE_SPEED * n.t                         -- linear; 0 at birth: every note leaves from the same point
+                local ang = n.a0 + NOTE_SPIN * n.t                 -- linear spin
+                local sx = originX + math.cos(ang) * r
+                local sy = originY + math.sin(ang) * r * NOTE_SQUASH
+                setProperty(n.tag .. '.x', cWorldX(sx) - NOTE_W / 2)
+                setProperty(n.tag .. '.y', cWorldY(sy) - NOTE_H / 2)
+                setScale(n.tag, NOTE_SCALE * cK() * (0.6 + 0.4 * math.min(1, n.t / 0.5)))
+                local fadeIn = math.min(1, n.t / NOTE_FADE_IN)                          -- 0 -> 1 right after spawning
+                local fadeOut = math.min(1, (NOTE_LIFE - n.t) / NOTE_FADE_OUT)       -- 1 -> 0 over the last NOTE_FADE_OUT seconds
+                setProperty(n.tag .. '.alpha', math.max(0, math.min(fadeIn / 2, fadeOut / 2)))
             end
         end
     end
@@ -368,12 +388,12 @@ local function onChallengeFail(n)
     callOnLuas('setHealthSplit', {2})          -- optional: lets setupAndEvents.lua cap the health like its Fade Out event does
 end
 
-local function finish()
+local function finish(keepResetLocked)
     prompting = false
     active = false
     perishing = false
     blockStrums(false)
-    lockReset(false)
+    if not keepResetLocked then lockReset(false) end
     darkTo(0)
 end
 
@@ -387,7 +407,8 @@ local function succeed()
         if isLetter(i) then unownSucceed(i) end
     end
     runTimer('mechExitAll', 0.5)
-    finish()
+    runTimer('mechUnlockReset', RESET_UNLOCK_DELAY)
+    finish(true)
 end
 
 local function fail()
@@ -457,9 +478,8 @@ local function startChallenge()
     lockReset(true)
 
     -- Celebi: grows and brightens over the time limit (a fixed-length tween, like the original)
-    local k = K()
-    doTweenX('mechCelebiSX', 'mechanic_celebi.scale', CELEBI_END_SCALE * k, timeLeft, CELEBI_EASE)
-    doTweenY('mechCelebiSY', 'mechanic_celebi.scale', CELEBI_END_SCALE * k, timeLeft, CELEBI_EASE)
+    doTweenX('mechCelebiSX', 'mechanic_celebi.scale', CELEBI_END_SCALE * cK(), timeLeft, CELEBI_EASE)
+    doTweenY('mechCelebiSY', 'mechanic_celebi.scale', CELEBI_END_SCALE * cK(), timeLeft, CELEBI_EASE)
     doTweenColor('mechCelebiCol', 'mechanic_celebi', 'FFFFFF', timeLeft, CELEBI_EASE)
 end
 
@@ -478,15 +498,14 @@ local function initiate(eventSec, duration, spec)
     shakes = {}
     deadline = eventSec + (duration or (TIME_BASE + TIME_PER_LETTER * wordLen))
 
-    -- Celebi: normally she is already out (Celebi Appear); if not, she appears now
+    -- Celebi: normally she is already out (Celebi Appear) and is NOT touched here: no re-placing, no rescaling.
+    -- If the chart has no Celebi Appear before this event, she appears now.
+    refreshView()                              -- the letters and the fly-by are placed from the current zoom; Celebi is not
     perishing = false                          -- the song ends where the typing begins
     if not celebiOut then
         celebiAppear(false)
-    else
-        refreshView()
-        placeCelebi()
-        setScale('mechanic_celebi', CELEBI_START_SCALE * K())
-        if celebiAnim ~= 'rise' then playCelebi('idle') end
+    elseif celebiAnim ~= 'rise' and celebiAnim ~= 'idle' then
+        playCelebi('idle')
     end
     cancelTimer('mechCelebiHide')
 
@@ -617,6 +636,8 @@ function onTimerCompleted(tag)
     if tag:sub(1, 4) ~= 'mech' then return end
     if tag == 'mechPrompt' then
         startChallenge()
+    elseif tag == 'mechUnlockReset' then
+        lockReset(false)
     elseif tag == 'mechExitAll' then
         exitAll()
     elseif tag == 'mechCelebiIdle' then
