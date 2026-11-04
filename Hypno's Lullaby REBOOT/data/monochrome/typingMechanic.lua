@@ -14,6 +14,11 @@ local function setScaleXY(obj, scale)
     setProperty(obj..'.scale.y', scale)
 end
 
+local function doTweenScale(tag, obj, target, duration, ease)
+    doTweenX(tag .. 'X', obj..'.scale', target, duration, ease)
+    doTweenY(tag .. 'Y', obj..'.scale', target, duration, ease)
+end
+
 function onCreate()
     makeAnimatedLuaSprite('celebi', 'monochrome/celebi', -630, -70)
     addAnimationByPrefix('celebi', 'idle', 'idle', 24, true)
@@ -27,6 +32,23 @@ function onCreate()
 end
 
 local wordLength = nil
+local letterspacing = 170
+local letteroffset = 460
+local letterscale = 0.7
+
+local actDelay = 2
+local canType = false
+local currentWord = ''
+local currentLetterToType = nil
+local typingProgress = 0
+
+local function setTypingProgress(progress)
+    typingProgress = progress
+    currentLetterToType = string.sub(currentWord, typingProgress, typingProgress)
+    if currentLetterToType == ' ' or currentLetterToType == 'SPACE' then
+        setTypingProgress(typingProgress + 1)
+    end
+end
 
 function onEvent(name, value1, value2)
     if name == 'Celebi Appear' then
@@ -34,7 +56,13 @@ function onEvent(name, value1, value2)
         animEndTimer('celebihasrisen', 'celebi')
     end
 
+    if name == 'Set Unown Typing Delay' then
+        actDelay = tonumber(value1)
+    end
+
     if name == 'Unown Typing' then
+        setProperty('canReset', false)
+
         doTweenAlpha('darkIn', 'darkOverlay', 0.5, 1, 'linear')
 
         local words = {}
@@ -50,30 +78,48 @@ function onEvent(name, value1, value2)
             return
         end
 
-        local randomWord = words[getRandomInt(1, #words)]
+        currentWord = words[getRandomInt(1, #words)]
 
-        debugPrint('Selected word: ' .. randomWord)
+        debugPrint('Selected word: ' .. currentWord)
 
-        wordLength = string.len(randomWord)
+        wordLength = string.len(currentWord)
 
         for i = 1, wordLength do
-            local letter = string.sub(randomWord, i, i)
+            local letter = string.sub(currentWord, i, i)
 
             debugPrint('Letter: ' .. letter)
 
             if letter ~= ' ' then
-                local letterspacing = 170
-                local letteroffset = 460
+                letterspacing = 170
+                letteroffset = 460
+                letterscale = 0.7
 
+                if wordLength > 10 then
+                    letterspacing = math.max(170 / (1 + (wordLength - 10) * 0.12), 85)
+                    letterscale = math.max(0.7 / (1 + (wordLength - 10) * 0.12), 0.35)
+                end
+
+                -- awesome formula to center the text
                 local xPos = (wordLength - ((wordLength/2) + (wordLength - i))) * letterspacing + letteroffset
+                local yPos = 200 + getRandomInt(-75,75)
                 
                 debugPrint(xPos)
-                makeAnimatedLuaSprite('unownLetter'..i, 'monochrome/UnownLetters', xPos, 200 + getRandomInt(-75,75))
-                addAnimationByPrefix('unownLetter'..i, 'act', 'Unown' .. letter .. ' Act_', 12, true)
-                setScrollFactor('unownLetter'..i, 0, 0)
-                setScaleXY('unownLetter'..i, 0.7)
 
+                makeLuaSprite('unownLetterBloom'..i, 'monochrome/unown_particle_bloom', xPos - 535, yPos - 525)
+                setScrollFactor('unownLetterBloom'..i, 0, 0)
+                setProperty('unownLetterBloom'..i..'.scale.x', letterscale / 3)
+                setProperty('unownLetterBloom'..i..'.scale.y', letterscale / 2)
+                setProperty('unownLetterBloom'..i..'.alpha', 0.5)
+                addLuaSprite('unownLetterBloom'..i, true)
+
+                makeAnimatedLuaSprite('unownLetter'..i, 'monochrome/UnownLetters', xPos, yPos)
+                addAnimationByIndices('unownLetter'..i, 'blank', 'UnownA Act_', '0', 1, true)
+                addAnimationByPrefix('unownLetter'..i, 'act', 'Unown' .. letter .. ' Act_', 24, false)
+                setScrollFactor('unownLetter'..i, 0, 0)
+                setScaleXY('unownLetter'..i, letterscale)
                 addLuaSprite('unownLetter'..i, true)
+                playAnim('unownLetter'..i, 'blank', true)
+                runTimer('letters act', actDelay)
             end
         end
     end
@@ -82,5 +128,43 @@ end
 function onTimerCompleted(tag)
     if tag == 'celebihasrisen' then
         playAnim('celebi', 'idle', true)
+    end
+    if tag == 'letters act' then
+        canType = true
+        setTypingProgress(1)
+        for i = 1,wordLength do
+            if luaSpriteExists('unownLetter'..i) then -- spaces or other non-letters break it otherwise
+                playAnim('unownLetter'..i, 'act', true)
+            end
+        end
+    end
+    if tag == 're-enable reset button' then
+        setProperty('canReset', true)
+    end
+end
+
+function onUpdate()
+    if keyboardJustPressed(currentLetterToType) then
+        debugPrint("that's right yeah!!! You typed: " .. currentLetterToType)
+        doTweenColor('darkenLetter'..typingProgress, 'unownLetter'..typingProgress, '7F7F7F', 0.35, 'quintOut')
+        doTweenAlpha('fadeOutBloomLetter'..typingProgress, 'unownLetterBloom'..typingProgress, 0, 0.35, 'quintOut')
+        doTweenScale('letterShrink', 'unownLetter'..typingProgress, getProperty('unownLetter'..typingProgress..'.scale.x') / 1.25, 0.35, 'quintOut')
+        setTypingProgress(typingProgress + 1)
+        if typingProgress > wordLength then
+            runTimer('re-enable reset button', 0.5)
+            doTweenAlpha('darkOut', 'darkOverlay', 0, 1, 'linear')
+            for i = 1,wordLength + 1 do
+                if luaSpriteExists('unownLetter'..i) then
+                    doTweenY('letterFall'..i, 'unownLetter'..i, getProperty('unownLetter'..i..'.y') + 700, 1, 'cubeIn')
+                end
+            end
+        end
+    end
+end
+
+function onTweenCompleted(tag)
+    if string.sub(tag, 1,10) == 'letterFall' then
+        debugPrint('letter fell: '..string.sub(tag, 11,11))
+        removeLuaSprite('unownLetter'..string.sub(tag, 11,11), true)
     end
 end
