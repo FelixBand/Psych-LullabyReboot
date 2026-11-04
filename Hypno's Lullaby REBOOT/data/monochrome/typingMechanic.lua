@@ -161,6 +161,7 @@ function onUpdate()
         if typingProgress > wordLength then
             runTimer('end typing', 0.5)
             doTweenAlpha('darkOut', 'darkOverlay', 0, 1, 'linear')
+            playAnim('celebi', 'pass', true)
         end
     end
 end
