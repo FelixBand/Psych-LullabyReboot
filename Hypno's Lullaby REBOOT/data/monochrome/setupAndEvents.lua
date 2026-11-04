@@ -270,7 +270,7 @@ local function jumpscare(type)
             end
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
-            --cameraShake('other', 0.005, 1.75)
+            cameraShake('game', 0.005, 1)
             --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
             shakeJumpscare = true
             jumpBlur(0.15, 0.1, 'game')
