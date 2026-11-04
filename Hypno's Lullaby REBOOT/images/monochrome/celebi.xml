@@ -103,6 +103,7 @@
     <SubTexture name="fail0045" x="4246" y="1" rotated="true" width="259" height="184" frameX="-148" frameY="-416" frameWidth="407" frameHeight="771"/>
     <SubTexture name="fail0046" x="216" y="492" width="32" height="89" frameX="-208" frameY="-470" frameWidth="407" frameHeight="771"/>
     <SubTexture name="fail0047" x="216" y="583" width="3" height="3" frameX="0" frameY="0" frameWidth="407" frameHeight="771"/>
+    <SubTexture name="fail0048" x="0" y="0" width="1" height="1"/>
     <SubTexture name="pass0000" x="3952" y="635" width="146" height="315" frameX="-127" frameY="-174" frameWidth="407" frameHeight="771"/>
     <SubTexture name="pass0001" x="3952" y="635" width="146" height="315" frameX="-127" frameY="-174" frameWidth="407" frameHeight="771"/>
     <SubTexture name="pass0002" x="4039" y="318" width="146" height="315" frameX="-128" frameY="-177" frameWidth="407" frameHeight="771"/>
@@ -133,6 +134,7 @@
     <SubTexture name="pass0027" x="4243" y="1784" rotated="true" width="217" height="168" frameX="-147" frameY="-449" frameWidth="407" frameHeight="771"/>
     <SubTexture name="pass0028" x="250" y="492" rotated="true" width="189" height="43" frameX="-209" frameY="-477" frameWidth="407" frameHeight="771"/>
     <SubTexture name="pass0029" x="216" y="583" width="3" height="3" frameX="0" frameY="0" frameWidth="407" frameHeight="771"/>
+    <SubTexture name="pass0030" x="0" y="0" width="1" height="1"/>
     <SubTexture name="shake0000" x="4098" y="1" width="146" height="315" frameX="-127" frameY="-170" frameWidth="407" frameHeight="771"/>
     <SubTexture name="shake0001" x="4098" y="1" width="146" height="315" frameX="-127" frameY="-170" frameWidth="407" frameHeight="771"/>
     <SubTexture name="shake0002" x="4098" y="1" width="146" height="315" frameX="-127" frameY="-170" frameWidth="407" frameHeight="771"/>
