@@ -265,12 +265,13 @@ local function jumpscare(type)
             setProperty('jumpscareP2.scale.y', 0.95)
             if type == '5' then
                 playAnim('jumpscareP2', 'jumpFaster', true)
+                cameraShake('game', 0.005, 0.65)
             else
                 playAnim('jumpscareP2', 'jump', true)
+                cameraShake('game', 0.005, 1)
             end
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
-            cameraShake('game', 0.005, 1)
             --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
             shakeJumpscare = true
             jumpBlur(0.15, 0.1, 'game')
