@@ -138,8 +138,13 @@ function onTimerCompleted(tag)
             end
         end
     end
-    if tag == 're-enable reset button' then
+    if tag == 'end typing' then
         setProperty('canReset', true)
+        for i = 1,wordLength + 1 do
+            if luaSpriteExists('unownLetter'..i) then
+                doTweenY('letterFall'..i, 'unownLetter'..i, getProperty('unownLetter'..i..'.y') + 700, 0.5, 'cubeIn')
+            end
+        end
     end
 end
 
@@ -151,13 +156,8 @@ function onUpdate()
         doTweenScale('letterShrink', 'unownLetter'..typingProgress, getProperty('unownLetter'..typingProgress..'.scale.x') / 1.25, 0.35, 'quintOut')
         setTypingProgress(typingProgress + 1)
         if typingProgress > wordLength then
-            runTimer('re-enable reset button', 0.5)
+            runTimer('end typing', 0.5)
             doTweenAlpha('darkOut', 'darkOverlay', 0, 1, 'linear')
-            for i = 1,wordLength + 1 do
-                if luaSpriteExists('unownLetter'..i) then
-                    doTweenY('letterFall'..i, 'unownLetter'..i, getProperty('unownLetter'..i..'.y') + 700, 1, 'cubeIn')
-                end
-            end
         end
     end
 end
