@@ -101,7 +101,10 @@ function onEvent(name, value1, value2)
 
                 -- awesome formula to center the text
                 local xPos = (wordLength - ((wordLength/2) + (wordLength - i))) * letterspacing + letteroffset
-                local yPos = 200 + getRandomInt(-75,75)
+                local yPos = 200 + getRandomInt(
+                    -math.max(75 / (1 + math.max(wordLength - 10, 0) * 0.12), 20),
+                    math.max(75 / (1 + math.max(wordLength - 10, 0) * 0.12), 20)
+                )
                 
                 debugPrint(xPos)
 
@@ -142,7 +145,7 @@ function onTimerCompleted(tag)
         setProperty('canReset', true)
         for i = 1,wordLength + 1 do
             if luaSpriteExists('unownLetter'..i) then
-                doTweenY('letterFall'..i, 'unownLetter'..i, getProperty('unownLetter'..i..'.y') + 700, 0.5, 'cubeIn')
+                doTweenY('letterFall'..i, 'unownLetter'..i, getProperty('unownLetter'..i..'.y') + 1100, 0.9, 'expoIn')
             end
         end
     end
