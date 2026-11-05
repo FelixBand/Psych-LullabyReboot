@@ -3,9 +3,12 @@ local sceneOffsetX = -216
 local sceneOffsetY = -23
 local cloudSpeed = -25 * sceneScale
 local cloudWidth = 1848 * 2.25 * sceneScale
+local hypnoLightScale = 2 * 1.25 * sceneScale
+local hypnoLightWidth = 195 * hypnoLightScale
+local hypnoLightHeight = 290 * hypnoLightScale
 
 local clouds = { 'SafetyClouds', 'SafetyClouds2' }
-local lightTags = { 'SafetyPoleGlow', 'SafetyPoleLight', 'SafetyPoleLight2' }
+local lightTags = { 'SafetyBgLight', 'SafetyPoleGlow', 'SafetyPoleLight', 'SafetyPoleLight2' }
 local healthTracked = 2
 local timePassed = 0
 local flickerTimer = 0
@@ -48,6 +51,7 @@ function onCreate()
 	addStageSprite('SafetyLamp1', 'lamp1', 2051.69, 214, 123, 568, 2.15141, 1, 1)
 	addStageSprite('SafetyLamp2', 'lampoff', 1063, 253, 88, 523, 2.2, 1, 1)
 	addStageSprite('SafetyBrokenLamp', 'lampbroken', -231, 603, 94, 202, 2.2, 1, 1)
+	addStageSprite('SafetyBgLight', 'darkness_gradient', 801, 449, 1049, 480, 4, 1, 1)
 
 	addStageSprite(
 		'SafetyPoleGlow', 'post_light_gradient',
@@ -65,10 +69,36 @@ function onCreate()
 		921, 681, 1.3687 * 2.15141, 1, 1
 	)
 
+	makeLuaSprite(
+		'HypnoLightMask',
+		'safety_lullaby/characters/hypno_world/chr_hypno_sl_light',
+		0, 0
+	)
+	scaleObject('HypnoLightMask', hypnoLightScale, hypnoLightScale)
+	setScrollFactor('HypnoLightMask', 1, 1)
+	setBlendMode('HypnoLightMask', 'add')
+	setProperty('HypnoLightMask.alpha', 0.18)
+	addLuaSprite('HypnoLightMask', true)
+
 	for _, tag in ipairs(lightTags) do
 		setBlendMode(tag, 'add')
 	end
+	setProperty('SafetyBgLight.alpha', 0.75)
 	setLightAlpha(0.8)
+end
+
+function onCreatePost()
+	local lightOrder = math.max(getObjectOrder('boyfriendGroup'), getObjectOrder('dadGroup')) + 1
+	for _, tag in ipairs(lightTags) do
+		setObjectOrder(tag, lightOrder)
+		lightOrder = lightOrder + 1
+	end
+	setObjectOrder('HypnoLightMask', lightOrder)
+end
+
+function onUpdatePost()
+	setProperty('HypnoLightMask.x', getMidpointX('dad') - hypnoLightWidth * 0.5)
+	setProperty('HypnoLightMask.y', getMidpointY('dad') - hypnoLightHeight * 0.5)
 end
 
 function onUpdate(elapsed)

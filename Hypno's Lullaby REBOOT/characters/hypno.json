@@ -99,6 +99,6 @@
 	"flip_x": false,
 	"healthbar_colors": [185, 144, 28],
 	"camera_position": [0, 0],
-	"sing_duration": 5,
+	"sing_duration": 2.7,
 	"scale": 1.25
 }
