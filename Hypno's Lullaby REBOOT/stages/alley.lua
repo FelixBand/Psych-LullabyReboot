@@ -71,7 +71,7 @@ function onCreate()
 
 	makeLuaSprite(
 		'HypnoLightMask',
-		'safety_lullaby/characters/hypno_world/chr_hypno_sl_light',
+		'safety_lullaby/chr_hypno_sl_light',
 		0, 0
 	)
 	scaleObject('HypnoLightMask', hypnoLightScale, hypnoLightScale)
