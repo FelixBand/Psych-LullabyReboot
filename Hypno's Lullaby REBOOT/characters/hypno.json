@@ -94,11 +94,11 @@
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/hypno/hypno",
-	"position": [-260, 20],
+	"position": [-260, -90],
 	"healthicon": "hypno",
 	"flip_x": false,
-	"healthbar_colors": [104, 20, 46],
+	"healthbar_colors": [185, 144, 28],
 	"camera_position": [0, 0],
 	"sing_duration": 5,
-	"scale": 1
+	"scale": 1.25
 }
