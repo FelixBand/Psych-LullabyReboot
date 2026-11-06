@@ -158,7 +158,7 @@ local function pushLightState(elapsed, energies)
 	local r, g, b, e = sampleMain(t)
 	local scrollX = getProperty('camGame.scroll.x') or 0
 	local scrollY = getProperty('camGame.scroll.y') or 0
-	local hyp = { getMidpointX('dad'), getMidpointY('dad'), hypnoLightW * 0.5, hypnoLightH * 0.5 }
+	local hyp = { getMidpointX('dad') + 250, getMidpointY('dad'), hypnoLightW * 0.5, hypnoLightH * 0.5 }
 
 	for _, entry in ipairs(lit) do
 		local tag = entry.tag
@@ -188,7 +188,7 @@ local function pushLightState(elapsed, energies)
 	end
 end
 
-function onUpdate(elapsed)
+function onUpdatePost(elapsed)
 	timePassed = timePassed + elapsed
 
 	for _, tag in ipairs(clouds) do
