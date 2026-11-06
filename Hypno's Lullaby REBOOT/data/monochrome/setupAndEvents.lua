@@ -144,9 +144,6 @@ function onCreatePost()
     setProperty('timeTxt.visible', false)
     runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]])
 
-    setProperty('showRating', false)
-    setProperty('showComboNum', false)
-
     for i = 0, getProperty('unspawnNotes.length') - 1 do
         local strumTime = getPropertyFromGroup('unspawnNotes', i, 'strumTime')
         local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
