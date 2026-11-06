@@ -12,7 +12,7 @@ local cloudWidth = 1848 * 2.25 * sceneScale
 -- Godot light parameters (alley.tscn / sng_safety_lullaby.tscn / chr_hypno_safety.tscn)
 local bgEnergy = 0.75
 local lampStatic = { 1.0, 1.2, 0.8 }  -- node energies, used when "flashing lights" is off (lamp_flicker.gd stops)
-local hypnoLightScale = 2 * 1.25 * sceneScale
+local hypnoLightScale = 3 * 1.25 * sceneScale
 local hypnoLightW = 195 * hypnoLightScale
 local hypnoLightH = 290 * hypnoLightScale
 local mainBaseEnergy = 0.31
