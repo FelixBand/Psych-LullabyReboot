@@ -11,6 +11,17 @@
 -- Right key = next letter, wrong key = the letter shakes and you lose 0.5 s. Whole word = Celebi returns.
 -- Time up = Celebi bursts: 1st fail splits the health bar + brings the foreground eyes, 2nd fail = instant death.
 
+local function getPlaysAsBF() -- returns true if not playing Psych Online for PE compat :)))
+    if type(_G.playsAsBF) == "function" then
+        local result = _G.playsAsBF()
+        if result ~= nil then
+            return result
+        end
+    end
+    
+    return true
+end
+
 ---@param obj string "name of the game object you want to get the current animation duration of"
 local function getAnimDuration(obj)
     return getProperty(obj..'.animation.curAnim.numFrames') / getProperty(obj..'.animation.curAnim.frameRate')
@@ -205,6 +216,11 @@ function onEvent(name, value1, value2)
     end
 
     if name == 'Unown Typing' then
+        if not getPlaysAsBF() then
+            playAnim('celebi', 'pass', true)
+            return
+        end
+
         if typingActive then return end
 
         -- which word: "=WORD" forces one, otherwise a random one from the list (no repeats until the whole list was used)
