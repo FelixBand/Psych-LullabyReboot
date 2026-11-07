@@ -383,7 +383,7 @@ function onTimerCompleted(tag)
         doTweenColor('celebiColor', 'celebi', 'FFFFFF', typingLimit, 'quadIn')
     end
     if tag == 'stun player' then
-        setProperty('boyfriend.stunned', true)
+        --setProperty('boyfriend.stunned', true)
     end
     if tag == 'end typing' then
         setProperty('canReset', true)
