@@ -2,7 +2,6 @@
 	"storyName": "Hypno's Lullaby",
 	"hideFreeplay": false,
 	"weekBackground": "black",
-	"weekBefore": "1hypno",
 	"startUnlocked": true,
 	"weekCharacters": [
 		"",
@@ -11,26 +10,8 @@
 	],
 	"songs": [
 		[
-			"safety lullaby",
-			"hypno",
-			[
-				0,
-				0,
-				0
-			]
-		],
-		[
 			"monochrome",
 			"mono",
-			[
-				0,
-				0,
-				0
-			]
-		],
-		[
-			"chimera",
-			"serena",
 			[
 				0,
 				0,
