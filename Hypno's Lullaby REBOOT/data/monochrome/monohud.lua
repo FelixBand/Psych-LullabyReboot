@@ -30,11 +30,54 @@ function onCreate()
     playAnim('mono_healthBarMask', 'full', true)
 end
 
--- Health only changes on note hits/misses, so the clip rect is only rebuilt then.
--- (Parsing a Haxe string and allocating a new FlxRect every frame was very expensive.)
-local lastHealth = nil
+-- Health bar mask.
+-- Calling runHaxeCode / runHaxeFunction repeatedly gets slower and slower on some builds (Psych Online 0.14.8),
+-- so it is called ONCE here, only to create the clipRect. Every later update uses plain Lua calls:
+-- resize the existing rect in place, then re-set the current frame so the engine re-applies the clip.
+local fastPath = false
+local validated = false
 
-local function updateMask(health)
+function onCreatePost()
+    runHaxeCode([[
+        var spr = game.getLuaObject('mono_healthBarMask');
+        if (spr != null)
+            spr.clipRect = new flixel.math.FlxRect(0, 0, spr.frameWidth * 0.5, spr.frameHeight);
+    ]])
+    -- only try the fast path if the rect really can be read from Lua on this build
+    fastPath = type(getProperty('mono_healthBarMask.clipRect.width')) == 'number'
+end
+
+local function applyClip(rw, rh)
+    setProperty('mono_healthBarMask.clipRect.x', 0)
+    setProperty('mono_healthBarMask.clipRect.y', 0)
+    setProperty('mono_healthBarMask.clipRect.width', rw)
+    setProperty('mono_healthBarMask.clipRect.height', rh)
+    -- re-set the same frame: this makes the sprite re-apply the (resized) clip rect
+    setProperty('mono_healthBarMask.animation.frameIndex', getProperty('mono_healthBarMask.animation.frameIndex'))
+end
+
+-- the width the sprite is really drawing (can be smaller than the clip: the atlas frame is trimmed)
+local function drawnWidth()
+    return getProperty('mono_healthBarMask._frame.frame.width')
+end
+
+-- one-time self-check: two clearly different clip widths must give two different drawn widths
+local function validateFastPath(rh)
+    applyClip(200, rh)
+    local a = drawnWidth()
+    applyClip(20, rh)
+    local b = drawnWidth()
+    local ok = type(a) == 'number' and type(b) == 'number' and a > b
+    if ok then
+        debugPrint('[monohud] health mask: fast path OK')
+    else
+        debugPrint('[monohud] health mask: fast path failed (drawn ' .. tostring(a) .. ' vs ' .. tostring(b) .. '), using fallback')
+    end
+    return ok
+end
+
+local function fallbackMask(health)
+    -- slow on some builds, but always correct
     runHaxeCode([[
         var spr = game.getLuaObject('mono_healthBarMask');
         if (spr != null) {
@@ -45,14 +88,37 @@ local function updateMask(health)
     ]])
 end
 
-local lastAnim = nil
+local function updateMask(health)
+    local w = getProperty('mono_healthBarMask.frameWidth') * health / 2
+    local h = getProperty('mono_healthBarMask.frameHeight')
+    -- the engine rounds the clip to whole pixels, so do the same
+    local rw, rh = math.floor(w + 0.5), math.floor(h + 0.5)
+
+    if fastPath and not validated then
+        if validateFastPath(rh) then
+            validated = true
+        else
+            fastPath = false
+        end
+    end
+
+    if fastPath then
+        applyClip(rw, rh)
+    else
+        fallbackMask(health)
+    end
+end
+
+-- Only redo the clip when it would actually look different: the rounded width changed,
+-- or a new animation (split1/split2) swapped the frame.
+local lastWidth, lastAnim = nil, nil
 
 function onUpdate(elapsed)
     local health = getHealth()
-    -- a new animation (split1/split2) swaps the frame, so re-apply the clip then too
     local anim = getProperty('mono_healthBarMask.animation.curAnim.name')
-    if health ~= lastHealth or anim ~= lastAnim then
-        lastHealth = health
+    local width = math.floor(getProperty('mono_healthBarMask.frameWidth') * health / 2 + 0.5)
+    if width ~= lastWidth or anim ~= lastAnim then
+        lastWidth = width
         lastAnim = anim
         updateMask(health)
     end

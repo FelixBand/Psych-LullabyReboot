@@ -127,6 +127,12 @@ function onCreatePost()
     setProperty('boyfriendGroup.visible', false)
     setProperty('gfGroup.visible', false)
 
+    runHaxeCode( -- hide multiple players, only show dad
+    [[
+        for (m in game.dadGroup.members)
+            if (m != game.dad) m.visible = false;
+    ]])
+
     triggerEvent('Camera Follow Pos', '183', '312')
 
     debugPrint(getPlaysAsBF())
