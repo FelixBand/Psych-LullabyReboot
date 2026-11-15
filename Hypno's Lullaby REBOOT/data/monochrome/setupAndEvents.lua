@@ -212,7 +212,7 @@ end
 
 local function jumpscare(type)
     
-    setProperty('dadGroup.visible', false)
+    setProperty('dad.visible', false)
     if dadName == 'goldp1' or dadName == 'goldp1-alt' then
         setProperty('jumpscareP1.alpha', 1)
         if type == '1' then
@@ -260,7 +260,7 @@ local function jumpscare(type)
             playAnim('jumpscareP2', 'buildup2', true)
         elseif type == 'fakeout' then
             setProperty('jumpscareP2.alpha', 0)
-            setProperty('dadGroup.visible', true)
+            setProperty('dad.visible', true)
         elseif type == '4' or type == '5' or type == '0' then
             setProperty('jumpscareP2.x', 212)
             setProperty('jumpscareP2.y', -33)
@@ -361,7 +361,7 @@ function onEvent(name, value1, value2, strumTime)
         --runTimer('pukeEnd', 2.15)
         setProperty('goldPukeBody.alpha', 1)
         setProperty('goldPukeHead.alpha', 1)
-        setProperty('dadGroup.visible', false)
+        setProperty('dad.visible', false)
         playAnim('goldPukeBody', 'puke', true)
         playAnim('goldPukeHead', 'puke' .. value1, true)
         if value1 == '-alt' then
@@ -432,12 +432,12 @@ function onTimerCompleted(tag, loops, loopsLeft)
     end
 
     if tag == 'pukeEnd' then
-        setProperty('dadGroup.visible', true)
+        setProperty('dad.visible', true)
         setProperty('goldPukeBody.alpha', 0)
         setProperty('goldPukeHead.alpha', 0)
     end
     if tag == 'jumpscareEnd' then
-        setProperty('dadGroup.visible', true)
+        setProperty('dad.visible', true)
         triggerEvent('Play Animation', 'jumpscareEnd', 'dad')
         setProperty('jumpscareP1.alpha', 0)
         setProperty('jumpscareP2.alpha', 0)
@@ -452,7 +452,7 @@ function onTimerCompleted(tag, loops, loopsLeft)
         doTweenZoom('zoomOut', 'camGame', 0.45, 5, 'cubeInOut')
     end
     if tag == 'showGoldP2' then
-        setProperty('dadGroup.visible', true)
+        setProperty('dad.visible', true)
 
         removeLuaSprite('goldPukeBody', true)
         removeLuaSprite('goldPukeHead', true)
