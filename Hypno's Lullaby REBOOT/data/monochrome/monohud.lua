@@ -30,15 +30,32 @@ function onCreate()
     playAnim('mono_healthBarMask', 'full', true)
 end
 
-function onUpdate(elapsed)
+-- Health only changes on note hits/misses, so the clip rect is only rebuilt then.
+-- (Parsing a Haxe string and allocating a new FlxRect every frame was very expensive.)
+local lastHealth = nil
+
+local function updateMask(health)
     runHaxeCode([[
         var spr = game.getLuaObject('mono_healthBarMask');
         if (spr != null) {
             spr.clipRect = new flixel.math.FlxRect(
-                0, 0, spr.frameWidth * ]] .. getHealth() / 2 .. [[, spr.frameHeight
+                0, 0, spr.frameWidth * ]] .. health / 2 .. [[, spr.frameHeight
             );
         }
     ]])
+end
+
+local lastAnim = nil
+
+function onUpdate(elapsed)
+    local health = getHealth()
+    -- a new animation (split1/split2) swaps the frame, so re-apply the clip then too
+    local anim = getProperty('mono_healthBarMask.animation.curAnim.name')
+    if health ~= lastHealth or anim ~= lastAnim then
+        lastHealth = health
+        lastAnim = anim
+        updateMask(health)
+    end
 end
 
 function onDestroy()
