@@ -1,20 +1,3 @@
--- Hold-note sing-animation retrigger (prototype) for Psych Online / Psych Engine 1.0.x.
---
--- Hold pieces no longer animate the character at all. Instead, when a hold's head note is hit, a "session"
--- starts and re-plays that sing animation every INTERVAL_STEPS steps until the hold ends, so the jitter rate
--- is yours to pick (vanilla = 1 step, the old half-rate trick = 2 steps).
---
--- Dropped holds: the engine still calls opponentNoteHit/goodNoteHit once per hold piece that is really hit,
--- so a session stays alive only while pieces keep arriving. It ends when
---   * the hold's length is over, or
---   * no piece has been hit for TIMEOUT_STEPS steps (player released/missed, or an online opponent dropped it), or
---   * noteMiss fires for that lane.
--- The same logic covers the player, the CPU opponent and human opponents/other players online.
---
--- Psych Online 0.14.9 fix: in multiplayer the engine hands us tags like "characters[<sid>]". 0.14.9 can no longer
--- resolve those through getProperty/setProperty/playAnim (0.14.8 could), so every call on such a tag silently did
--- nothing. resolveTag() registers each character once under a plain variable name and we use that instead.
-
 local INTERVAL_STEPS = 1.425    -- how often the sing animation restarts, in steps. 1 = vanilla, 2 = half speed
 local TIMEOUT_STEPS  = 2.0    -- stop retriggering if no hold piece was hit for this long
 local AFFECT_OPPONENT = true
@@ -182,5 +165,11 @@ function onSongStart() sessions = {} end
 function onEvent(name, value1, value2)
     if name == 'Change Jitter Interval' then
         INTERVAL_STEPS = tonumber(value1)
+    elseif name == 'Change Character' then
+        -- the engine swaps in a different Character object: forget the old aliases (they are re-registered
+        -- lazily on the next hit) and drop running sessions, which hold the old character's animation name
+        aliasCache = {}
+        sessions = {}
+        dbg('Change Character: aliases reset')
     end
 end
