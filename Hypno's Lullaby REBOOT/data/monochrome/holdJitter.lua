@@ -10,15 +10,51 @@
 --   * no piece has been hit for TIMEOUT_STEPS steps (player released/missed, or an online opponent dropped it), or
 --   * noteMiss fires for that lane.
 -- The same logic covers the player, the CPU opponent and human opponents/other players online.
+--
+-- Psych Online 0.14.9 fix: in multiplayer the engine hands us tags like "characters[<sid>]". 0.14.9 can no longer
+-- resolve those through getProperty/setProperty/playAnim (0.14.8 could), so every call on such a tag silently did
+-- nothing. resolveTag() registers each character once under a plain variable name and we use that instead.
 
 local INTERVAL_STEPS = 1.425    -- how often the sing animation restarts, in steps. 1 = vanilla, 2 = half speed
 local TIMEOUT_STEPS  = 2.0    -- stop retriggering if no hold piece was hit for this long
 local AFFECT_OPPONENT = true
 local AFFECT_PLAYER   = true
-local DEBUG = false
+local DEBUG = false             -- true = on-screen log (debugPrint isn't visible in multiplayer)
 
 local FALLBACK_ANIMS = {'singLEFT', 'singDOWN', 'singUP', 'singRIGHT'}
 local sessions = {}   -- key: charTag .. '#' .. lane
+
+-- on-screen log, plain Lua
+local dbgLines = {}
+local function dbg(s)
+    if not DEBUG then return end
+    dbgLines[#dbgLines + 1] = tostring(s)
+    if #dbgLines > 14 then table.remove(dbgLines, 1) end
+    setTextString('hrDebug', table.concat(dbgLines, '\n'))
+end
+
+-- "characters[<sid>]" -> plain variable name that every version can resolve
+local aliasCache = {}
+local function resolveTag(tag)
+    local sid = type(tag) == 'string' and tag:match('^characters%[(.+)%]$')
+    if not sid then return tag end
+    local cached = aliasCache[sid]
+    if cached then return cached end
+    if not sid:match('^[%w_%-]+$') then return tag end
+
+    local alias = '__hr_char_' .. sid
+    -- runHaxeCode returns nothing on 0.14.9, so we don't check its result; we verify by reading a property back
+    runHaxeCode("game.variables.set('" .. alias .. "', game.characters.get('" .. sid .. "'));")
+    local name = getProperty(alias .. '.curCharacter')
+    if type(name) == 'string' and name ~= '' then
+        aliasCache[sid] = alias
+        dbg('alias ' .. alias .. ' -> ' .. name)
+        return alias
+    end
+    dbg('alias FAILED for ' .. tag .. ', keeping original tag')
+    aliasCache[sid] = tag
+    return tag
+end
 
 local function stepMs()
     local ok, v = pcall(getPropertyFromClass, 'backend.Conductor', 'stepCrochet')
@@ -47,6 +83,15 @@ end
 
 -- every hold piece is flagged, so the engine never touches the animation (or sustainTimer) for pieces
 function onCreatePost()
+    if DEBUG then
+        makeLuaText('hrDebug', '', 1200, 10, 10)
+        setTextSize('hrDebug', 18)
+        setTextAlignment('hrDebug', 'left')
+        setTextBorder('hrDebug', 2, '000000')
+        setObjectCamera('hrDebug', 'other')
+        addLuaText('hrDebug')
+    end
+
     local total = getProperty('unspawnNotes.length')
     local flagged = 0
     for i = 0, total - 1 do
@@ -58,13 +103,15 @@ function onCreatePost()
             end
         end
     end
-    if DEBUG then debugPrint('[hold_retrigger] hold pieces flagged noAnimation: ' .. flagged) end
+    dbg('hold pieces flagged noAnimation: ' .. flagged)
 end
 
 local function onHit(id, dir, noteType, isSus, charTag, isPlayerSide)
     if (isPlayerSide and not AFFECT_PLAYER) or (not isPlayerSide and not AFFECT_OPPONENT) then return end
+    charTag = resolveTag(charTag)
     if noteType == 'Hey!' or isSilent('notes', id, isSus) then
         sessions[sessionKey(charTag, dir)] = nil
+        dbg('silent/hey: ' .. charTag .. ' lane ' .. dir)
         return
     end
     if getPropertyFromGroup('notes', id, 'gfNote') then charTag = 'gf' end
@@ -82,7 +129,7 @@ local function onHit(id, dir, noteType, isSus, charTag, isPlayerSide)
                 lastPiece = now, nextPlay = now + INTERVAL_STEPS * stepMs(),
                 endTime = getPropertyFromGroup('notes', id, 'strumTime') + len,
             }
-            if DEBUG then debugPrint('[hold_retrigger] start ' .. key .. ' len=' .. len) end
+            dbg('start ' .. key .. ' len=' .. len)
         else
             sessions[key] = nil
         end
@@ -92,6 +139,7 @@ local function onHit(id, dir, noteType, isSus, charTag, isPlayerSide)
             s = {tag = charTag, dir = dir, anim = FALLBACK_ANIMS[dir + 1] or 'singUP',
                  nextPlay = now + INTERVAL_STEPS * stepMs()}
             sessions[key] = s
+            dbg('pickup ' .. key)
         end
         s.lastPiece = now
         -- pieces skip the engine's holdTimer reset (noAnimation), so keep the pose from timing out
@@ -103,7 +151,7 @@ function opponentNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, noteT
 function goodNoteHit(id, dir, noteType, isSus, charTag) onHit(id, dir, noteType, isSus, charTag or 'boyfriend', true) end
 
 function noteMiss(id, dir, noteType, isSus, charTag)
-    sessions[sessionKey(charTag or 'boyfriend', dir)] = nil
+    sessions[sessionKey(resolveTag(charTag or 'boyfriend'), dir)] = nil
     sessions[sessionKey('gf', dir)] = nil   -- a missed "GF Sing" hold reports the player's tag, but animates gf
 end
 
@@ -118,7 +166,7 @@ function onUpdate(elapsed)
         local dropped = (now - s.lastPiece) > TIMEOUT_STEPS * step
         if finished or dropped then
             sessions[key] = nil
-            if DEBUG then debugPrint('[hold_retrigger] end ' .. key .. (finished and ' (finished)' or ' (dropped)')) end
+            dbg('end ' .. key .. (finished and ' (finished)' or ' (dropped)'))
         elseif now >= s.nextPlay then
             playAnim(s.tag, s.anim, true)
             setProperty(s.tag .. '.holdTimer', 0)
