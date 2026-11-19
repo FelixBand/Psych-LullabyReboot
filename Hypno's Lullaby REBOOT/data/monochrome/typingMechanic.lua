@@ -55,7 +55,7 @@ local celebiFailing = false
 local noteCount = 7
 local noteLife = 1.15            -- seconds a note lives
 local noteSpeed = 170           -- outward speed, pixels per second
-local noteSpin = 0.8            -- radians per second (negative = other way)
+local noteSpin = -0.8           -- radians per second (negative = counterclockwise on screen)
 local noteFadeIn, noteFadeOut = 0.5, 0.5
 local noteAlpha = 0.5           -- peak opacity
 local noteSquash = 1         -- below 1 flattens the spiral vertically
