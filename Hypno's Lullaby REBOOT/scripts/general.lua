@@ -1,5 +1,5 @@
 function onCreate()
-    setPropertyFromClass('PauseSubState', 'songName', 'mus_pause')
+    setPropertyFromClass('PauseSubState', 'songName', 'pause')
 
     setProperty('showRating', false)
     setProperty('showComboNum', false)

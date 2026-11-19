@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:e6d5d5805cca7f8f435a7cf0c842e883:eada025561e1bbbe003698698a500a6a:496067b7a7f8424108e9cc9a1972c617$ -->
+<TextureAtlas imagePath="unown_deathR.png" width="1743" height="1532">
+    <SubTexture name="unowns0000" x="777" y="765" rotated="true" width="945" height="766" frameX="-11" frameY="-80" frameWidth="785" frameHeight="1073"/>
+    <SubTexture name="unowns0001" x="1" y="1" width="774" height="995" frameX="-6" frameY="-67" frameWidth="785" frameHeight="1073"/>
+    <SubTexture name="unowns0002" x="777" y="765" rotated="true" width="945" height="766" frameX="-11" frameY="-80" frameWidth="785" frameHeight="1073"/>
+    <SubTexture name="unowns0003" x="777" y="1" rotated="true" width="965" height="762" frameX="-6" frameY="-75" frameWidth="785" frameHeight="1073"/>
+</TextureAtlas>

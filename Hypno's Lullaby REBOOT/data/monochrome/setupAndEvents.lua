@@ -11,6 +11,10 @@ local function getPlaysAsBF() -- returns true if not playing Psych Online for PE
     return true
 end
 
+local defined = false
+local monophase = 1
+local canRetry = false
+
 local fgUnownX = {'-55', '150', '515', '1050', '1050'}
 local fgUnownY = {'-35', '550', '-35',  '-35',  '515'}
 
@@ -326,6 +330,7 @@ function onEvent(name, value1, value2, strumTime)
         end
 
         fgEyesNextPhase()
+        monophase = 2
     end
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
@@ -463,6 +468,22 @@ function onTimerCompleted(tag, loops, loopsLeft)
         setProperty('goldPukeBody.y', getProperty('goldPukeBody.y') + 92)
         setProperty('goldPukeBody.x', getProperty('goldPukeBody.x') + 30)
     end
+    if tag == 'showgameover' then
+        setProperty('gameoverbf.alpha', 1)
+        playMusic('gameover_mono', 1, true)
+        canRetry = true
+    end
+    if tag == 'gameoverFadeInGold' then
+        doTweenAlpha('gameOverGoldIn', 'gameovergold', 1, 1, 'linear')
+        playAnim('gameovergold', 'idle', true)
+        runTimer('hidep2gameover', 2.5)
+        runTimer('showgameover', 3.5)
+    end
+    if tag == 'hidep2gameover' then
+        removeLuaSprite('gameovergold', true)
+        removeLuaSprite('gameoverunownsL', true)
+        removeLuaSprite('gameoverunownsR', true)
+    end
 end
 
 function onUpdatePost()
@@ -512,4 +533,91 @@ function opponentNoteHit(id, direction, noteType, isSustainNote)
     if not isSustainNote then
         playAnim('goldbloodsplatter', getProperty('singAnimations')[direction+1])
     end
+end
+
+-- Hides everything currently drawn on camOther. Call it whenever you like: hideCamOther()
+function hideCamOther()
+    if not defined then
+        -- defined once; later calls only run it by name (no re-parsing)
+        runHaxeCode([[
+            function hideCamOtherIn(grp) {
+                for (m in grp.members) {
+                    if (m == null) continue;
+                    var cams = m.cameras;
+                    if (cams != null && cams.indexOf(game.camOther) != -1)
+                        m.visible = false;
+                    else if (m.members != null)
+                        hideCamOtherIn(m);
+                }
+            }
+            function hideCamOtherAll() {
+                hideCamOtherIn(game);
+            }
+        ]])
+        defined = true
+    end
+    runHaxeFunction('hideCamOtherAll', {})
+end
+
+function onGameOver()
+	openCustomSubstate('gameover', true)
+
+	return Function_Stop
+end
+
+function onCustomSubstateCreate(name)
+	if name == 'gameover' then
+        hideCamOther()
+        makeAnimatedLuaSprite('gameoverbf', 'monochrome/gameover/monodeath_boyfriend', -10, 10)
+        addAnimationByPrefix('gameoverbf', 'idle', 'bf', 24, true)
+        setObjectCamera('gameoverbf', 'other')
+        scaleObject('gameoverbf', 0.67, 0.67)
+        setProperty('gameoverbf.alpha', 0.0001)
+        addLuaSprite('gameoverbf')
+        insertToCustomSubstate('gameoverbf')
+
+        if monophase == 1 then
+            runTimer('showgameover', 1)
+        elseif monophase == 2 then
+            makeAnimatedLuaSprite('gameoverunownsL', 'monochrome/gameover/unown_deathL', 0, 0)
+            addAnimationByPrefix('gameoverunownsL', 'idle', 'unowns', 8, true)
+            setObjectCamera('gameoverunownsL', 'other')
+            scaleObject('gameoverunownsL', 0.67, 0.67)
+            addLuaSprite('gameoverunownsL')
+            insertToCustomSubstate('gameoverunownsL')
+
+            makeAnimatedLuaSprite('gameoverunownsR', 'monochrome/gameover/unown_deathR', 750, 10)
+            addAnimationByPrefix('gameoverunownsR', 'idle', 'unowns', 8, true)
+            setObjectCamera('gameoverunownsR', 'other')
+            scaleObject('gameoverunownsR', 0.67, 0.67)
+            addLuaSprite('gameoverunownsR')
+            insertToCustomSubstate('gameoverunownsR')
+
+            makeAnimatedLuaSprite('gameovergold', 'monochrome/gameover/mono_gameover_gold', 450, 100)
+            addAnimationByPrefix('gameovergold', 'idle', 'gold', 8, false)
+            setObjectCamera('gameovergold', 'other')
+            scaleObject('gameovergold', 0.67, 0.67)
+            setProperty('gameovergold.alpha', 0.0001)
+            addLuaSprite('gameovergold')
+            insertToCustomSubstate('gameovergold')
+            runTimer('gameoverFadeInGold', 1)
+        end
+
+		setProperty('camGame.visible', false)
+		setProperty('camHUD.visible', false)
+	end
+end
+
+function onCustomSubstateUpdate(name, elapsed)
+	if name == 'gameover' then
+		if not pressedRetry and canRetry and keyJustPressed('accept') then
+			pressedRetry = true
+			removeLuaSprite('gameoverbf', true)
+
+			restartSong()
+		end
+		if keyJustPressed('back') then
+			exitSong()
+		end
+	end
 end
