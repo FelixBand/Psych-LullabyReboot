@@ -19,6 +19,22 @@ local mainBaseEnergy = 0.31
 local mainBaseColor = { 0.961983, 0.8266328, 0.884364 }
 local subEnergy = 0.08
 
+-- Hypno's light offset per pose, in pixels, RELATIVE to his idle light position (+x right, +y down).
+-- Looked up by exact animation name first, then by the name without its suffix (singLEFT-alt -> singLEFT), then {0, 0}.
+-- Tune these by eye.
+local hypnoLightPoses = {
+	idle = { -10, 0 },
+	singLEFT = { -160, -160 },
+	singDOWN = { -30, 0 },
+	singUP = { -140, -160 },
+	singRIGHT = { -10, -10 },
+	['singLEFT-alt'] = { 0, 0 },
+	['singDOWN-alt'] = { 0, 0 },
+	['singUP-alt'] = { 0, 0 },
+	['singRIGHT-alt'] = { 0, 0 },
+}
+local lightRestX, lightRestY = 0, 0  -- idle light position relative to dad.x / dad.y (set in onCreatePost)
+
 -- MainLight colour/energy keys from the song's AnimationPlayer: {seconds, r, g, b, energy}
 local pink = { 0.9523702, 0.14184096, 0.49339223 }
 local main = mainBaseColor
@@ -144,6 +160,9 @@ function onCreate()
 end
 
 function onCreatePost()
+	-- anchor the light to dad.x/dad.y (constant) instead of the frame midpoint (which changes every frame)
+	lightRestX = getMidpointX('dad') + 250 - getProperty('dad.x')
+	lightRestY = getMidpointY('dad') - getProperty('dad.y')
 	if not lightingOn then return end
 	-- the characters are lit like layer-1 items (Hypno: light_mask 81)
 	for _, pair in ipairs({ { 'dad', 'dad' }, { 'boyfriend', 'boyfriend' } }) do
@@ -158,7 +177,13 @@ local function pushLightState(elapsed, energies)
 	local r, g, b, e = sampleMain(t)
 	local scrollX = getProperty('camGame.scroll.x') or 0
 	local scrollY = getProperty('camGame.scroll.y') or 0
-	local hyp = { getMidpointX('dad') + 250, getMidpointY('dad'), hypnoLightW * 0.5, hypnoLightH * 0.5 }
+	local pose = getProperty('dad.animation.curAnim.name') or 'idle'
+	local po = hypnoLightPoses[pose] or hypnoLightPoses[pose:match('^[^-]+')] or { 0, 0 }
+	local hyp = {
+		getProperty('dad.x') + lightRestX + po[1],
+		getProperty('dad.y') + lightRestY + po[2],
+		hypnoLightW * 0.5, hypnoLightH * 0.5,
+	}
 
 	for _, entry in ipairs(lit) do
 		local tag = entry.tag
@@ -167,16 +192,21 @@ local function pushLightState(elapsed, energies)
 		setShaderFloatArray(tag, 'uHyp', hyp)
 
 		if entry.char then
-			-- map the atlas frame onto the character's world rectangle (approximation, ignores trim offsets)
+			-- Place this animation frame exactly where FlxSprite draws it (offset, origin, scale and the frame's
+			-- own trim offset), so the light position stays fixed while Hypno switches poses.
 			local gw, gh = getProperty(tag .. '.graphic.width'), getProperty(tag .. '.graphic.height')
 			local fx, fy = getProperty(tag .. '.frame.frame.x'), getProperty(tag .. '.frame.frame.y')
 			local fw, fh = getProperty(tag .. '.frame.frame.width'), getProperty(tag .. '.frame.frame.height')
 			if gw and fx and fw and gw > 0 then
 				local sx, sy = getProperty(tag .. '.scale.x') or 1, getProperty(tag .. '.scale.y') or 1
-				local w, h = fw * sx, fh * sy
+				local ox, oy = getProperty(tag .. '.origin.x') or 0, getProperty(tag .. '.origin.y') or 0
+				local offX, offY = getProperty(tag .. '.offset.x') or 0, getProperty(tag .. '.offset.y') or 0
+				local frOffX, frOffY = getProperty(tag .. '.frame.offset.x') or 0, getProperty(tag .. '.frame.offset.y') or 0
+				local left = getProperty(tag .. '.x') - offX + ox + (frOffX - ox) * sx
+				local top = getProperty(tag .. '.y') - offY + oy + (frOffY - oy) * sy
 				setShaderFloatArray(tag, 'uFrame', { fx / gw, fy / gh, fw / gw, fh / gh })
-				setShaderFloatArray(tag, 'uSize', { w, h })
-				setShaderFloatArray(tag, 'uOrigin', { getMidpointX(tag) - w * 0.5, getMidpointY(tag) - h * 0.5 })
+				setShaderFloatArray(tag, 'uSize', { fw * sx, fh * sy })
+				setShaderFloatArray(tag, 'uOrigin', { left, top })
 			end
 		elseif entry.scroll ~= 1 then
 			-- parallax layers: convert the on-screen position back into scroll-factor-1 light space

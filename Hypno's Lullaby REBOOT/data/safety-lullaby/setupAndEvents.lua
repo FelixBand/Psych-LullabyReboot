@@ -22,4 +22,5 @@ function onCreatePost()
             setPropertyFromGroup('opponentStrums', i, 'x', -5000)
         end
     end
+    runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]])
 end
