@@ -1218,6 +1218,12 @@
 	],
 	"events": [
 		[
+			30113,
+			[
+				["Play Animation", "intro", "bf"]
+			]
+		],
+		[
 			44021.3903743315,
 			[
 				["Camera Movement", "1", ""]
