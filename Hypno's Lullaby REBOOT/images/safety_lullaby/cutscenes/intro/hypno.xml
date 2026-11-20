@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:b12c88feea596b938bf88b587ded01ad:61d2df70892a1b42bd58e7d10620721f:66c13d6edb48d9a8b32e5f09fc92085a$ -->
+<TextureAtlas imagePath="hypno.png" width="1052" height="1181">
+    <SubTexture name="frame_0000" x="1" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0001" x="1" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0002" x="1" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0003" x="1" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0004" x="1" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0005_padded" x="352" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0006_padded" x="352" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0007_padded" x="352" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0008_padded" x="352" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0009_padded" x="352" y="1" width="349" height="1179"/>
+    <SubTexture name="frame_0010_padded" x="703" y="1" width="348" height="1179" frameX="0" frameY="0" frameWidth="349" frameHeight="1179"/>
+    <SubTexture name="frame_0011_padded" x="703" y="1" width="348" height="1179" frameX="0" frameY="0" frameWidth="349" frameHeight="1179"/>
+    <SubTexture name="frame_0012_padded" x="703" y="1" width="348" height="1179" frameX="0" frameY="0" frameWidth="349" frameHeight="1179"/>
+    <SubTexture name="frame_0013_padded" x="703" y="1" width="348" height="1179" frameX="0" frameY="0" frameWidth="349" frameHeight="1179"/>
+    <SubTexture name="frame_0014_padded" x="703" y="1" width="348" height="1179" frameX="0" frameY="0" frameWidth="349" frameHeight="1179"/>
+</TextureAtlas>
