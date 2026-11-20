@@ -1284,6 +1284,12 @@
 			]
 		],
 		[
+			156609,
+			[
+				["Play Animation", "walk2", "dad"]
+			]
+		],
+		[
 			156962.56684492,
 			[
 				["Camera Movement", "0", "[true,4,\"CLASSIC\",\"In\"]"]
