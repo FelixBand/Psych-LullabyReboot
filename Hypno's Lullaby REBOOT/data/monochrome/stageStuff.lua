@@ -7,7 +7,7 @@ local EYE_SCALE = 2 / 3
 -- The eyes are ordinary camGame sprites: camGame's zoom and scroll affect them like anything else,
 -- and each depth layer follows the camera by its own scroll factor (1 = with the world, 0 = pinned).
 -- The three FIELD_ values move/scale the whole collection of eyes.
-local FIELD_SCALE = 1.67   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
+local FIELD_SCALE = 1.63   -- zoom of the whole field (eyes, spacing, bloom) about the screen centre. 1 = as authored
 local FIELD_X = -420         -- pan the whole field in screen pixels (+ = right)
 local FIELD_Y = -100         -- (+ = down)
 local DEPTH_SCROLL = {[1] = 1.0, [2] = 1.0, [3] = 1.0} -- had a cool per layer parallaxing idea, but nah

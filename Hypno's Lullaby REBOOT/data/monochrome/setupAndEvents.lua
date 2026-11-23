@@ -82,6 +82,8 @@ function onCreate()
     setObjectCamera('jumpscareP2', 'other')
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
+    setProperty('jumpscareP2.offset.x', 0)
+    setProperty('jumpscareP2.offset.y', 0)
     addLuaSprite('jumpscareP2', true)
 
     -- blood splatters on gold and bf's blood characters
@@ -172,8 +174,11 @@ function onUpdate(elapsed)
     setProperty('camZooming', false)
 
     if shakeJumpscare then
-        setProperty('jumpscareP2.x', 212 + getRandomInt(-5,5))
-        setProperty('jumpscareP2.y', -33 + getRandomInt(-5,5))
+        setProperty('jumpscareP2.offset.x', getRandomInt(-7,7))
+        setProperty('jumpscareP2.offset.y', getRandomInt(-7,7))
+    --     setProperty('jumpscareP2.angle', getRandomInt(-1,1))
+    -- else
+    --     setProperty('jumpscareP2.angle', 0)
     end
 
     for i = 0,4 do
@@ -248,28 +253,28 @@ local function jumpscare(type)
         end
     elseif dadName == 'goldp2' then
         setProperty('jumpscareP2.alpha', 1)
-        setProperty('jumpscareP2.scale.x', 0.5)
-        setProperty('jumpscareP2.scale.y', 0.5)
+        setProperty('jumpscareP2.scale.x', 0.55)
+        setProperty('jumpscareP2.scale.y', 0.55)
         if type == '1' then
-            setProperty('jumpscareP2.x', -100)
-            setProperty('jumpscareP2.y', -40)
+            setProperty('jumpscareP2.x', -230)
+            setProperty('jumpscareP2.y', -150)
             playAnim('jumpscareP2', 'buildup0', true)
         elseif type == '2' then
-            setProperty('jumpscareP2.x', -200)
-            setProperty('jumpscareP2.y', -80)
+            setProperty('jumpscareP2.x', -330)
+            setProperty('jumpscareP2.y', -190)
             playAnim('jumpscareP2', 'buildup1', true)
         elseif type == '3' then
-            setProperty('jumpscareP2.x', -195)
-            setProperty('jumpscareP2.y', -130)
+            setProperty('jumpscareP2.x', -310)
+            setProperty('jumpscareP2.y', -205)
             playAnim('jumpscareP2', 'buildup2', true)
         elseif type == 'fakeout' then
             setProperty('jumpscareP2.alpha', 0)
             setProperty('dad.visible', true)
         elseif type == '4' or type == '5' or type == '0' then
-            setProperty('jumpscareP2.x', 212)
-            setProperty('jumpscareP2.y', -33)
-            setProperty('jumpscareP2.scale.x', 0.95)
-            setProperty('jumpscareP2.scale.y', 0.95)
+            setProperty('jumpscareP2.x', 80)
+            setProperty('jumpscareP2.y', -120)
+            setProperty('jumpscareP2.scale.x', 0.85)
+            setProperty('jumpscareP2.scale.y', 0.85)
             if type == '5' then
                 playAnim('jumpscareP2', 'jumpFaster', true)
                 cameraShake('game', 0.005, 0.65)
@@ -277,6 +282,10 @@ local function jumpscare(type)
                 playAnim('jumpscareP2', 'jump', true)
                 cameraShake('game', 0.005, 1)
             end
+            doTweenX('growJumpscareP2X', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenY('growJumpscareP2Y', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenX('correctJumpscareP2X', 'jumpscareP2', getProperty('jumpscareP2.x') + 88, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenY('correctJumpscareP2Y', 'jumpscareP2', getProperty('jumpscareP2.y') + 73, getAnimDuration('jumpscareP2'), 'expoInOut')
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
