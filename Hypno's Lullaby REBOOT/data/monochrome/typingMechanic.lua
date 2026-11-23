@@ -158,6 +158,7 @@ end
 
 local function letterFinished(i)
     if letterDone[i] or not luaSpriteExists('unownLetter'..i) then return end
+    cancelTween('wrongLetter'..i)
     letterDone[i] = true
     doTweenColor('darkenLetter'..i, 'unownLetter'..i, doneColor, 0.2, 'quadOut')
     doTweenAlpha('fadeLetter'..i, 'unownLetter'..i, 0.7, 0.2, 'quadOut')
