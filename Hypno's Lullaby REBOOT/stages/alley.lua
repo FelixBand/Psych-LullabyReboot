@@ -12,7 +12,7 @@ local cloudWidth = 1848 * 2.25 * sceneScale
 -- Godot light parameters (alley.tscn / sng_safety_lullaby.tscn / chr_hypno_safety.tscn)
 local bgEnergy = 0.75
 local lampStatic = { 1.0, 1.2, 0.8 }  -- node energies, used when "flashing lights" is off (lamp_flicker.gd stops)
-local hypnoLightScale = 3 * 1.25 * sceneScale
+local hypnoLightScale = 2 * 1.25 * sceneScale
 local hypnoLightW = 195 * hypnoLightScale
 local hypnoLightH = 290 * hypnoLightScale
 local mainBaseEnergy = 0.31
@@ -23,15 +23,17 @@ local subEnergy = 0.08
 -- Looked up by exact animation name first, then by the name without its suffix (singLEFT-alt -> singLEFT), then {0, 0}.
 -- Tune these by eye.
 local hypnoLightPoses = {
-	idle = { 0, 0 },
-	singLEFT = { 0, 0 },
-	singDOWN = { 0, 0 },
-	singUP = { 0, 0 },
-	singRIGHT = { 0, 0 },
-	['singLEFT-alt'] = { 0, 0 },
-	['singDOWN-alt'] = { 0, 0 },
-	['singUP-alt'] = { 0, 0 },
-	['singRIGHT-alt'] = { 0, 0 },
+	idle = { -20, 0 },
+	singLEFT = { -160, -160 },
+	singDOWN = { -30, 0 },
+	singUP = { -140, -160 },
+	singRIGHT = { -30, -10 },
+	['idle-alt'] = { 0, 0 },
+	['singLEFT-alt'] = { -320, -50 },
+	['singDOWN-alt'] = { -50, 130 },
+	['singUP-alt'] = { -30, -240 },
+	['singRIGHT-alt'] = { 100, 0 },
+	walk = { -30, -10 },
 }
 local lightRestX, lightRestY = 0, 0  -- idle light position relative to dad.x / dad.y (set in onCreatePost)
 
@@ -126,6 +128,20 @@ local function sampleMain(t)
 	return a[2], a[3], a[4], a[5]
 end
 
+local function sampleHypnoLightScale(t)
+	if t < 32.375 then
+		return 2
+	elseif t < 72.125 then
+		return 2 + (t - 32.375) / (72.125 - 32.375)
+	elseif t < 109.75 then
+		return 3
+	elseif t < 157.625 then
+		local progress = (t - 109.75) / (157.625 - 109.75)
+		return 3 + 9 * progress ^ 1.624505
+	end
+	return 12
+end
+
 function onCreate()
 	makeLuaSprite('SafetySky', nil, -1200, -900)
 	makeGraphic('SafetySky', 5000, 3000, '11131D')
@@ -182,10 +198,11 @@ local function pushLightState(elapsed, energies)
 	local scrollY = getProperty('camGame.scroll.y') or 0
 	local pose = getProperty('dad.animation.curAnim.name') or 'idle'
 	local po = hypnoLightPoses[pose] or hypnoLightPoses[pose:match('^[^-]+')] or { 0, 0 }
+	local lightScale = sampleHypnoLightScale(t) / 2
 	local hyp = {
 		getProperty('dad.x') + lightRestX + po[1],
 		getProperty('dad.y') + lightRestY + po[2],
-		hypnoLightW * 0.5, hypnoLightH * 0.5,
+		hypnoLightW * lightScale * 0.5, hypnoLightH * lightScale * 0.5,
 	}
 
 	for _, entry in ipairs(lit) do

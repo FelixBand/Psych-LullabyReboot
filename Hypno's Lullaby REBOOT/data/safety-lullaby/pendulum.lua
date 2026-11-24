@@ -322,7 +322,7 @@ local function updateTrance(elapsed)
 		playingTrancePose = inTrance
 		setProperty('boyfriend.idleSuffix', inTrance and '-alt' or '') -- "hypnotised idle" is the idle-alt animation
 		if getProperty('boyfriend.animation.curAnim.name') == 'idle' or getProperty('boyfriend.animation.curAnim.name') == 'idle-alt' then
-			characterPlayAnim('boyfriend', inTrance and 'idle-alt' or 'idle', true)
+			triggerEvent('Play Animation', inTrance and 'idle-alt' or 'idle', 'bf')
 		end
 	end
 end
@@ -330,7 +330,7 @@ end
 function goodNoteHit(id, direction, noteType, isSustainNote)
 	if not (TRANCE_GF_POSE and playingTrancePose) then return end
 	local dirs = { 'singLEFT', 'singDOWN', 'singUP', 'singRIGHT' }
-	characterPlayAnim('boyfriend', dirs[direction + 1] .. '-hypno', true)
+	triggerEvent('Play Animation', dirs[direction + 1] .. '-hypno', 'bf')
 end
 
 -- ===== in-hand pendulum placement ========================================================================
