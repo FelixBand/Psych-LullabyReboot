@@ -172,8 +172,8 @@ function onUpdate(elapsed)
     setProperty('camZooming', false)
 
     if shakeJumpscare then
-        setProperty('jumpscareP2.x', 212 + getRandomInt(-5,5))
-        setProperty('jumpscareP2.y', -33 + getRandomInt(-5,5))
+        setProperty('jumpscareP2.offset.x', 88.9 + getRandomInt(-5,5))
+        setProperty('jumpscareP2.offset.y', 64.05 + getRandomInt(-5,5))
     end
 
     for i = 0,4 do
@@ -266,10 +266,10 @@ local function jumpscare(type)
             setProperty('jumpscareP2.alpha', 0)
             setProperty('dad.visible', true)
         elseif type == '4' or type == '5' or type == '0' then
-            setProperty('jumpscareP2.x', 212)
-            setProperty('jumpscareP2.y', -33)
-            setProperty('jumpscareP2.scale.x', 0.95)
-            setProperty('jumpscareP2.scale.y', 0.95)
+            setProperty('jumpscareP2.x', 180)
+            setProperty('jumpscareP2.y', -55)
+            setProperty('jumpscareP2.scale.x', 0.85)
+            setProperty('jumpscareP2.scale.y', 0.85)
             if type == '5' then
                 playAnim('jumpscareP2', 'jumpFaster', true)
                 cameraShake('game', 0.005, 0.65)
@@ -277,6 +277,10 @@ local function jumpscare(type)
                 playAnim('jumpscareP2', 'jump', true)
                 cameraShake('game', 0.005, 1)
             end
+            doTweenX('growJumpP2X', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenY('growJumpP2Y', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenX('correctJumpP2X', 'jumpscareP2', getProperty('jumpscareP2.x') + 72, getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenY('correctJumpP2Y', 'jumpscareP2', getProperty('jumpscareP2.y') + 73, getAnimDuration('jumpscareP2'), 'expoInOut')
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
