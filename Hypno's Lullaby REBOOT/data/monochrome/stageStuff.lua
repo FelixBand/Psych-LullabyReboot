@@ -27,7 +27,7 @@ local bgUnowns = {}
 --   Eyes Progress   to  or  from,to        main fade wave.   value2 = duration,transition (leave empty = instant)
 --   Eyes Hold       to  or  from,to        second wave.      value2 = duration,transition
 --   Eyes Blacken    1 / 0                  eyes (and their glow) turn black / back to white
---   Eyes Motion     speed                  wobble speed multiplier (0 = standing still)
+--   Eyes Motion     speed                  wobble speed multiplier; value2 = duration,transition for a speed ramp
 --   Eyes Intensity  from,to                wobble amount eases from "from" to "to".  value2 = duration in seconds
 -- transition: 1 = linear, 0.5 = fast start / slow end (ease-out), 2 = slow start (ease-in)
 
@@ -42,7 +42,8 @@ local anyShown = false      -- at least one eye is visible (or still has a glow 
 local needPass = false      -- ask for one more run of the eye loop even though nothing is moving
 local blackened = false
 
-local speed, phaseBase, phaseT = 1, 0, 0       -- wobble phase = phaseBase + speed * (songTime - phaseT)
+local speed, phaseBase, phaseT = 1, 0, 0
+local speedRamp = nil
 local intensity = {from = 1, to = 1, t0 = 0, dur = 0}
 local intensityRamping, intensityEnd = false, 0
 
@@ -88,6 +89,48 @@ local function rampAt(r, t)
         x = x ^ tr
     end
     return r.from + (r.to - r.from) * x
+end
+
+local function motionEase(x, tr)
+    if tr == 0 then
+        return 0
+    elseif tr < 1 then
+        return 1 - (1 - x) ^ (1 / tr)
+    end
+    return x ^ tr
+end
+
+local function motionEaseIntegral(x, tr)
+    if tr == 0 then return 0 end
+    if tr < 1 then
+        local exponent = 1 + 1 / tr
+        return x - (1 - (1 - x) ^ exponent) / exponent
+    end
+    return x ^ (tr + 1) / (tr + 1)
+end
+
+local function motionSpeedAt(t)
+    local r = speedRamp
+    if r == nil then return speed end
+    if t <= r.t0 then return r.from end
+    if t >= r.t0 + r.dur then return r.to end
+    local x = (t - r.t0) / r.dur
+    return r.from + (r.to - r.from) * motionEase(x, r.tr)
+end
+
+local function motionPhaseAt(t)
+    local r = speedRamp
+    if r == nil then return phaseBase + speed * (t - phaseT) end
+    if t <= r.t0 then return phaseBase + r.from * (t - phaseT) end
+
+    local x = math.min((t - r.t0) / r.dur, 1)
+    local phase = phaseBase + r.dur * (
+        r.from * x + (r.to - r.from) * motionEaseIntegral(x, r.tr)
+    )
+    if t > r.t0 + r.dur then
+        phase = phase + r.to * (t - r.t0 - r.dur)
+    end
+    return phase
 end
 
 local function intensityAt(t)
@@ -481,9 +524,18 @@ function onEvent(name, value1, value2, strumTime)
         pendingBlacken = (tonumber(value1) or 0) ~= 0
     elseif name == 'Eyes Motion' then
         local T = eventTime(strumTime)
-        phaseBase = phaseBase + speed * (T - phaseT)   -- keep the wobble phase continuous across the speed change
+        local currentSpeed = motionSpeedAt(T)
+        phaseBase = motionPhaseAt(T)   -- keep the wobble phase continuous across the speed change
         phaseT = T
-        speed = tonumber(value1) or speed
+        local targetSpeed = tonumber(value1) or speed
+        local motionArgs = nums(value2)
+        local duration, transition = motionArgs[1] or 0, motionArgs[2] or 1
+        if duration > 0 and currentSpeed ~= targetSpeed then
+            speedRamp = {from = currentSpeed, to = targetSpeed, t0 = T, dur = duration, tr = transition}
+        else
+            speedRamp = nil
+        end
+        speed = targetSpeed
         needPass = true
     elseif name == 'Eyes Intensity' then
         local T = eventTime(strumTime)
@@ -541,10 +593,18 @@ function onUpdate(elapsed)
         intensityRamping = false
         needPass = true   -- one last pass at the final wobble amount
     end
+    if speedRamp ~= nil and songTime >= speedRamp.t0 + speedRamp.dur then
+        phaseBase = motionPhaseAt(songTime)
+        phaseT = songTime
+        speed = speedRamp.to
+        speedRamp = nil
+        needPass = true
+    end
 
     -- nothing to do: all eyes hidden, or shown but standing still, and no wave / fade / change pending
     local doAlpha = alphaActive
-    if not (doAlpha or needPass or (anyShown and (speed ~= 0 or intensityRamping))) then return end
+    local motionRamping = speedRamp ~= nil and songTime < speedRamp.t0 + speedRamp.dur
+    if not (doAlpha or needPass or (anyShown and (speed ~= 0 or motionRamping or intensityRamping))) then return end
     needPass = false
 
     local fadingAtStart = fadingCount > 0
@@ -554,7 +614,7 @@ function onUpdate(elapsed)
         pv = rampAt(state.P, songTime)
         hv = rampAt(state.H, songTime)
     end
-    local phase = phaseBase + speed * (songTime - phaseT)
+    local phase = motionPhaseAt(songTime)
     local amtScale = intensityAt(songTime)
     local blk = blackened
     local shown = false

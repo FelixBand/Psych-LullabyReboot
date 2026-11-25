@@ -426,7 +426,7 @@ function onEvent(name, value1, value2, strumTime)
     end
     if name == 'End Tweens' then
         doTweenZoom('gameZoomOut', 'camGame', 0.3, 5, 'smoothStepInOut')
-        doTweenY('goldDown', 'dad', 500, 5, 'smoothStepInOut')
+        doTweenY('goldDown', 'dad', 700, 5, 'smoothStepInOut')
     end
 end
 
