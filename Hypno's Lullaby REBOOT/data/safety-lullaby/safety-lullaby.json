@@ -1260,19 +1260,19 @@
 			]
 		],
 		[
-			111786.096256684,
+			111865.50802139,
+			[
+				["Play Animation", "laugh", "dad"]
+			]
+		],
+		[
+			117256,
 			[
 				["Alt Idle Animation", "dad", "-alt"]
 			]
 		],
 		[
-			111865.50802139,
-			[
-				["Play Animation", "singRIGHT", "dad"]
-			]
-		],
-		[
-			112139.037433155,
+			117256,
 			[
 				["Play Animation", "walk", "dad"]
 			]
@@ -1286,7 +1286,7 @@
 		[
 			156609,
 			[
-				["Play Animation", "walk2", "dad"]
+				["Play Animation", "walk-end", "dad"]
 			]
 		],
 		[
