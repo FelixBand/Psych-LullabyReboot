@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:4ac09300163fc774a17ec4a89d0b90cf:87f7b7046e8be38bdd4e919fb70aee78:38e57d6bf1b77b4667019432b76f8143$ -->
+<TextureAtlas imagePath="pendulum_drop.png" width="683" height="1805">
+    <SubTexture name="pendulum0000" x="492" y="1644" width="163" height="160" frameX="-35" frameY="0" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0001" x="492" y="1481" width="163" height="161" frameX="-52" frameY="-83" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0002" x="492" y="1225" width="163" height="254" frameX="-68" frameY="-96" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0003" x="492" y="900" width="163" height="323" frameX="-89" frameY="-184" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0004" x="492" y="900" width="163" height="323" frameX="-89" frameY="-184" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0005" x="1" y="1" width="193" height="449" frameX="-57" frameY="-175" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0006" x="327" y="1357" width="163" height="444" frameX="-33" frameY="-169" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0007" x="489" y="457" width="163" height="441" frameX="-33" frameY="-172" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0008" x="327" y="909" width="163" height="446" frameX="-6" frameY="-152" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0009" x="164" y="1368" width="161" height="426" frameX="-1" frameY="-155" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0010" x="1" y="1367" width="161" height="430" frameX="-1" frameY="-151" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0011" x="523" y="1" width="159" height="431" frameX="0" frameY="-153" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0012" x="523" y="1" width="159" height="431" frameX="0" frameY="-153" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0013" x="327" y="457" width="160" height="450" frameX="-2" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0014" x="1" y="452" width="161" height="457" frameX="-6" frameY="-146" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0015" x="1" y="452" width="161" height="457" frameX="-6" frameY="-146" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0016" x="1" y="911" width="161" height="454" frameX="-8" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0017" x="1" y="911" width="161" height="454" frameX="-8" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0018" x="1" y="911" width="161" height="454" frameX="-8" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0019" x="360" y="1" width="161" height="454" frameX="-13" frameY="-142" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0020" x="360" y="1" width="161" height="454" frameX="-13" frameY="-142" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0021" x="360" y="1" width="161" height="454" frameX="-13" frameY="-142" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0022" x="196" y="1" width="162" height="454" frameX="-10" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0023" x="196" y="1" width="162" height="454" frameX="-10" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0024" x="196" y="1" width="162" height="454" frameX="-10" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0025" x="196" y="1" width="162" height="454" frameX="-10" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0026" x="164" y="457" width="161" height="454" frameX="-9" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0027" x="164" y="457" width="161" height="454" frameX="-9" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0028" x="164" y="457" width="161" height="454" frameX="-9" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0029" x="164" y="457" width="161" height="454" frameX="-9" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0030" x="164" y="457" width="161" height="454" frameX="-9" frameY="-144" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0031" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0032" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0033" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0034" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0035" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0036" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0037" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+    <SubTexture name="pendulum0038" x="164" y="913" width="161" height="453" frameX="-10" frameY="-145" frameWidth="252" frameHeight="624"/>
+</TextureAtlas>

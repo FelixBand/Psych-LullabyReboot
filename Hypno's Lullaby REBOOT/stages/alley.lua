@@ -33,7 +33,7 @@ local hypnoLightPoses = {
 	['singDOWN-alt'] = { -50, 130 },
 	['singUP-alt'] = { -30, -240 },
 	['singRIGHT-alt'] = { 100, 0 },
-	['walk'] = { -30, -10 }
+	walk = { -30, -10 },
 }
 local lightRestX, lightRestY = 0, 0  -- idle light position relative to dad.x / dad.y (set in onCreatePost)
 
@@ -108,6 +108,7 @@ local function setupLitSprite(entry)
 	setShaderFloat(tag, 'uBgEnergy', bgEnergy)
 	setShaderFloat(tag, 'uSubEnergy', subEnergy)
 	setShaderFloatArray(tag, 'uFrame', { 0, 0, 1, 1 })
+	setShaderFloat(tag, 'uRot', 0)
 	if not entry.char then
 		setShaderFloatArray(tag, 'uSize', { getProperty(tag .. '.width'), getProperty(tag .. '.height') })
 		setShaderFloatArray(tag, 'uOrigin', { getProperty(tag .. '.x'), getProperty(tag .. '.y') })
@@ -179,6 +180,8 @@ function onCreatePost()
 	-- anchor the light to dad.x/dad.y (constant) instead of the frame midpoint (which changes every frame)
 	lightRestX = getMidpointX('dad') + 250 - getProperty('dad.x')
 	lightRestY = getMidpointY('dad') - getProperty('dad.y')
+	setVar('hypnoLightRestX', lightRestX) -- shared with data/safety-lullaby/pendulum.lua
+	setVar('hypnoLightRestY', lightRestY)
 	if not lightingOn then return end
 	-- the characters are lit like layer-1 items (Hypno: light_mask 81)
 	for _, pair in ipairs({ { 'dad', 'dad' }, { 'boyfriend', 'boyfriend' } }) do
@@ -208,6 +211,14 @@ local function pushLightState(elapsed, energies)
 		setShaderFloatArray(tag, 'uMainColor', { r * e, g * e, b * e })
 		setShaderFloatArray(tag, 'uHyp', hyp)
 
+		if tag == 'dad' then
+			local bobX = getVar('pendulumBobX')
+			if bobX ~= nil then
+				setShaderFloatArray(tag, 'uBob', { bobX, getVar('pendulumBobY'), getVar('pendulumBobRX'), getVar('pendulumBobRY') })
+				setShaderFloatArray(tag, 'uBobColor', { getVar('pendulumBobR'), getVar('pendulumBobG'), getVar('pendulumBobB') })
+			end
+		end
+
 		if entry.char then
 			-- Place this animation frame exactly where FlxSprite draws it (offset, origin, scale and the frame's
 			-- own trim offset), so the light position stays fixed while Hypno switches poses.
@@ -221,8 +232,13 @@ local function pushLightState(elapsed, energies)
 				local frOffX, frOffY = getProperty(tag .. '.frame.offset.x') or 0, getProperty(tag .. '.frame.offset.y') or 0
 				local left = getProperty(tag .. '.x') - offX + ox + (frOffX - ox) * sx
 				local top = getProperty(tag .. '.y') - offY + oy + (frOffY - oy) * sy
+				-- Hypno's left/up frames are stored rotated in the atlas: swap the displayed size and tell the shader
+				local rotated = (getProperty(tag .. '.frame.angle') or 0) ~= 0
+				local dw, dh = fw, fh
+				if rotated then dw, dh = fh, fw end
+				setShaderFloat(tag, 'uRot', rotated and 1 or 0)
 				setShaderFloatArray(tag, 'uFrame', { fx / gw, fy / gh, fw / gw, fh / gh })
-				setShaderFloatArray(tag, 'uSize', { fw * sx, fh * sy })
+				setShaderFloatArray(tag, 'uSize', { dw * sx, dh * sy })
 				setShaderFloatArray(tag, 'uOrigin', { left, top })
 			end
 		elseif entry.scroll ~= 1 then

@@ -13,6 +13,7 @@ uniform sampler2D hypTex;   // chr_hypno_sl_light
 uniform vec2 uOrigin;       // light-space position of the sprite's top-left
 uniform vec2 uSize;         // sprite size in world pixels
 uniform vec4 uFrame;        // atlas uv rect (u, v, w, h); (0,0,1,1) for plain images
+uniform float uRot;         // 1 = frame is stored rotated 90 degrees clockwise in the atlas (sparrow rotated="true")
 
 uniform vec4 uBg;           // light rects: centre x, centre y, half width, half height
 uniform vec4 uPole;
@@ -25,6 +26,8 @@ uniform float uBgEnergy;
 uniform vec3 uLampEnergy;   // Pole, PoleLight, PoleLight2
 uniform vec3 uMainColor;    // Hypno MainLight colour * energy
 uniform float uSubEnergy;
+uniform vec4 uBob;          // pendulum bob glow on Hypno: centre x, centre y, radius x, radius y
+uniform vec3 uBobColor;     // glow colour * energy (zero for every sprite except Hypno)
 
 vec4 lightAt(sampler2D t, vec4 r, vec2 p)
 {
@@ -37,6 +40,7 @@ void main()
 {
     vec4 base = flixel_texture2D(bitmap, openfl_TextureCoordv);
     vec2 local = (openfl_TextureCoordv - uFrame.xy) / uFrame.zw;
+    if (uRot > 0.5) local = vec2(local.y, 1.0 - local.x);
     vec2 p = uOrigin + local * uSize;
 
     vec3 f = vec3(1.0);
@@ -56,6 +60,9 @@ void main()
     vec3 hyp = lightAt(hypTex, uHyp, p).rgb;
     if (uFlags.z > 0.5) f += hyp * uMainColor;
     if (uFlags.w > 0.5) f += hyp * uSubEnergy;
+
+    if (uBob.z > 0.0)
+        f += max(1.0 - length((p - uBob.xy) / uBob.zw), 0.0) * uBobColor;
 
     gl_FragColor = vec4(clamp(base.rgb * f, 0.0, base.a), base.a);
 }

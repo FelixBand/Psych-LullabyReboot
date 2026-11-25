@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:262680f735be7f5e7513a89d7a88a06a:8be73a5f502e36931d87a77c2c20058c:bb9be36c6afc06d4495466e99deecc96$ -->
+<TextureAtlas imagePath="hand_drop_dark.png" width="1142" height="474">
+    <SubTexture name="hand0000" x="271" y="1" width="288" height="238" frameX="0" frameY="0" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0001" x="561" y="1" width="290" height="236" frameX="-7" frameY="-74" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0002" x="565" y="239" width="289" height="234" frameX="-13" frameY="-109" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0003" x="1" y="1" width="268" height="242" frameX="-36" frameY="-191" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0004" x="1" y="1" width="268" height="242" frameX="-36" frameY="-191" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0005" x="856" y="237" width="272" height="234" frameX="-31" frameY="-188" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0006" x="856" y="237" width="272" height="234" frameX="-31" frameY="-188" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0007" x="856" y="237" width="272" height="234" frameX="-31" frameY="-188" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0008" x="1" y="245" width="273" height="227" frameX="-29" frameY="-182" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0009" x="1" y="245" width="273" height="227" frameX="-29" frameY="-182" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0010" x="276" y="241" width="287" height="231" frameX="-19" frameY="-152" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0011" x="276" y="241" width="287" height="231" frameX="-19" frameY="-152" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0012" x="276" y="241" width="287" height="231" frameX="-19" frameY="-152" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0013" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0014" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0015" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0016" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0017" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0018" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0019" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0020" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+    <SubTexture name="hand0021" x="853" y="1" width="288" height="234" frameX="-22" frameY="-150" frameWidth="310" frameHeight="433"/>
+</TextureAtlas>
