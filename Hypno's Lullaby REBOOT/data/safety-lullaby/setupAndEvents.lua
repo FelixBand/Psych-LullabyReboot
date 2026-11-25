@@ -42,5 +42,6 @@ function onTimerCompleted(tag, loops, loopsLeft)
     if tag == 'hypnoSnapForward' then
         triggerEvent('Play Animation', 'idle-alt', 'dad')
         setProperty('dad.x', getProperty('dad.x') + 66)
+        setProperty('dad.cameraPosition[0]', getProperty('dad.cameraPosition[0]') - 66)
     end
 end

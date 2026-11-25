@@ -104,7 +104,7 @@
 	"healthicon": "hypno",
 	"flip_x": false,
 	"healthbar_colors": [185, 144, 28],
-	"camera_position": [20, 50],
+	"camera_position": [-150, 50],
 	"sing_duration": 2.7,
 	"scale": 1.25,
 	"_editor_isPlayer": false
