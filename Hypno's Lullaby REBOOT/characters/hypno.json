@@ -1,204 +1,119 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": true,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "idle",
-			"indices": [],
-			"name": "idle"
+			"fps": 24,
+			"name": "AIdle",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singLEFT",
-			"indices": [],
-			"name": "left"
+			"fps": 24,
+			"name": "ALeft Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singRIGHT",
-			"indices": [],
-			"name": "right"
+			"fps": 24,
+			"name": "ARight Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singDOWN",
-			"indices": [],
-			"name": "down"
+			"fps": 24,
+			"name": "ADown pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singUP",
-			"indices": [],
-			"name": "up"
+			"fps": 24,
+			"name": "AUp Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": true,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "idle-alt",
-			"indices": [],
-			"name": "alt idle"
+			"fps": 24,
+			"name": "Idle Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singLEFT-alt",
-			"indices": [],
-			"name": "alt left"
+			"fps": 24,
+			"name": "Left Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singRIGHT-alt",
-			"indices": [],
-			"name": "alt right"
+			"fps": 24,
+			"name": "Right Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singDOWN-alt",
-			"indices": [],
-			"name": "alt down"
+			"fps": 24,
+			"name": "Down pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
-			"fps": 24,
+			"offsets": [0, 0],
 			"anim": "singUP-alt",
-			"indices": [],
-			"name": "alt up"
+			"fps": 24,
+			"name": "Up Pose",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
 			"loop": false,
+			"offsets": [0, 0],
+			"anim": "laugh",
 			"fps": 24,
-			"anim": "walk",
-			"indices": [],
-			"name": "walk"
+			"name": "Laugh",
+			"indices": []
 		},
 		{
-			"offsets": [
-				-68,
-				0
-			],
-			"indices": [
-				70,
-				71,
-				72,
-				73,
-				74,
-				75,
-				76,
-				77,
-				78,
-				79,
-				80,
-				81,
-				82,
-				83,
-				84,
-				85,
-				86,
-				87,
-				88,
-				89,
-				90,
-				91,
-				92,
-				93,
-				94,
-				95,
-				96,
-				97,
-				98,
-				99,
-				100,
-				101,
-				102,
-				103,
-				104,
-				105,
-				106,
-				107,
-				108,
-				109,
-				110,
-				111,
-				112,
-				113
-			],
-			"fps": 24,
-			"anim": "walk2",
 			"loop": false,
-			"name": "walk"
+			"offsets": [0, 0],
+			"anim": "step",
+			"fps": 24,
+			"name": "Step",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [-66, 0],
+			"anim": "step-end",
+			"fps": 24,
+			"name": "Step",
+			"indices": []
 		}
 	],
 	"vocals_file": "",
-	"results_character": null,
 	"no_antialiasing": false,
 	"image": "characters/hypno/hypno",
-	"position": [
-		-260,
-		-90
-	],
-	"speaker": null,
+	"position": [-260, -90],
 	"healthicon": "hypno",
 	"flip_x": false,
-	"healthbar_colors": [
-		185,
-		144,
-		28
-	],
-	"camera_position": [
-		20,
-		50
-	],
+	"healthbar_colors": [185, 144, 28],
+	"camera_position": [20, 50],
 	"sing_duration": 2.7,
-	"dead_character": null,
-	"scale": 1.25
+	"scale": 1.25,
+	"_editor_isPlayer": false
 }
