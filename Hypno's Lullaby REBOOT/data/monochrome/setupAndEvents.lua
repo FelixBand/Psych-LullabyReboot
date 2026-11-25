@@ -339,6 +339,9 @@ function onEvent(name, value1, value2, strumTime)
     if name == 'HUD Fade In' then
         doTweenAlpha('hudIn', 'camHUD', 1, 3, 'linear')
     end
+    if name == 'HUD Fade Out' then
+        doTweenAlpha('hudOut', 'camHUD', 0, 2, 'linear')
+    end
     if name == 'Notes Fade In' then
         for i = 0,getProperty('playerStrums.length') - 1 do
             noteTweenAlpha('strumIn'..i, getProperty('playerStrums.length') + i, 1, 3, 'linear')
@@ -528,6 +531,10 @@ function goodNoteHit(id, direction, noteType, isSustainNote)
 
     if not isSustainNote then
         playAnim('bfbloodsplatter', getProperty('singAnimations')[direction+1])
+    end
+
+    if noteType == 'Strum Fade Out' then
+        noteTweenAlpha('strumOut'..direction, direction + getProperty('opponentStrums.length'), 0, 1, 'linear')
     end
 end
 
