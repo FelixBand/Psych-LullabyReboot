@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas imagePath="hypnosis.png">
-    <SubTexture name="hypnosis0000" x="0" y="0" width="960" height="580"/>
-    <SubTexture name="hypnosis0001" x="960" y="0" width="960" height="580"/>
-    <SubTexture name="hypnosis0002" x="1920" y="0" width="960" height="580"/>
-    <SubTexture name="hypnosis0003" x="0" y="580" width="960" height="580"/>
-    <SubTexture name="hypnosis0004" x="960" y="580" width="960" height="580"/>
-    <SubTexture name="hypnosis0005" x="1920" y="580" width="960" height="580"/>
-    <SubTexture name="hypnosis0006" x="0" y="1160" width="960" height="580"/>
-    <SubTexture name="hypnosis0007" x="960" y="1160" width="960" height="580"/>
-    <SubTexture name="hypnosis0008" x="1920" y="1160" width="960" height="580"/>
-    <SubTexture name="hypnosis0009" x="0" y="1740" width="960" height="580"/>
-    <SubTexture name="hypnosis0010" x="960" y="1740" width="960" height="580"/>
-    <SubTexture name="hypnosis0011" x="1920" y="1740" width="960" height="580"/>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:8a7afb66cd4c70b83fde57a2d4d60ea6:635bb0feb27befe733ed366bfabec228:be0d771b67fd091b807503fce528c125$ -->
+<TextureAtlas imagePath="hypnosis.png" width="7698" height="1552">
+    <SubTexture name="hypnosis0000" x="1" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0001" x="1284" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0002" x="2567" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0003" x="3850" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0004" x="5133" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0005" x="6416" y="1" width="1281" height="774"/>
+    <SubTexture name="hypnosis0006" x="1" y="777" width="1281" height="774"/>
+    <SubTexture name="hypnosis0007" x="1284" y="777" width="1281" height="774"/>
+    <SubTexture name="hypnosis0008" x="2567" y="777" width="1281" height="774"/>
+    <SubTexture name="hypnosis0009" x="3850" y="777" width="1281" height="774"/>
+    <SubTexture name="hypnosis0010" x="5133" y="777" width="1281" height="774"/>
+    <SubTexture name="hypnosis0011" x="6416" y="777" width="1281" height="774"/>
 </TextureAtlas>

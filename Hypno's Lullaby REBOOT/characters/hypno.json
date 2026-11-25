@@ -1,108 +1,100 @@
 {
 	"animations": [
 		{
-			"loop": true,
 			"offsets": [0, 0],
+			"loop": true,
+			"fps": 24,
 			"anim": "idle",
-			"fps": 24,
-			"name": "AIdle",
-			"indices": []
+			"indices": [],
+			"name": "AIdle"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
-			"name": "ALeft Pose",
-			"indices": []
+			"indices": [],
+			"name": "ALeft Pose"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
-			"name": "ARight Pose",
-			"indices": []
+			"indices": [],
+			"name": "ARight Pose"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
-			"name": "ADown pose",
-			"indices": []
+			"indices": [],
+			"name": "ADown pose"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "singUP",
-			"fps": 24,
-			"name": "AUp Pose",
-			"indices": []
+			"indices": [],
+			"name": "AUp Pose"
 		},
 		{
+			"offsets": [66, 0],
 			"loop": true,
-			"offsets": [0, 0],
+			"fps": 24,
 			"anim": "idle-alt",
-			"fps": 24,
-			"name": "Idle Pose",
-			"indices": []
+			"indices": [],
+			"name": "Idle Pose"
 		},
 		{
+			"offsets": [66, 0],
 			"loop": false,
-			"offsets": [0, 0],
+			"fps": 24,
 			"anim": "singLEFT-alt",
-			"fps": 24,
-			"name": "Left Pose",
-			"indices": []
+			"indices": [],
+			"name": "Left Pose"
 		},
 		{
+			"offsets": [66, 0],
 			"loop": false,
-			"offsets": [0, 0],
+			"fps": 24,
 			"anim": "singRIGHT-alt",
-			"fps": 24,
-			"name": "Right Pose",
-			"indices": []
+			"indices": [],
+			"name": "Right Pose"
 		},
 		{
+			"offsets": [66, 0],
 			"loop": false,
-			"offsets": [0, 0],
+			"fps": 24,
 			"anim": "singDOWN-alt",
-			"fps": 24,
-			"name": "Down pose",
-			"indices": []
+			"indices": [],
+			"name": "Down pose"
 		},
 		{
+			"offsets": [66, 0],
 			"loop": false,
-			"offsets": [0, 0],
+			"fps": 24,
 			"anim": "singUP-alt",
-			"fps": 24,
-			"name": "Up Pose",
-			"indices": []
+			"indices": [],
+			"name": "Up Pose"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
 			"anim": "laugh",
-			"fps": 24,
-			"name": "Laugh",
-			"indices": []
+			"indices": [],
+			"name": "Laugh"
 		},
 		{
-			"loop": false,
 			"offsets": [0, 0],
-			"anim": "step",
-			"fps": 24,
-			"name": "Step",
-			"indices": []
-		},
-		{
 			"loop": false,
-			"offsets": [-66, 0],
-			"anim": "step-end",
 			"fps": 24,
-			"name": "Step",
-			"indices": []
+			"anim": "step",
+			"indices": [],
+			"name": "Step"
 		}
 	],
 	"vocals_file": "",

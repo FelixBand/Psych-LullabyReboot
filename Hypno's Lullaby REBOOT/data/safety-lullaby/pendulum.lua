@@ -261,7 +261,6 @@ local function setupTrance()
 	makeAnimatedLuaSprite('tranceOverlay', 'safety_lullaby/trance/hypnosis', 10.8, -33.3)
 	addAnimationByPrefix('tranceOverlay', 'default', 'hypnosis', 5, true)
 	playAnim('tranceOverlay', 'default', true)
-	scaleObject('tranceOverlay', 4 / 3, 4 / 3, false) -- frames are stored at half size
 	setProperty('tranceOverlay.origin.x', 0)
 	setProperty('tranceOverlay.origin.y', 0)
 	setProperty('tranceOverlay.alpha', 0)
