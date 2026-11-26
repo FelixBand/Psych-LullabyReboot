@@ -31,16 +31,15 @@ function onCreate()
     setProperty('skipCountdown', true)
 
     makeLuaSprite('endBg', 'safety_lullaby/cutscenes/end/end_bg', 0, 0)
-    setObjectCamera('endBg', 'other')
+    setObjectCamera('endBg', 'hud')
     scaleObject('endBg', 0.39, 0.39)
     setProperty('endBg.alpha', 0.0001)
     setProperty('endBg.color', '000000')
-    addLuaSprite('endBg')
+    addLuaSprite('endBg', true)
 end
 
 function onCreatePost()
-    setObjectCamera('gf', 'other')
-    setObjectCamera('gfGroup', 'other')
+    setObjectCamera('gfGroup', 'hud')
     setProperty('gf.x', 310)
     setProperty('gf.y', 10)
     setProperty('gf.alpha', 0.0001)
@@ -65,13 +64,22 @@ function onEvent(name, value1, value2)
     end
     if name == 'Transition to Ending' then
         doTweenAlpha('endBgIn', 'endBg', 1, 1.5, 'linear')
-        doTweenZoom('camGameIn', 'camGame', 0.9, 1.5, 'cubeIn')
+        doTweenZoom('camGameIn', 'camGame', 0.9, 1.4, 'smoothStepIn')
+
+        for i = 0,getProperty('opponentStrums.length') - 1 do
+            noteTweenAlpha('playerStrumOut'..i, i + 4, 0, 1, 'linear')
+        end
+
+        doTweenAlpha('scoreTxtOut', 'scoreTxt', 0, 1, 'linear')
+        doTweenAlpha('healthBarOut', 'healthBar', 0, 1, 'linear')
+        doTweenAlpha('iconP1Out', 'iconP1', 0, 1, 'linear')
+        doTweenAlpha('iconP2Out', 'iconP2', 0, 1, 'linear')
     end
     if name == 'Fade In Ending' then
         setVar('safetyLullabyEndingLightingOff', true)
         setVar('safetyLullabyEndingActive', true)
-        setObjectCamera('pndHandTrail', 'other')
-        setObjectCamera('pndHandActive', 'other')
+        setObjectCamera('pndHandTrail', 'hud')
+        setObjectCamera('pndHandActive', 'hud')
         setObjectOrder('pndHandTrail', getObjectOrder('gfGroup') + 1)
         setObjectOrder('pndHandActive', getObjectOrder('gfGroup') + 2)
         doTweenColor('endBgColor', 'endBg', getColorFromHex('FFFFFF'), 1.5, 'linear')
@@ -81,6 +89,10 @@ end
 
 function onUpdatePost()
     local songTime = (getSongPosition() or 0) / 1000 + SOURCE_TIME_OFFSET
+
+    if curBeat >= 247 then
+        setProperty('camZooming', false)
+    end
 
     if not endingMotionStarted and songTime >= ENDING_MOVE_START then
         endingMotionStarted = true

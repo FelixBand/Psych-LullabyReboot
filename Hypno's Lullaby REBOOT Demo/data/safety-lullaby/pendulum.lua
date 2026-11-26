@@ -29,8 +29,11 @@ local SONG_TIME_OFFSET = 1.0
 -- How far the water warp pushes the picture. 1.0 = exactly the Godot shader, which only moves things ~2 px (retention
 -- warp) / ~6 px (Water Warp event) on average because its noise texture is dark - that reads as a faint blur.
 -- Higher = visibly wobbly. Try the debug keys in scripts/debugWater.lua to pick values.
-local TRANCE_WARP_SCALE = 4.0
-local SQUIGGLE_WARP_SCALE = 4.0
+local TRANCE_WARP_SCALE = 1.5
+local SQUIGGLE_WARP_SCALE = 1.5
+-- Godot warps the HUD too, but every filtered camera costs a full-screen pass. false = only the game camera is warped
+-- (noticeably cheaper). The notes stay readable as well.
+local WARP_HUD = false
 local STOP_EASE = 0.75               -- seconds the pendulum takes to ease back to straight after Pendulum Stop
 
 -- ===== Godot constants ===================================================================================
@@ -355,8 +358,10 @@ local function setupTrance()
 	runHaxeCode([[
 		var sh = game.createRuntimeShader('tranceEffects');
 		game.getLuaObject('tranceController').shader = sh;
-		sh.setBitmapData('noiseTex', Paths.image('safety_lullaby/trance/water_noise').bitmap);
+		// created once and only attached / detached later, so switching the effect on and off does not allocate
+		game.variables.set('tranceFilter', new ShaderFilter(sh));
 	]])
+	setShaderSampler2D('tranceController', 'noiseTex', 'safety_lullaby/trance/water_noise')
 
 	makeAnimatedLuaSprite('tranceOverlay', 'safety_lullaby/trance/hypnosis', 10.8, -33.3)
 	addAnimationByPrefix('tranceOverlay', 'default', 'hypnosis', 5, true)
@@ -372,16 +377,19 @@ local function setFilters(on)
 	if on == filtersOn then return end
 	filtersOn = on
 	if on then
-		runHaxeCode([[
-			var sh = game.getLuaObject('tranceController').shader;
-			game.camGame.setFilters([new ShaderFilter(sh)]);
-			game.camHUD.setFilters([new ShaderFilter(sh)]);
-		]])
+		runHaxeCode('var f = game.variables.get("tranceFilter"); game.camGame.setFilters([f]);' ..
+			(WARP_HUD and ' game.camHUD.setFilters([f]);' or ''))
 	else
-		runHaxeCode([[
-			game.camGame.setFilters([]);
-			game.camHUD.setFilters([]);
-		]])
+		runHaxeCode('game.camGame.setFilters([]); game.camHUD.setFilters([]);')
+	end
+end
+
+-- uniforms are only sent when they changed (each setShaderFloat is a Lua -> Haxe call)
+local sentUniforms = {}
+local function sendUniform(name, value)
+	if sentUniforms[name] ~= value then
+		sentUniforms[name] = value
+		setShaderFloat('tranceController', name, value)
 	end
 end
 
@@ -423,17 +431,17 @@ local function updateTrance(elapsed)
 	local active = forced or tranceStrength > 0.002 or squiggle > 0.001
 	setFilters(active)
 	if active then
-		setShaderFloat('tranceController', 'uTime', shaderTime)
-		setShaderFloat('tranceController', 'uWave', wave)
-		setShaderFloat('tranceController', 'uGhost', ghost)
-		setShaderFloat('tranceController', 'uSaturation', saturation)
-		setShaderFloat('tranceController', 'uContrast', contrast)
-		setShaderFloat('tranceController', 'uBlur', blur)
-		setShaderFloat('tranceController', 'uSquiggle', squiggle)
-		setShaderFloat('tranceController', 'uSquiggleGhost', 0.449)
-		setShaderFloat('tranceController', 'uWarpScale', warpScale)
-		setShaderFloat('tranceController', 'uSquiggleScale', squiggleScale)
-		setShaderFloat('tranceController', 'uView', debugView)
+		sendUniform('uTime', shaderTime)
+		sendUniform('uWave', wave)
+		sendUniform('uGhost', ghost)
+		sendUniform('uSaturation', saturation)
+		sendUniform('uContrast', contrast)
+		sendUniform('uBlur', blur)
+		sendUniform('uSquiggle', squiggle)
+		sendUniform('uSquiggleGhost', 0.449)
+		sendUniform('uWarpScale', warpScale)
+		sendUniform('uSquiggleScale', squiggleScale)
+		sendUniform('uView', debugView)
 	end
 
 	-- overlay + GF (trance.gd)
