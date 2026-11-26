@@ -518,17 +518,7 @@ function onTweenCompleted(tag)
     end
 end
 
-local function setSplashOpacity(alpha)
-    runHaxeCode([[
-        for (s in game.grpNoteSplashes.members)
-            if (s != null && s.exists && s.animation.curAnim != null && !s.animation.curAnim.finished)
-                s.alpha = ]]..alpha..[[;
-    ]])
-end
-
 function goodNoteHit(id, direction, noteType, isSustainNote)
-    setSplashOpacity(1)
-
     if not isSustainNote then
         playAnim('bfbloodsplatter', getProperty('singAnimations')[direction+1])
     end
@@ -539,8 +529,6 @@ function goodNoteHit(id, direction, noteType, isSustainNote)
 end
 
 function opponentNoteHit(id, direction, noteType, isSustainNote)
-    setSplashOpacity(1)
-
     if not isSustainNote then
         playAnim('goldbloodsplatter', getProperty('singAnimations')[direction+1])
     end
