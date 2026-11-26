@@ -111,18 +111,18 @@ local ENDING_HAND_ADJUST = {
 -- EASY TUNING: extra offset in Psych pixels per dad animation name, added on top of the computed position
 -- (+x right, +y down). Edit these by eye. Animations that are not listed get {0, 0}.
 local HAND_ADJUST = {
-	['idle'] = { 0, 25 },
-	['singLEFT'] = { 0, 25 },
-	['singDOWN'] = { 10, 25 },
-	['singUP'] = { -8, 25 },
-	['singRIGHT'] = { -8, 25 },
-	['idle-alt'] = { 60, 25 },
-	['singLEFT-alt'] = { 60, 25 },
-	['singDOWN-alt'] = { 60, 25 },
-	['singUP-alt'] = { 60, 25 },
-	['singRIGHT-alt'] = { 60, 25 },
-	['step'] = { 10, 25 },
-	['laugh'] = { 0, 25 },
+	['idle'] = { 0, 22 },
+	['singLEFT'] = { -5, 22 },
+	['singDOWN'] = { 10, 22 },
+	['singUP'] = { -8, 22 },
+	['singRIGHT'] = { -8, 22 },
+	['idle-alt'] = { 60, 22 },
+	['singLEFT-alt'] = { 60, 22 },
+	['singDOWN-alt'] = { 60, 22 },
+	['singUP-alt'] = { 60, 22 },
+	['singRIGHT-alt'] = { 60, 22 },
+	['step'] = { 10, 22 },
+	['laugh'] = { 0, 22 },
 }
 
 -- Hypno's body walks forward INSIDE the step sprites (his upper body is 54 canvas px further right in the last frame

@@ -91,12 +91,12 @@ function onUpdatePost()
         local bgY = getProperty('endBg.y')
         local bgScaleX = getProperty('endBg.scale.x')
         local bgScaleY = getProperty('endBg.scale.y')
-        local zoom = 1.38
+        local zoom = 1.5
         local targetBgX = bgX - bgWidth * (zoom - 1) / 2 - PS
         local targetBgY = bgY - bgHeight * (zoom - 1) / 2 + 113 * PS
 
-        doTweenX('endBgZoomX', 'endBg.scale', bgScaleX * zoom, ENDING_ZOOM_DURATION, 'quadIn')
-        doTweenY('endBgZoomY', 'endBg.scale', bgScaleY * zoom, ENDING_ZOOM_DURATION, 'quadIn')
+        doTweenX('endBgZoomX', 'endBg.scale', bgScaleX * zoom, ENDING_ZOOM_DURATION, 'linear')
+        doTweenY('endBgZoomY', 'endBg.scale', bgScaleY * zoom, ENDING_ZOOM_DURATION, 'linear')
 
         doTweenX('hypnoShrinkX', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')
         doTweenY('hypnoShrinkY', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')

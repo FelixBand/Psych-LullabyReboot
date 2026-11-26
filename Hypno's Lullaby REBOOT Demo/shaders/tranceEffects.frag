@@ -12,6 +12,9 @@ uniform float uContrast;
 uniform float uBlur;
 uniform float uSquiggle;       // song-timeline water warp (SquiggleLayer WAVE_STRENGTH, 0..2)
 uniform float uSquiggleGhost;  // SquiggleLayer GHOST_STRENGTH (0.449 in the scene)
+uniform float uWarpScale;      // multiplies the retention warp distance (1.0 = exactly the Godot shader)
+uniform float uSquiggleScale;  // multiplies the squiggle warp distance (1.0 = exactly the Godot shader)
+uniform float uView;           // debug: 0 = normal, 1 = left half untouched / right half effect, 2 = show the offset field
 
 vec3 rgb2hsv(vec3 c)
 {
@@ -39,7 +42,7 @@ vec2 noiseOffset(vec2 uv, float wave)
     vec2 local = vec2(fract(nuv.x), fract(nuv.y));
     if (mod(index, 2.0) != 0.0) local.x = 1.0 - local.x;
 
-    return texture2D(noiseTex, local).xy * wave * 0.0125;
+    return texture2D(noiseTex, local).xy * wave * 0.0125;  // wave already includes its scale
 }
 
 // retention based distortion (trance_shaders.gd WaterEffect)
@@ -47,7 +50,7 @@ vec4 tranceWater(vec2 uv)
 {
     if (uWave <= 0.0) return texture2D(bitmap, uv);
 
-    vec2 offset = noiseOffset(uv, uWave);
+    vec2 offset = noiseOffset(uv, uWave * uWarpScale);
     vec4 c = texture2D(bitmap, uv + offset);
     c += texture2D(bitmap, uv + offset * (1.0 - uGhost));
     return c * 0.5;
@@ -58,7 +61,7 @@ vec4 water(vec2 uv)
 {
     if (uSquiggle <= 0.0) return tranceWater(uv);
 
-    vec2 offset = noiseOffset(uv, uSquiggle);
+    vec2 offset = noiseOffset(uv, uSquiggle * uSquiggleScale);
     vec4 c = tranceWater(uv + offset);
     c += tranceWater(uv + offset * (1.0 - uSquiggleGhost));
     return c * 0.5;
@@ -78,6 +81,21 @@ vec4 grade(vec4 c)
 void main()
 {
     vec2 uv = openfl_TextureCoordv;
+
+    // debug: show the displacement field (red = x, green = y, grey = none)
+    if (uView > 1.5)
+    {
+        vec2 o = noiseOffset(uv, uWave * uWarpScale) + noiseOffset(uv, uSquiggle * uSquiggleScale);
+        gl_FragColor = vec4(0.5 + o * 40.0, 0.5, 1.0);
+        return;
+    }
+    // debug: left half is the untouched screen
+    if (uView > 0.5 && uv.x < 0.5)
+    {
+        gl_FragColor = texture2D(bitmap, uv);
+        return;
+    }
+
     vec4 col = grade(water(uv));
 
     if (uBlur > 0.0)
