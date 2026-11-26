@@ -159,6 +159,14 @@
 			"fps": 24,
 			"name": "right0",
 			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [0, 0],
+			"anim": "hey",
+			"fps": 24,
+			"name": "intro",
+			"indices": [40,41,42,43,44,45,46,47,48,49,50,55,56,57,58,59,60]
 		}
 	],
 	"vocals_file": "",

@@ -57,6 +57,14 @@
 			"indices": []
 		},
 		{
+			"loop": true,
+			"offsets": [0, 0],
+			"anim": "singRIGHT-loop",
+			"fps": 24,
+			"name": "right_hypno",
+			"indices": [6,7,8,9,10,11,12,13]
+		},
+		{
 			"loop": false,
 			"offsets": [0, 0],
 			"anim": "singDOWN",
