@@ -26,6 +26,11 @@ local GF_CHAR_TYPE = 'bf'            -- the character slot GF is in (she is the 
 -- Everything from the Godot timeline (squiggle keys, y offset keys, ...) reads about 1 second late in Psych, so the
 -- timeline is sampled this many seconds EARLIER. Set to 0 to disable. The chart events are placed already shifted.
 local SONG_TIME_OFFSET = 1.0
+-- How far the water warp pushes the picture. 1.0 = exactly the Godot shader, which only moves things ~2 px (retention
+-- warp) / ~6 px (Water Warp event) on average because its noise texture is dark - that reads as a faint blur.
+-- Higher = visibly wobbly. Try the debug keys in scripts/debugWater.lua to pick values.
+local TRANCE_WARP_SCALE = 4.0
+local SQUIGGLE_WARP_SCALE = 4.0
 local STOP_EASE = 0.75               -- seconds the pendulum takes to ease back to straight after Pendulum Stop
 
 -- ===== Godot constants ===================================================================================
@@ -402,7 +407,20 @@ local function updateTrance(elapsed)
 		squiggle = squiggleTo
 	end
 
-	local active = tranceStrength > 0.002 or squiggle > 0.001
+	-- scripts/debugWater.lua can take over the values (waterDebug* variables)
+	local debugView = 0
+	local warpScale, squiggleScale = TRANCE_WARP_SCALE, SQUIGGLE_WARP_SCALE
+	local forced = getVar('waterDebug')
+	if forced then
+		wave = getVar('waterDebugWave') or wave
+		ghost = getVar('waterDebugGhost') or ghost
+		squiggle = getVar('waterDebugSquiggle') or squiggle
+		warpScale = getVar('waterDebugScale') or warpScale
+		squiggleScale = getVar('waterDebugSquiggleScale') or squiggleScale
+		debugView = getVar('waterDebugView') or 0
+	end
+
+	local active = forced or tranceStrength > 0.002 or squiggle > 0.001
 	setFilters(active)
 	if active then
 		setShaderFloat('tranceController', 'uTime', shaderTime)
@@ -413,6 +431,9 @@ local function updateTrance(elapsed)
 		setShaderFloat('tranceController', 'uBlur', blur)
 		setShaderFloat('tranceController', 'uSquiggle', squiggle)
 		setShaderFloat('tranceController', 'uSquiggleGhost', 0.449)
+		setShaderFloat('tranceController', 'uWarpScale', warpScale)
+		setShaderFloat('tranceController', 'uSquiggleScale', squiggleScale)
+		setShaderFloat('tranceController', 'uView', debugView)
 	end
 
 	-- overlay + GF (trance.gd)
