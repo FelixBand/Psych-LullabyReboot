@@ -1,6 +1,6 @@
 local INTERVAL_STEPS = 1    -- how often the sing animation restarts, in steps. 1 = vanilla, 2 = half speed
 local TIMEOUT_STEPS  = 2.0    -- stop retriggering if no hold piece was hit for this long
-local AFFECT_OPPONENT = true
+local AFFECT_OPPONENT = false
 local AFFECT_PLAYER   = true
 local DEBUG = false             -- true = on-screen log (debugPrint isn't visible in multiplayer)
 

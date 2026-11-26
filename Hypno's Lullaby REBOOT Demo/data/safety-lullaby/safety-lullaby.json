@@ -1400,12 +1400,36 @@
 		[
 			156962.56684492,
 			[
-				["Camera Movement", "0", "[true,4,\"CLASSIC\",\"In\"]"]
+				["Transition to Ending", "", ""]
+			]
+		],
+		[
+			158550,
+			[
+				["Change Character", "dad", "hypno_end"]
+			]
+		],
+		[
+			159080,
+			[
+				["Fade In Ending", "", ""]
+			]
+		],
+		[
+			183786,
+			[
+				["Alt Idle Animation", "gf", "-disabled"]
+			]
+		],
+		[
+			183786,
+			[
+				["Play Animation", "laugh", "gf"]
 			]
 		]
 	],
 	"player2": "hypno",
-	"gfVersion": "blank",
+	"gfVersion": "hypno_end",
 	"disableNoteRgb": false,
 	"disableNoteRGB": false,
 	"splashSkin": "",

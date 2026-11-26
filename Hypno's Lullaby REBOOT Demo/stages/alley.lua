@@ -241,6 +241,7 @@ local function pushLightState(elapsed, energies)
 	local scrollY = getProperty('camGame.scroll.y') or 0
 	local lightScale = sampleHypnoLightScale(t) / 2
 	local hx, hy = hypnoLightWorld()
+	local endingLightingOff = getVar('safetyLullabyEndingLightingOff') == true
 	local hyp = {
 		hx, hy,
 		hypnoLightW * lightScale * 0.5, hypnoLightH * lightScale * 0.5,
@@ -259,10 +260,15 @@ local function pushLightState(elapsed, energies)
 		setShaderFloatArray(tag, 'uLampEnergy', energies)
 		setShaderFloatArray(tag, 'uMainColor', { r * e, g * e, b * e })
 		setShaderFloatArray(tag, 'uHyp', hyp)
+		local flags = entry.flags
+		if tag == 'dad' and endingLightingOff then flags = { 0, 0, 0, 0 } end
+		setShaderFloatArray(tag, 'uFlags', flags)
 
 		if tag == 'dad' then
 			local bobX = getVar('pendulumBobX')
-			if bobX ~= nil then
+			if endingLightingOff then
+				setShaderFloatArray(tag, 'uBob', { 0, 0, 0, 0 })
+			elseif bobX ~= nil then
 				setShaderFloatArray(tag, 'uBob', { bobX, getVar('pendulumBobY'), getVar('pendulumBobRX'), getVar('pendulumBobRY') })
 				setShaderFloatArray(tag, 'uBobColor', { getVar('pendulumBobR'), getVar('pendulumBobG'), getVar('pendulumBobB') })
 			end
