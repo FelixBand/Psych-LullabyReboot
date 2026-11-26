@@ -57,9 +57,56 @@ local HUD_CENTER_X = 640
 local CANVAS_X, CANVAS_Y = 446, 713
 local PENDULUM_NODE_X, PENDULUM_NODE_Y = -157.575, 175.805
 local TRAIL_POS = { 10, -127 }
+local ENDING_HAND_SCALE = 1.0
+local ENDING_ACTIVE_NODE_POS = { 3.1579895, -5.0881042 }
+local ENDING_FRAME_CENTER = { 354, 303 }
 local BOB_LOCAL = { -0.9634635, 124.806694 }
 local BOB_RADIUS = { 57.8, 81.4 } -- PointLight2D2 (pink glow on Hypno): radial gradient, black at 0.419 * 0.7071 of the texture
 local BOB_COLOR = { 0.4, 0.4 * 0.4745098, 0.4 * 0.5176471 }
+
+-- Godot end-character pendulum anchors, keyed by animation frame. Sprite offsets are from the source scene.
+local ENDING_HAND_POSES = {
+	['idle'] = {
+		spriteOffset = { 0, 106 },
+		keys = { { 0, -142.708, 186.858 }, { 2, -143.15, 186.15 }, { 3, -142.94, 186.43 }, { 4, -143.27, 186.96 } }
+	},
+	['laugh'] = {
+		spriteOffset = { 0, 106 },
+		keys = {
+			{ 0, -143.158, 187.088 }, { 1, -142, 187 }, { 2, -133.915, 185 }, { 3, -129.005, 188.035 },
+			{ 4, -135.01, 187.175 }, { 5, -136.275, 184.83 }, { 6, -136.275, 181.775 }, { 7, -136.275, 183.41 },
+			{ 8, -136.275, 182.775 }, { 9, -136.275, 183.41 }, { 10, -136.275, 183.775 }, { 11, -141.005, 179.49 },
+			{ 12, -143.705, 179.71 }, { 13, -145.865, 183.885 }, { 15, -150.42, 178.885 }, { 16, -154.37, 175.805 },
+			{ 17, -157.575, 175.805 }
+		}
+	},
+	['singDOWN'] = {
+		spriteOffset = { 7, 106 },
+		keys = { { 0, -127, 181 }, { 1, -128, 184 }, { 2, -127, 186 }, { 3, -126, 185 } }
+	},
+	['singLEFT'] = {
+		spriteOffset = { 9, 106 },
+		keys = { { 0, -99, 246 }, { 1, -93, 240 }, { 2, -91, 236 }, { 3, -91, 239 } }
+	},
+	['singRIGHT'] = {
+		spriteOffset = { -7, 106 },
+		keys = { { 0, -144, 187 }, { 1, -147, 185 }, { 2, -150, 184 }, { 3, -148, 184 } }
+	},
+	['singUP'] = {
+		spriteOffset = { 6, 106 },
+		keys = { { 0, -127, 179 }, { 1, -125, 184 }, { 2, -126, 182 }, { 3, -125, 183 } }
+	}
+}
+
+-- EASY TUNING: extra Psych-pixel adjustment per end-character animation, added after the source anchor.
+local ENDING_HAND_ADJUST = {
+	['idle'] = { 0, 0 },
+	['laugh'] = { 0, 0 },
+	['singDOWN'] = { 0, 0 },
+	['singLEFT'] = { 0, 0 },
+	['singRIGHT'] = { 0, 0 },
+	['singUP'] = { 0, 0 }
+}
 
 -- EASY TUNING: extra offset in Psych pixels per dad animation name, added on top of the computed position
 -- (+x right, +y down). Edit these by eye. Animations that are not listed get {0, 0}.
@@ -152,6 +199,12 @@ local squiggle, squiggleFrom, squiggleTo, squiggleDur, squiggleT = 0.0, 0.0, 0.0
 -- ===== helpers ===========================================================================================
 local function clamp(v, lo, hi) return math.max(lo, math.min(hi, v)) end
 local function lerp(a, b, t) return a + (b - a) * t end
+
+local function hitTrailAlpha(timeSinceHit)
+	if timeSinceHit < 0.05 then return lerp(1, 0.49019608, timeSinceHit / 0.05) end
+	if timeSinceHit < 0.3 then return lerp(0.49019608, 0, (timeSinceHit - 0.05) / 0.25) end
+	return 0
+end
 
 local function sampleKeys(keys, t)
 	if t <= keys[1][1] then return keys[1][2] end
@@ -388,13 +441,34 @@ local function handLocal(animName, frame)
 	return sprite[1] + PENDULUM_NODE_X + key[2], sprite[2] + PENDULUM_NODE_Y + key[3]
 end
 
--- Hypno-local -> Psych world, using exactly how FlxSprite draws the current frame (x, offset, origin, scale)
-local function localToWorld(lx, ly)
-	local cx, cy = lx + CANVAS_X, ly + CANVAS_Y
-	local ox, oy = getProperty('dad.origin.x'), getProperty('dad.origin.y')
-	local sx, sy = getProperty('dad.scale.x'), getProperty('dad.scale.y')
-	local x = getProperty('dad.x') - getProperty('dad.offset.x') + ox + (cx - ox) * sx
-	local y = getProperty('dad.y') - getProperty('dad.offset.y') + oy + (cy - oy) * sy
+local function endingHandLocal(animName, frame)
+	local pose = ENDING_HAND_POSES[animName] or ENDING_HAND_POSES['idle']
+	local keys = pose.keys
+	local x, y = keys[1][2], keys[1][3]
+	for i = 1, #keys - 1 do
+		local current, following = keys[i], keys[i + 1]
+		if frame <= following[1] then
+			local t = clamp((frame - current[1]) / (following[1] - current[1]), 0, 1)
+			x = current[2] + (following[2] - current[2]) * t
+			y = current[3] + (following[3] - current[3]) * t
+			break
+		end
+		x, y = following[2], following[3]
+	end
+	return ENDING_FRAME_CENTER[1] + x - pose.spriteOffset[1],
+		ENDING_FRAME_CENTER[2] + y - pose.spriteOffset[2]
+end
+
+-- Character-local -> Psych world, using FlxSprite's current x, offset, origin, and scale.
+local function localToWorld(character, lx, ly)
+	local cx, cy = lx, ly
+	if character == 'dad' then
+		cx, cy = lx + CANVAS_X, ly + CANVAS_Y
+	end
+	local ox, oy = getProperty(character .. '.origin.x'), getProperty(character .. '.origin.y')
+	local sx, sy = getProperty(character .. '.scale.x'), getProperty(character .. '.scale.y')
+	local x = getProperty(character .. '.x') - getProperty(character .. '.offset.x') + ox + (cx - ox) * sx
+	local y = getProperty(character .. '.y') - getProperty(character .. '.offset.y') + oy + (cy - oy) * sy
 	return x, y
 end
 
@@ -406,33 +480,57 @@ local function stepTravel()
 	return (a[1] - st[1]) + HAND_SCALE * (ax - sx), (a[2] - st[2]) + HAND_SCALE * (ay - sy)
 end
 
+local lastHandEnding = false
+
 local function updateHand()
-	local animName = getProperty('dad.animation.curAnim.name') or 'idle'
-	local frame = getProperty('dad.animation.curAnim.curFrame') or 0
-	local tx, ty = handLocal(animName, frame)
-
-	local px, py = localToWorld(tx, ty)
-	local adj = HAND_ADJUST[animName] or { 0, 0 }
-	px, py = px + adj[1], py + adj[2]
-	if animName == 'step' then
-		local tx, ty = stepTravel()
-		local p = STEP_PROGRESS[frame + 1] or 1
-		px, py = px + tx * p, py + ty * p
+	local ending = getVar('safetyLullabyEndingActive') == true
+	local character = ending and 'gf' or 'dad'
+	local animName = getProperty(character .. '.animation.curAnim.name') or 'idle'
+	local frame = getProperty(character .. '.animation.curAnim.curFrame') or 0
+	if ending ~= lastHandEnding then
+		local handScale = ending and ENDING_HAND_SCALE or HAND_SCALE
+		scaleObject('pndHandActive', handScale, handScale, false)
+		scaleObject('pndHandTrail', handScale, handScale, false)
+		lastHandEnding = ending
 	end
-	local k = HAND_SCALE
 
-	setProperty('pndHandActive.x', px - 31)
-	setProperty('pndHandActive.y', py - 3.5)
+	local px, py, activeX, activeY, k
+	local handAlpha = 1
+	if ending then
+		local lx, ly = endingHandLocal(animName, frame)
+		local adj = ENDING_HAND_ADJUST[animName] or { 0, 0 }
+		lx, ly = lx + adj[1], ly + adj[2]
+		px, py = localToWorld('gf', lx, ly)
+		activeX, activeY = localToWorld('gf', lx + ENDING_ACTIVE_NODE_POS[1], ly + ENDING_ACTIVE_NODE_POS[2])
+		k = ENDING_HAND_SCALE
+
+		local songTime = (getSongPosition() or 0) / 1000 + SONG_TIME_OFFSET
+		handAlpha = 1 - clamp((songTime - 188.91667) / (193.04167 - 188.91667), 0, 1)
+	else
+		local lx, ly = handLocal(animName, frame)
+		px, py = localToWorld('dad', lx, ly)
+		local adj = HAND_ADJUST[animName] or { 0, 0 }
+		px, py = px + adj[1], py + adj[2]
+		if animName == 'step' then
+			local tx, ty = stepTravel()
+			local p = STEP_PROGRESS[frame + 1] or 1
+			px, py = px + tx * p, py + ty * p
+		end
+		activeX, activeY = px, py
+		k = HAND_SCALE
+	end
+
+	setProperty('pndHandActive.x', activeX - 31)
+	setProperty('pndHandActive.y', activeY - 3.5)
 	setProperty('pndHandActive.angle', math.deg(rotation))
+	setProperty('pndHandActive.alpha', handAlpha)
 
 	local trailRot = getVar('pendulumTrailRotation') or 0
-	local tx2, ty2 = px + TRAIL_POS[1] * k, py + TRAIL_POS[2] * k
-	setProperty('pndHandTrail.x', tx2 - 46)
-	setProperty('pndHandTrail.y', ty2 + 121.5)
+	local trailX, trailY = activeX + TRAIL_POS[1] * k, activeY + TRAIL_POS[2] * k
+	setProperty('pndHandTrail.x', trailX - 46)
+	setProperty('pndHandTrail.y', trailY + 121.5)
 	setProperty('pndHandTrail.angle', math.deg(trailRot))
-	local a = 0
-	if hitT < 0.1667 then a = 0.49019608 elseif hitT < 0.6667 then a = 0.49019608 * (1 - (hitT - 0.1667) / 0.5) end
-	setProperty('pndHandTrail.alpha', a)
+	setProperty('pndHandTrail.alpha', hitTrailAlpha(hitT) * handAlpha)
 
 	-- glow on Hypno that follows the pendulum bob (PointLight2D2, read by stages/alley.lua)
 	local c, s = math.cos(rotation), math.sin(rotation)
@@ -503,10 +601,8 @@ local function updateHud(elapsed, ms)
 	placeHud(ax + 0 * PS, ay - 76 * PS, 'pndHand', 310, 433)
 	placeHud(ax + 36 * PS, ay + 227 * PS, 'pndDrop', 252, 624)
 
-	hitT = hitT + elapsed
-	local trailA, shineA = 0, 0
-	if hitT < 0.05 then trailA = lerp(1, 0.49019608, hitT / 0.05)
-	elseif hitT < 0.3 then trailA = lerp(0.49019608, 0, (hitT - 0.05) / 0.25) end
+	local trailA = hitTrailAlpha(hitT)
+	local shineA = 0
 	if hitT < 0.16666667 then shineA = 0.39215687
 	elseif hitT < 0.375 then shineA = 0.39215687 * (1 - (hitT - 0.16666667) / 0.20833333) end
 
@@ -532,6 +628,8 @@ local function startMechanic(ms)
 end
 
 local function updateServer(elapsed, ms)
+	hitT = hitT + elapsed
+
 	-- swings straight away when started, eases back to straight when stopped
 	if started then
 		rotation = godotRotation(ms)

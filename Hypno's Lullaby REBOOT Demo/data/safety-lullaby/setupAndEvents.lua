@@ -1,5 +1,16 @@
 luaDebugMode = true
 
+local SOURCE_TIME_OFFSET = 1.0
+local PS = 2 / 3
+local ENDING_MOVE_START = 181.1
+local ENDING_FADE_START = 184.1
+local ENDING_DARKEN_START = 191.86667
+local ENDING_ZOOM_DURATION = 198 - ENDING_MOVE_START
+local ENDING_HYPNO_DURATION = 193.13333 - ENDING_MOVE_START
+local endingMotionStarted = false
+local endingFadeStarted = false
+local endingDarkenStarted = false
+
 local function getPlaysAsBF() -- returns true if not playing Psych Online for PE compat :)))
     if type(_G.playsAsBF) == "function" then
         local result = _G.playsAsBF()
@@ -29,10 +40,12 @@ end
 
 function onCreatePost()
     setObjectCamera('gf', 'other')
+    setObjectCamera('gfGroup', 'other')
     setProperty('gf.x', 310)
     setProperty('gf.y', 10)
     setProperty('gf.alpha', 0.0001)
     setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
+    setVar('safetyLullabyEndingActive', false)
 
     if getPlaysAsBF() then -- hide opponent strums if not playing as opponent
         for i = 0,getProperty('opponentStrums.length') - 1 do
@@ -56,12 +69,49 @@ function onEvent(name, value1, value2)
     end
     if name == 'Fade In Ending' then
         setVar('safetyLullabyEndingLightingOff', true)
+        setVar('safetyLullabyEndingActive', true)
         setObjectCamera('pndHandTrail', 'other')
         setObjectCamera('pndHandActive', 'other')
-        setObjectOrder('pndHandActive', getObjectOrder('gfGroup') + 1)
         setObjectOrder('pndHandTrail', getObjectOrder('gfGroup') + 1)
+        setObjectOrder('pndHandActive', getObjectOrder('gfGroup') + 2)
         doTweenColor('endBgColor', 'endBg', getColorFromHex('FFFFFF'), 1.5, 'linear')
         doTweenAlpha('hypnoIn', 'gf', 1, 1.5, 'linear')
+    end
+end
+
+function onUpdatePost()
+    local songTime = (getSongPosition() or 0) / 1000 + SOURCE_TIME_OFFSET
+
+    if not endingMotionStarted and songTime >= ENDING_MOVE_START then
+        endingMotionStarted = true
+
+        local bgWidth = getProperty('endBg.width')
+        local bgHeight = getProperty('endBg.height')
+        local bgX = getProperty('endBg.x')
+        local bgY = getProperty('endBg.y')
+        local bgScaleX = getProperty('endBg.scale.x')
+        local bgScaleY = getProperty('endBg.scale.y')
+        local zoom = 1.38
+        local targetBgX = bgX - bgWidth * (zoom - 1) / 2 - PS
+        local targetBgY = bgY - bgHeight * (zoom - 1) / 2 + 113 * PS
+
+        doTweenX('endBgZoomX', 'endBg.scale', bgScaleX * zoom, ENDING_ZOOM_DURATION, 'quadIn')
+        doTweenY('endBgZoomY', 'endBg.scale', bgScaleY * zoom, ENDING_ZOOM_DURATION, 'quadIn')
+
+        doTweenX('hypnoShrinkX', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')
+        doTweenY('hypnoShrinkY', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')
+        doTweenX('hypnoDriftX', 'gf', getProperty('gf.x') - 5 * PS, ENDING_HYPNO_DURATION, 'cubeIn')
+        doTweenY('hypnoDriftY', 'gf', getProperty('gf.y') - 93 * PS, ENDING_HYPNO_DURATION, 'cubeIn')
+    end
+
+    if not endingFadeStarted and songTime >= ENDING_FADE_START then
+        endingFadeStarted = true
+        doTweenAlpha('hypnoDarkFade', 'gf', 0, 189.16667 - ENDING_FADE_START, 'quadOut')
+    end
+
+    if not endingDarkenStarted and songTime >= ENDING_DARKEN_START then
+        endingDarkenStarted = true
+        doTweenColor('endBgToDark', 'endBg', getColorFromHex('000000'), 197 - ENDING_DARKEN_START, 'quadIn')
     end
 end
 
