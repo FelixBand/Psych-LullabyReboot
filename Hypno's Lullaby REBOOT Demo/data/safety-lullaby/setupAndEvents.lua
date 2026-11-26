@@ -46,7 +46,7 @@ end
 
 function onEvent(name, value1, value2)
     if name == 'Hypno Step Forward' then
-        debugPrint('walk damnit')
+        --debugPrint('walk damnit')
         triggerEvent('Play Animation', 'step', 'dad')
         runTimer('hypnoSnapForward', getAnimDuration('dad') - 0.001)
     end
