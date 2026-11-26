@@ -10,6 +10,8 @@ uniform float uGhost;
 uniform float uSaturation;
 uniform float uContrast;
 uniform float uBlur;
+uniform float uSquiggle;       // song-timeline water warp (SquiggleLayer WAVE_STRENGTH, 0..2)
+uniform float uSquiggleGhost;  // SquiggleLayer GHOST_STRENGTH (0.449 in the scene)
 
 vec3 rgb2hsv(vec3 c)
 {
@@ -28,10 +30,8 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-vec4 water(vec2 uv)
+vec2 noiseOffset(vec2 uv, float wave)
 {
-    if (uWave <= 0.0) return texture2D(bitmap, uv);
-
     vec2 nuv = uv * vec2(3.0, 1.0);
     nuv.x -= uTime * 0.15;
 
@@ -39,10 +39,28 @@ vec4 water(vec2 uv)
     vec2 local = vec2(fract(nuv.x), fract(nuv.y));
     if (mod(index, 2.0) != 0.0) local.x = 1.0 - local.x;
 
-    vec2 offset = texture2D(noiseTex, local).xy * uWave * 0.0125;
+    return texture2D(noiseTex, local).xy * wave * 0.0125;
+}
 
+// retention based distortion (trance_shaders.gd WaterEffect)
+vec4 tranceWater(vec2 uv)
+{
+    if (uWave <= 0.0) return texture2D(bitmap, uv);
+
+    vec2 offset = noiseOffset(uv, uWave);
     vec4 c = texture2D(bitmap, uv + offset);
     c += texture2D(bitmap, uv + offset * (1.0 - uGhost));
+    return c * 0.5;
+}
+
+// timeline distortion (SquiggleLayer), applied on top of the retention one
+vec4 water(vec2 uv)
+{
+    if (uSquiggle <= 0.0) return tranceWater(uv);
+
+    vec2 offset = noiseOffset(uv, uSquiggle);
+    vec4 c = tranceWater(uv + offset);
+    c += tranceWater(uv + offset * (1.0 - uSquiggleGhost));
     return c * 0.5;
 }
 

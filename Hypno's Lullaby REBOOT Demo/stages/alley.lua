@@ -19,23 +19,46 @@ local mainBaseEnergy = 0.31
 local mainBaseColor = { 0.961983, 0.8266328, 0.884364 }
 local subEnergy = 0.08
 
--- Hypno's light offset per pose, in pixels, RELATIVE to his idle light position (+x right, +y down).
--- Looked up by exact animation name first, then by the name without its suffix (singLEFT-alt -> singLEFT), then {0, 0}.
--- Tune these by eye.
-local hypnoLightPoses = {
-	idle = { -20, 0 },
-	singLEFT = { -160, -160 },
-	singDOWN = { -30, 0 },
-	singUP = { -140, -160 },
-	singRIGHT = { -30, -10 },
-	['idle-alt'] = { 0, 0 },
-	['singLEFT-alt'] = { -320, -50 },
-	['singDOWN-alt'] = { -50, 130 },
-	['singUP-alt'] = { -30, -240 },
-	['singRIGHT-alt'] = { 100, 0 },
-	walk = { -30, -10 },
+-- ===== Hypno's MainLight position ========================================================================
+-- Godot moves MainLight per animation (and per frame for laugh / step) with the AnimationPlayer in
+-- chr_hypno_safety.tscn. The values are in Hypno-local units; the port's sprite canvas is Hypno-local + CANVAS.
+-- Keys are { frame (24fps), x, y } and stay active until the next key (stepped, like the Godot tracks).
+local CANVAS_X, CANVAS_Y = 446, 713
+
+local LIGHT_KEYS = {
+	['idle'] = { { 0, 356.92, -253.08 } },
+	['singLEFT'] = { { 0, 253.08, -276.15 } },
+	['singDOWN'] = { { 0, 318.46, -231.54 } },
+	['singUP'] = { { 0, 265.38, -303.85 } },
+	['singRIGHT'] = { { 0, 340.0, -235.38 } },
+	['idle-alt'] = { { 0, 356.92, -253.08 } },
+	['singLEFT-alt'] = { { 0, 90.0, -339.23 } },
+	['singDOWN-alt'] = { { 0, 289.23, -206.92 } },
+	['singUP-alt'] = { { 0, 284.62, -426.15 } },
+	['singRIGHT-alt'] = { { 0, 418.46, -268.46 } },
+	['step'] = { { 0, 356.92, -253.08 }, { 8, 337.23, -253.08 }, { 17, 350.85, -253.08 }, { 20, 354.62, -253.08 }, { 24, 356.92, -253.08 } },
+	['laugh'] = { { 0, 356.92, -253.08 }, { 45, 378.46, -245.38 }, { 50, 365.38, -245.38 }, { 55, 352.31, -266.92 }, { 60, 333.85, -253.08 }, { 64, 317.69, -245.38 }, { 73, 345.38, -253.08 }, { 75, 356.92, -253.08 } },
 }
-local lightRestX, lightRestY = 0, 0  -- idle light position relative to dad.x / dad.y (set in onCreatePost)
+
+-- EASY TUNING: extra offset in Psych pixels per dad animation name, added on top (+x right, +y down).
+local LIGHT_ADJUST = {
+	['idle'] = { 0, 0 },
+	['singLEFT'] = { 0, 0 },
+	['singDOWN'] = { 0, 0 },
+	['singUP'] = { 0, 0 },
+	['singRIGHT'] = { 0, 0 },
+	['idle-alt'] = { 0, 0 },
+	['singLEFT-alt'] = { 0, 0 },
+	['singDOWN-alt'] = { 0, 0 },
+	['singUP-alt'] = { 0, 0 },
+	['singRIGHT-alt'] = { 0, 0 },
+	['step'] = { 0, 0 },
+	['laugh'] = { 0, 0 },
+}
+local watchedChars = { dad = '', boyfriend = '' }
+
+-- Godot timeline times read about 1 second late in Psych, so the timeline is sampled this many seconds earlier.
+local SONG_TIME_OFFSET = 1.0
 
 -- MainLight colour/energy keys from the song's AnimationPlayer: {seconds, r, g, b, energy}
 local pink = { 0.9523702, 0.14184096, 0.49339223 }
@@ -177,36 +200,62 @@ function onCreate()
 end
 
 function onCreatePost()
-	-- anchor the light to dad.x/dad.y (constant) instead of the frame midpoint (which changes every frame)
-	lightRestX = getMidpointX('dad') + 250 - getProperty('dad.x')
-	lightRestY = getMidpointY('dad') - getProperty('dad.y')
-	setVar('hypnoLightRestX', lightRestX) -- shared with data/safety-lullaby/pendulum.lua
-	setVar('hypnoLightRestY', lightRestY)
 	if not lightingOn then return end
 	-- the characters are lit like layer-1 items (Hypno: light_mask 81)
-	for _, pair in ipairs({ { 'dad', 'dad' }, { 'boyfriend', 'boyfriend' } }) do
-		local entry = { tag = pair[2], scroll = 1, flags = { 1, 1, 1, 0 }, char = true }
+	for _, tag in ipairs({ 'dad', 'boyfriend' }) do
+		local entry = { tag = tag, scroll = 1, flags = { 1, 1, 1, 0 }, char = true }
 		lit[#lit + 1] = entry
 		setupLitSprite(entry)
+		watchedChars[tag] = getProperty(tag .. '.curCharacter') or ''
 	end
 end
 
+-- Hypno-local -> Psych world, using exactly how FlxSprite draws the current frame (x, offset, origin, scale)
+local function localToWorld(lx, ly)
+	local cx, cy = lx + CANVAS_X, ly + CANVAS_Y
+	local ox, oy = getProperty('dad.origin.x'), getProperty('dad.origin.y')
+	local sx, sy = getProperty('dad.scale.x'), getProperty('dad.scale.y')
+	local x = getProperty('dad.x') - getProperty('dad.offset.x') + ox + (cx - ox) * sx
+	local y = getProperty('dad.y') - getProperty('dad.offset.y') + oy + (cy - oy) * sy
+	return x, y
+end
+
+local function hypnoLightWorld()
+	local pose = getProperty('dad.animation.curAnim.name') or 'idle'
+	local frame = getProperty('dad.animation.curAnim.curFrame') or 0
+	local keys = LIGHT_KEYS[pose] or LIGHT_KEYS['idle']
+	local key = keys[1]
+	for _, k in ipairs(keys) do
+		if k[1] <= frame then key = k end
+	end
+
+	local x, y = localToWorld(key[2], key[3])
+	local adj = LIGHT_ADJUST[pose] or { 0, 0 }
+	return x + adj[1], y + adj[2]
+end
+
 local function pushLightState(elapsed, energies)
-	local t = (getSongPosition() or 0) / 1000
+	local t = (getSongPosition() or 0) / 1000 + SONG_TIME_OFFSET
 	local r, g, b, e = sampleMain(t)
 	local scrollX = getProperty('camGame.scroll.x') or 0
 	local scrollY = getProperty('camGame.scroll.y') or 0
-	local pose = getProperty('dad.animation.curAnim.name') or 'idle'
-	local po = hypnoLightPoses[pose] or hypnoLightPoses[pose:match('^[^-]+')] or { 0, 0 }
 	local lightScale = sampleHypnoLightScale(t) / 2
+	local hx, hy = hypnoLightWorld()
 	local hyp = {
-		getProperty('dad.x') + lightRestX + po[1],
-		getProperty('dad.y') + lightRestY + po[2],
+		hx, hy,
 		hypnoLightW * lightScale * 0.5, hypnoLightH * lightScale * 0.5,
 	}
 
 	for _, entry in ipairs(lit) do
 		local tag = entry.tag
+		-- Change Character swaps the Character object, which drops its shader: apply it again
+		if entry.char then
+			local now = getProperty(tag .. '.curCharacter') or ''
+			if now ~= watchedChars[tag] then
+				watchedChars[tag] = now
+				setupLitSprite(entry)
+			end
+		end
 		setShaderFloatArray(tag, 'uLampEnergy', energies)
 		setShaderFloatArray(tag, 'uMainColor', { r * e, g * e, b * e })
 		setShaderFloatArray(tag, 'uHyp', hyp)

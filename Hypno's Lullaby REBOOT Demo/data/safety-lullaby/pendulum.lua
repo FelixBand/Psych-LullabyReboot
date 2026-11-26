@@ -6,14 +6,27 @@
 --   songs/safety_lullaby/trance_shaders.gd                                (screen effects)
 --   songs/safety_lullaby/sng_safety_lullaby.tscn                          (timeline: drop / start / y offset / ratio)
 -- Press SPACE when the pendulum passes the centre (every half measure).
--- Needs Psych Engine 1.0+ and stages/alley.lua (it shares Hypno's light position through setVar).
+-- Needs Psych Engine 1.0+ and stages/alley.lua (it shares the pendulum bob glow with it through setVar).
+--
+-- Song events (add them in the chart editor, no custom_events file needed):
+--   Pendulum Drop   value1: nothing = drop the HUD pendulum in, "hide" = hide it again
+--   Pendulum Start  the mechanic starts (hits count, pendulum swings)
+--   Pendulum Stop   the mechanic stops (pendulum eases back to straight)
+--   Water Warp      value1: wave strength (0 - 2), value2: seconds to tween there (0 = instant). The SquiggleLayer.
 
 -- ===== tunables ==========================================================================================
 local KEYS = { 'SPACE' }
 local FAITHFUL_START_MISS = true  -- the Godot server counts the first half-measure after start as a miss (start at 85)
 local BABY_MODE = false           -- Godot "baby mode": the game presses for you at a random offset (no voice lines)
 local HAND_SCALE = 1.25           -- Psych pixels per Godot Hypno-local unit (Hypno's json scale)
-local TRANCE_GF_POSE = true       -- GF switches to the -hypno poses while retention <= 60
+local TRANCE_GF_CHARACTER = 'gf-hypno' -- Change Character event fired at retention <= 60 (nil = never change)
+local NORMAL_GF_CHARACTER = 'gf'
+local GF_CHAR_TYPE = 'bf'            -- the character slot GF is in (she is the player in this port)
+
+-- Everything from the Godot timeline (squiggle keys, y offset keys, ...) reads about 1 second late in Psych, so the
+-- timeline is sampled this many seconds EARLIER. Set to 0 to disable. The chart events are placed already shifted.
+local SONG_TIME_OFFSET = 1.0
+local STOP_EASE = 0.75               -- seconds the pendulum takes to ease back to straight after Pendulum Stop
 
 -- ===== Godot constants ===================================================================================
 local HIT_WINDOW_MS = 75.0
@@ -21,11 +34,7 @@ local RETENTION_MAX = 100
 local RETENTION_GAIN = 15
 local RETENTION_LOSS = -15
 local ROTATION_LENGTH = 0.825
-local INITIAL_ROTATION = 0.8198507336215746 -- value left in the scene; the in-hand pendulum rests here until the mechanic starts
 
--- song timeline (seconds): { from, to }
-local DROPPED = { { 31.933332, 160.0 } }
-local STARTED = { { 33.733334, 159.08333 }, { 160.04167, 194.36667 } }
 -- keyframes {time, value} (linear)
 local Y_OFFSET_KEYS = { { 0, 0 }, { 37, 0 }, { 40.083332, 8 }, { 123.166664, 8 }, { 125.791664, 30 }, { 159.125, 30 }, { 159.83333, 0 } }
 local LINEAR_RATIO_KEYS = { { 0, 0 }, { 124, 0 }, { 124.041664, 0.4 }, { 158.08333, 0.4 }, { 158.5, 0 } }
@@ -43,16 +52,53 @@ local PS = 2 / 3
 local HUD_CENTER_X = 640
 
 -- ===== in-hand pendulum (Hypno) ==========================================================================
--- Godot positions are in Hypno-local units. Sprite node (-230, -538.46) + Pendulum control (-157.575, 175.805).
-local HAND_ORIGIN_X, HAND_ORIGIN_Y = -230 + -157.575, -538.46154 + 175.805
-local LIGHT_LOCAL_X, LIGHT_LOCAL_Y = 356.92307, -253.07693 -- Hypno's MainLight, used to line the units up with the port's light
+-- Godot works in "Hypno-local" units. The port's sprite canvas (the 1000x778 xml frame) is Hypno-local + CANVAS.
+-- Anchor (Hypno-local) = SPRITE[pose] + PENDULUM_NODE + key[pose][frame]
+local CANVAS_X, CANVAS_Y = 446, 713
+local PENDULUM_NODE_X, PENDULUM_NODE_Y = -157.575, 175.805
 local TRAIL_POS = { 10, -127 }
 local BOB_LOCAL = { -0.9634635, 124.806694 }
 local BOB_RADIUS = { 57.8, 81.4 } -- PointLight2D2 (pink glow on Hypno): radial gradient, black at 0.419 * 0.7071 of the texture
 local BOB_COLOR = { 0.4, 0.4 * 0.4745098, 0.4 * 0.5176471 }
 
+-- EASY TUNING: extra offset in Psych pixels per dad animation name, added on top of the computed position
+-- (+x right, +y down). Edit these by eye. Animations that are not listed get {0, 0}.
+local HAND_ADJUST = {
+	['idle'] = { 0, 25 },
+	['singLEFT'] = { 0, 25 },
+	['singDOWN'] = { 10, 25 },
+	['singUP'] = { -8, 25 },
+	['singRIGHT'] = { -8, 25 },
+	['idle-alt'] = { 60, 25 },
+	['singLEFT-alt'] = { 60, 25 },
+	['singDOWN-alt'] = { 60, 25 },
+	['singUP-alt'] = { 60, 25 },
+	['singRIGHT-alt'] = { 60, 25 },
+	['step'] = { 10, 25 },
+	['laugh'] = { 0, 25 },
+}
+
+-- Hypno's body walks forward INSIDE the step sprites (his upper body is 54 canvas px further right in the last frame
+-- than in the first; the idle-alt / sing-alt sprites are shifted by the same amount, which is the +56 in HAND_ADJUST).
+-- The Godot anchor keys don't contain that walk, so it is added back: 0 = start of the step, 1 = fully stepped.
+-- Measured from the Step frames of hypno.png (upper body centre per frame).
+local STEP_PROGRESS = { 0, 0, 0.04, 0.04, 0.04, 0.17, 0.17, 0.17, 0.28, 0.28, 0.28, 0.28, 0.31, 0.31, 0.31, 0.31, 0.31, 0.43, 0.43, 0.43, 0.91, 0.91, 0.91, 0.91, 1, 1, 1 }
+-- Total extra Psych pixels over the whole step. nil = automatic: whatever makes the last step frame land exactly where
+-- idle-alt frame 0 starts (using HAND_ADJUST), so the pendulum never jumps when the step ends. Or set { x, y } by hand.
+local STEP_TRAVEL = nil
+
+-- Sprite node position per Hypno pose (hypno_world_LIBRARY.res, track ".:position")
+local SPRITE = {
+	['AIdle'] = { -229.23, -537.69 }, ['Idle Pose'] = { -230, -538.46 },
+	['ALeft Pose'] = { -352.31, -557.69 }, ['Left Pose'] = { -388.46, -560 },
+	['ARight Pose'] = { 32.31, -508.46 }, ['Right Pose'] = { 68.46, -510 },
+	['AUp Pose'] = { -100, -672.31 }, ['Up Pose'] = { -106.15, -678.46 },
+	['ADown pose'] = { -33.08, -433.85 }, ['Down pose'] = { -26.15, -432.31 },
+	['Step'] = { -230, -538 }, ['Laugh'] = { 29.23, -510 },
+}
+
 -- Pendulum anchor keyframes per Hypno pose, in the Pendulum control's local space: { frame (24fps), x, y }.
--- Extracted from hypno_world_LIBRARY.res. Poses on the left are the Psych animation names.
+-- Extracted from hypno_world_LIBRARY.res. A frame's key stays active until the next key (stepped).
 local P = {}
 P['Idle Pose'] = { { 0, 741.0, 53.7 }, { 2, 745.0, 57.7 }, { 5, 743.0, 58.7 }, { 9, 740.16, 55.8 }, { 13, 739.16, 50.8 }, { 14, 737.16, 52.8 }, { 16, 733.16, 60.8 }, { 19, 735.16, 58.8 }, { 23, 738.16, 52.8 }, { 27, 741.16, 47.8 } }
 P['AIdle'] = { { 0, 741.0, 55.7 }, { 2, 741.0, 52.7 }, { 3, 740.0, 48.7 }, { 7, 740.16, 44.8 }, { 12, 740.16, 45.8 }, { 14, 741.16, 53.8 }, { 18, 741.16, 59.8 }, { 24, 742.16, 60.8 }, { 27, 741.16, 57.8 } }
@@ -65,32 +111,34 @@ P['AUp Pose'] = { { 0, 503.0, 106.7 }, { 2, 507.0, 106.7 }, { 8, 510.0, 110.7 } 
 P['Down pose'] = { { 0, 479.0, 88.7 }, { 2, 471.0, 89.7 }, { 4, 470.0, 84.7 }, { 7, 471.0, 84.7 } }
 P['ADown pose'] = { { 0, 488.0, -29.3 }, { 2, 487.0, -32.3 }, { 8, 486.0, -46.3 } }
 P['Step'] = { { 0, 740.0, 47.7 }, { 2, 738.0, 45.7 }, { 5, 732.0, 48.7 }, { 8, 728.0, 58.7 }, { 12, 733.0, 61.7 }, { 17, 738.0, 58.7 }, { 20, 743.0, 49.7 }, { 24, 746.0, 50.7 } }
-P['Laugh'] = { { 0, 481.0, 19.7 }, { 2, 481.0, 17.7 }, { 6, 479.0, 16.7 }, { 34, 479.0, 17.7 }, { 36, 476.0, 22.7 }, { 39, 482.0, 22.7 }, { 41, 485.0, 29.7 }, { 44, 498.0, 45.7 }, { 47, 492.0, 49.7 }, { 49, 487.0, 49.7 }, { 54, 485.0, 44.7 }, { 56, 473.0, 48.7 }, { 63, 457.0, 40.7 }, { 67, 453.0, 41.7 }, { 71, 436.0, 34.7 }, { 75, 436.0, 29.7 }, { 78, 446.0, 18.7 }, { 83, 464.0, 20.7 }, { 87, 472.0, 20.7 } }
+P['Laugh'] = { { 0, 481.0, 19.7 }, { 2, 481.0, 17.7 }, { 6, 479.0, 16.7 }, { 34, 479.0, 17.7 }, { 36, 476.0, 22.7 }, { 39, 482.0, 22.7 }, { 41, 485.0, 29.7 }, { 44, 498.0, 45.7 }, { 47, 492.0, 49.7 }, { 49, 487.0, 49.7 }, { 51, 485.0, 44.7 }, { 54, 473.0, 48.7 }, { 56, 457.0, 40.7 }, { 59, 453.0, 41.7 }, { 63, 436.0, 34.7 }, { 68, 436.0, 29.7 }, { 72, 446.0, 18.7 }, { 75, 464.0, 20.7 }, { 78, 472.0, 20.7 } }
 
--- Psych animation name -> pose track
+-- Psych animation name -> Godot pose (A* poses = the base animations, the others = the -alt ones)
 local POSE_OF = {
 	['idle-alt'] = 'Idle Pose', ['idle'] = 'AIdle',
-	['singLEFT'] = 'Left Pose', ['singLEFT-alt'] = 'ALeft Pose',
-	['singRIGHT'] = 'Right Pose', ['singRIGHT-alt'] = 'ARight Pose',
-	['singUP'] = 'Up Pose', ['singUP-alt'] = 'AUp Pose',
-	['singDOWN'] = 'Down pose', ['singDOWN-alt'] = 'ADown pose',
-	['walk'] = 'Step', ['walk2'] = 'Step', ['laugh'] = 'Laugh',
+	['singLEFT'] = 'ALeft Pose', ['singLEFT-alt'] = 'Left Pose',
+	['singRIGHT'] = 'ARight Pose', ['singRIGHT-alt'] = 'Right Pose',
+	['singUP'] = 'AUp Pose', ['singUP-alt'] = 'Up Pose',
+	['singDOWN'] = 'ADown pose', ['singDOWN-alt'] = 'Down pose',
+	['step'] = 'Step', ['laugh'] = 'Laugh',
 }
 
 -- ===== state =============================================================================================
 local retention = RETENTION_MAX
-local started, dropped = false, false
-local rotation = INITIAL_ROTATION
+local started = false
+local rotation = 0.0               -- visual rotation (straight until the swing eases in)
+local stopRotation, stopT = 0.0, 0.0 -- rotation when the mechanic stopped, seconds since then
 local nextHitMs = 0.0
 local pendulumIsHit = false
 local pendulumMeasure = 0
 local failed = false
-local timePassed = 0.0
+local timePassed = 0.0               -- only runs while the mechanic is active (anchor bob)
+local shaderTime = 0.0              -- free running, drives the water noise
 local babyNextHit = 0.0
 local babyCooldown = 0.0
 
 local hudDropT = nil         -- seconds since the HUD drop animation started (nil = not playing)
-local hudShown = false
+local hudShown = false      -- set by the Pendulum Drop song event
 local hitT = 99              -- seconds since the last successful hit
 local anchorX, anchorY = 0.0, 0.0
 
@@ -98,18 +146,12 @@ local tranceStrength = 0.0
 local tranceAlpha = 0.0
 local nullifyTrance = false
 local filtersOn = false
-local playingTrancePose = false
+local gfHypnotised = false
+local squiggle, squiggleFrom, squiggleTo, squiggleDur, squiggleT = 0.0, 0.0, 0.0, 0.0, 0.0
 
 -- ===== helpers ===========================================================================================
 local function clamp(v, lo, hi) return math.max(lo, math.min(hi, v)) end
 local function lerp(a, b, t) return a + (b - a) * t end
-
-local function inRanges(t, ranges)
-	for _, r in ipairs(ranges) do
-		if t >= r[1] and t < r[2] then return true end
-	end
-	return false
-end
 
 local function sampleKeys(keys, t)
 	if t <= keys[1][1] then return keys[1][2] end
@@ -137,15 +179,15 @@ local function updateHitTime(ms)
 	babyNextHit = nextHitMs + (math.random() * 300 - 150)
 end
 
-local function updateRotation(ms)
+local function godotRotation(ms)
 	local measure = measureAtMs(ms)
 	local base = math.sin(measure * 2 * math.pi)
 	local normal = (base + 1) / 2
-	local ratio = sampleKeys(LINEAR_RATIO_KEYS, ms / 1000)
+	local ratio = sampleKeys(LINEAR_RATIO_KEYS, ms / 1000 + SONG_TIME_OFFSET)
 	local eased
 	if normal < 0.5 then eased = 2 * normal * normal else eased = 1 - ((-2 * normal + 2) ^ 2) / 2 end
 	local mixed = normal * ratio + eased * (1 - ratio)
-	rotation = -(((mixed * 2) - 1) * ROTATION_LENGTH)
+	return -(((mixed * 2) - 1) * ROTATION_LENGTH)
 end
 
 local function isHittable(ms)
@@ -299,71 +341,94 @@ local function updateTrance(elapsed)
 	local contrast = 1 + tranceStrength * 0.04575
 	local blur = tranceStrength * 0.135
 
-	local active = tranceStrength > 0.002
+	-- "Water Warp" song event: linear tween of the SquiggleLayer wave strength
+	if squiggleT < squiggleDur then
+		squiggleT = squiggleT + elapsed
+		squiggle = lerp(squiggleFrom, squiggleTo, clamp(squiggleT / squiggleDur, 0, 1))
+	else
+		squiggle = squiggleTo
+	end
+
+	local active = tranceStrength > 0.002 or squiggle > 0.001
 	setFilters(active)
 	if active then
-		setShaderFloat('tranceController', 'uTime', timePassed)
+		setShaderFloat('tranceController', 'uTime', shaderTime)
 		setShaderFloat('tranceController', 'uWave', wave)
 		setShaderFloat('tranceController', 'uGhost', ghost)
 		setShaderFloat('tranceController', 'uSaturation', saturation)
 		setShaderFloat('tranceController', 'uContrast', contrast)
 		setShaderFloat('tranceController', 'uBlur', blur)
+		setShaderFloat('tranceController', 'uSquiggle', squiggle)
+		setShaderFloat('tranceController', 'uSquiggleGhost', 0.449)
 	end
 
-	-- overlay + GF pose (trance.gd)
+	-- overlay + GF (trance.gd)
 	local inTrance = retention <= 60 and retention > 0
 	local overlayTarget = 0
 	if inTrance then overlayTarget = clamp((60 - retention) / 60 / 2, 0, 1) end
 	tranceAlpha = lerp(tranceAlpha, overlayTarget, 1 - 0.2 ^ (elapsed * 2))
 	setProperty('tranceOverlay.alpha', tranceAlpha)
 
-	if TRANCE_GF_POSE and inTrance ~= playingTrancePose then
-		playingTrancePose = inTrance
-		setProperty('boyfriend.idleSuffix', inTrance and '-alt' or '') -- "hypnotised idle" is the idle-alt animation
-		if getProperty('boyfriend.animation.curAnim.name') == 'idle' or getProperty('boyfriend.animation.curAnim.name') == 'idle-alt' then
-			triggerEvent('Play Animation', inTrance and 'idle-alt' or 'idle', 'bf')
-		end
+	-- GF becomes the hypnotised character through a normal Change Character event
+	if TRANCE_GF_CHARACTER and inTrance ~= gfHypnotised then
+		gfHypnotised = inTrance
+		triggerEvent('Change Character', GF_CHAR_TYPE, inTrance and TRANCE_GF_CHARACTER or NORMAL_GF_CHARACTER)
 	end
 end
 
-function goodNoteHit(id, direction, noteType, isSustainNote)
-	if not (TRANCE_GF_POSE and playingTrancePose) then return end
-	local dirs = { 'singLEFT', 'singDOWN', 'singUP', 'singRIGHT' }
-	triggerEvent('Play Animation', dirs[direction + 1] .. '-hypno', 'bf')
-end
-
 -- ===== in-hand pendulum placement ========================================================================
-local function poseKey(animName, frame)
-	local track = P[POSE_OF[animName] or 'Idle Pose'] or P['Idle Pose']
+local function handLocal(animName, frame)
+	local pose = POSE_OF[animName] or 'Idle Pose'
+	local track = P[pose]
 	local key = track[1]
 	for _, k in ipairs(track) do
 		if k[1] <= frame then key = k end
 	end
-	return key[2], key[3]
+	local sprite = SPRITE[pose]
+	return sprite[1] + PENDULUM_NODE_X + key[2], sprite[2] + PENDULUM_NODE_Y + key[3]
+end
+
+-- Hypno-local -> Psych world, using exactly how FlxSprite draws the current frame (x, offset, origin, scale)
+local function localToWorld(lx, ly)
+	local cx, cy = lx + CANVAS_X, ly + CANVAS_Y
+	local ox, oy = getProperty('dad.origin.x'), getProperty('dad.origin.y')
+	local sx, sy = getProperty('dad.scale.x'), getProperty('dad.scale.y')
+	local x = getProperty('dad.x') - getProperty('dad.offset.x') + ox + (cx - ox) * sx
+	local y = getProperty('dad.y') - getProperty('dad.offset.y') + oy + (cy - oy) * sy
+	return x, y
+end
+
+local function stepTravel()
+	if STEP_TRAVEL then return STEP_TRAVEL[1], STEP_TRAVEL[2] end
+	local ax, ay = handLocal('idle-alt', 0)
+	local sx, sy = handLocal('step', 9999)
+	local a, st = HAND_ADJUST['idle-alt'], HAND_ADJUST['step']
+	return (a[1] - st[1]) + HAND_SCALE * (ax - sx), (a[2] - st[2]) + HAND_SCALE * (ay - sy)
 end
 
 local function updateHand()
-	local restX, restY = getVar('hypnoLightRestX'), getVar('hypnoLightRestY')
-	if restX == nil then return end
-
-	local k = HAND_SCALE
-	local originX = getProperty('dad.x') + restX - LIGHT_LOCAL_X * k
-	local originY = getProperty('dad.y') + restY - LIGHT_LOCAL_Y * k
-
 	local animName = getProperty('dad.animation.curAnim.name') or 'idle'
 	local frame = getProperty('dad.animation.curAnim.curFrame') or 0
-	local ax, ay = poseKey(animName, frame)
-	local px = originX + (HAND_ORIGIN_X + ax) * k
-	local py = originY + (HAND_ORIGIN_Y + ay) * k
+	local tx, ty = handLocal(animName, frame)
+
+	local px, py = localToWorld(tx, ty)
+	local adj = HAND_ADJUST[animName] or { 0, 0 }
+	px, py = px + adj[1], py + adj[2]
+	if animName == 'step' then
+		local tx, ty = stepTravel()
+		local p = STEP_PROGRESS[frame + 1] or 1
+		px, py = px + tx * p, py + ty * p
+	end
+	local k = HAND_SCALE
 
 	setProperty('pndHandActive.x', px - 31)
 	setProperty('pndHandActive.y', py - 3.5)
 	setProperty('pndHandActive.angle', math.deg(rotation))
 
 	local trailRot = getVar('pendulumTrailRotation') or 0
-	local tx, ty = px + TRAIL_POS[1] * k, py + TRAIL_POS[2] * k
-	setProperty('pndHandTrail.x', tx - 46)
-	setProperty('pndHandTrail.y', ty + 121.5)
+	local tx2, ty2 = px + TRAIL_POS[1] * k, py + TRAIL_POS[2] * k
+	setProperty('pndHandTrail.x', tx2 - 46)
+	setProperty('pndHandTrail.y', ty2 + 121.5)
 	setProperty('pndHandTrail.angle', math.deg(trailRot))
 	local a = 0
 	if hitT < 0.1667 then a = 0.49019608 elseif hitT < 0.6667 then a = 0.49019608 * (1 - (hitT - 0.1667) / 0.5) end
@@ -385,18 +450,6 @@ end
 -- ===== HUD update ========================================================================================
 local function updateHud(elapsed, ms)
 	local t = ms / 1000
-	local shouldDrop = inRanges(t, DROPPED)
-
-	if shouldDrop and not hudShown then
-		hudShown = true
-		hudDropT = 0
-		playAnim('pndHand', 'drop', true)
-		playAnim('pndDrop', 'drop', true)
-	elseif not shouldDrop and hudShown then
-		hudShown = false
-		hudDropT = nil
-		playAnim('pndHand', 'still', true)
-	end
 
 	if not hudShown then
 		for _, tag in ipairs({ 'pndTrail', 'pndActive', 'pndShine', 'pndHand', 'pndDrop' }) do
@@ -425,7 +478,7 @@ local function updateHud(elapsed, ms)
 		local strength = 4.0
 		local nx = math.sin(measure * 2 * math.pi) * (strength * 0.75) + math.random() * 0.5
 		local ny = math.cos(timePassed) * (strength * 0.8) + math.sin(timePassed) * (strength * 0.8)
-		ny = ny + sampleKeys(Y_OFFSET_KEYS, t) + math.random() * 0.5
+		ny = ny + sampleKeys(Y_OFFSET_KEYS, t + SONG_TIME_OFFSET) + math.random() * 0.5
 		local ratio = 1 - 0.1 ^ elapsed
 		anchorX = lerp(anchorX, nx, ratio)
 		anchorY = lerp(anchorY, ny, ratio)
@@ -472,22 +525,26 @@ local function pressed()
 	return false
 end
 
-local function updateServer(elapsed, ms)
-	local t = ms / 1000
-	local nowStarted = inRanges(t, STARTED)
+local function startMechanic(ms)
+	started = true
+	updateHitTime(ms)
+	if not FAITHFUL_START_MISS then pendulumMeasure = math.floor(measureAtMs(ms) * 2) end
+end
 
-	if nowStarted ~= started then
-		started = nowStarted
-		if started then
-			updateHitTime(ms)
-			updateRotation(ms)
-			if not FAITHFUL_START_MISS then pendulumMeasure = math.floor(measureAtMs(ms) * 2) end
-		end
+local function updateServer(elapsed, ms)
+	-- swings straight away when started, eases back to straight when stopped
+	if started then
+		rotation = godotRotation(ms)
+		stopRotation, stopT = rotation, 0.0
+	else
+		stopT = stopT + elapsed
+		local k = clamp(stopT / STOP_EASE, 0, 1)
+		rotation = stopRotation * (1 - k * k * (3 - 2 * k))
 	end
+
 	if not started then return end
 
 	timePassed = timePassed + elapsed
-	updateRotation(ms)
 
 	if retention <= 0 then
 		if not failed then
@@ -530,7 +587,34 @@ local function updateServer(elapsed, ms)
 end
 
 -- ===== callbacks =========================================================================================
+function onEvent(name, value1, value2)
+	local ms = getSongPosition()
+	if name == 'Pendulum Drop' then
+		if value1 == 'hide' then
+			hudShown = false
+			hudDropT = nil
+			playAnim('pndHand', 'still', true)
+		else
+			hudShown = true
+			hudDropT = 0
+			playAnim('pndHand', 'drop', true)
+			playAnim('pndDrop', 'drop', true)
+		end
+	elseif name == 'Pendulum Start' then
+		startMechanic(ms)
+	elseif name == 'Pendulum Stop' then
+		started = false
+	elseif name == 'Water Warp' then
+		squiggleFrom = squiggle
+		squiggleTo = tonumber(value1) or 0
+		squiggleDur = math.max(tonumber(value2) or 0, 0)
+		squiggleT = 0
+		if squiggleDur <= 0 then squiggle = squiggleTo end
+	end
+end
+
 function onCreatePost()
+	if TRANCE_GF_CHARACTER then addCharacterToList(TRANCE_GF_CHARACTER, GF_CHAR_TYPE == 'bf' and 'boyfriend' or 'girlfriend') end
 	setupHud()
 	setupHand()
 	setupTrance()
@@ -543,6 +627,7 @@ end
 
 function onUpdatePost(elapsed)
 	local ms = getSongPosition()
+	shaderTime = shaderTime + elapsed
 	updateServer(elapsed, ms)
 	updateHud(elapsed, ms)
 	updateHand()
