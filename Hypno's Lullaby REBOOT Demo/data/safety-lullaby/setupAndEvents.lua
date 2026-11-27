@@ -299,6 +299,8 @@ function onCreate()
     setProperty('endBg.color', '000000')
     addLuaSprite('endBg')
 
+    setBlendMode('gf', 'add')
+
     goCreateSprites()
 end
 
@@ -407,7 +409,6 @@ function onEvent(name, value1, value2)
     if name == 'Transition to Ending' then
         setObjectOrder('endBg', getObjectOrder('pndHand') + 1)
         setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
-        setBlendMode('gf', 'add')
         doTweenAlpha('endBgIn', 'endBg', 1, 1.5, 'linear')
         doTweenZoom('camGameIn', 'camGame', 0.9, 1.4, 'smoothStepIn')
 
@@ -424,6 +425,7 @@ function onEvent(name, value1, value2)
     end
     if name == 'Fade In Ending' then
         setProperty('camGame.visible', false)
+        setBlendMode('endBg', 'add')
         setVar('safetyLullabyEndingLightingOff', true)
         setVar('safetyLullabyEndingActive', true)
         setObjectCamera('pndHandTrail', 'hud')
