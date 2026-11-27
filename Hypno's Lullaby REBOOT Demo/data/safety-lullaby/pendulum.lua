@@ -8,8 +8,10 @@ local NORMAL_GF_CHARACTER = 'gf'
 local GF_CHAR_TYPE = 'bf' -- the character slot GF is in (she is the player (bf) in this port, dont get it twisted)
 
 local SONG_TIME_OFFSET = 1.0
-local TRANCE_WARP_SCALE = 1.5
-local SQUIGGLE_WARP_SCALE = 1.5
+local WATER_STRENGTH_DIVIDER = 1.2 -- overall water warp strength is divided by this (raise it to calm the effect down)
+local TRANCE_WARP_SCALE = 1.5 / WATER_STRENGTH_DIVIDER
+local SQUIGGLE_WARP_SCALE = 1.5 / WATER_STRENGTH_DIVIDER
+local GAME_WARP_RATIO = 0.7 -- the game camera gets this fraction of the HUD camera's warp (0.5 = half as strong)
 local WARP_HUD = true
 local STOP_EASE = 0.75 -- seconds the pendulum takes to ease back to straight after Pendulum Stop
 
@@ -329,14 +331,20 @@ end
 -- ===== trance (screen effects, overlay, GF) ==============================================================
 local function setupTrance()
 	initLuaShader('tranceEffects')
+	-- two shader instances: one for camHUD (full warp) and one for camGame (warp * GAME_WARP_RATIO)
 	makeLuaSprite('tranceController', '', 0, 0)
+	makeLuaSprite('tranceControllerGame', '', 0, 0)
 	runHaxeCode([[
 		var sh = game.createRuntimeShader('tranceEffects');
 		game.getLuaObject('tranceController').shader = sh;
+		var shGame = game.createRuntimeShader('tranceEffects');
+		game.getLuaObject('tranceControllerGame').shader = shGame;
 		// created once and only attached / detached later, so switching the effect on and off does not allocate
 		game.variables.set('tranceFilter', new ShaderFilter(sh));
+		game.variables.set('tranceFilterGame', new ShaderFilter(shGame));
 	]])
 	setShaderSampler2D('tranceController', 'noiseTex', 'safety_lullaby/trance/water_noise')
+	setShaderSampler2D('tranceControllerGame', 'noiseTex', 'safety_lullaby/trance/water_noise')
 
 	makeAnimatedLuaSprite('tranceOverlay', 'safety_lullaby/trance/hypnosis', 10.8, -33.3)
 	addAnimationByPrefix('tranceOverlay', 'default', 'hypnosis', 5, true)
@@ -352,8 +360,8 @@ local function setFilters(on)
 	if on == filtersOn then return end
 	filtersOn = on
 	if on then
-		runHaxeCode('var f = game.variables.get("tranceFilter"); game.camGame.setFilters([f]);' ..
-			(WARP_HUD and ' game.camHUD.setFilters([f]);' or ''))
+		runHaxeCode('game.camGame.setFilters([game.variables.get("tranceFilterGame")]);' ..
+			(WARP_HUD and ' game.camHUD.setFilters([game.variables.get("tranceFilter")]);' or ''))
 	else
 		runHaxeCode('game.camGame.setFilters([]); game.camHUD.setFilters([]);')
 	end
@@ -361,11 +369,18 @@ end
 
 -- uniforms are only sent when they changed (each setShaderFloat is a Lua -> Haxe call)
 local sentUniforms = {}
-local function sendUniform(name, value)
-	if sentUniforms[name] ~= value then
-		sentUniforms[name] = value
-		setShaderFloat('tranceController', name, value)
+local function sendUniform(name, value, controller)
+	controller = controller or 'tranceController'
+	local key = controller .. name
+	if sentUniforms[key] ~= value then
+		sentUniforms[key] = value
+		setShaderFloat(controller, name, value)
 	end
+end
+-- same value to both cameras' shaders
+local function sendBoth(name, value)
+	sendUniform(name, value)
+	sendUniform(name, value, 'tranceControllerGame')
 end
 
 local function easeSine(t) return -(math.cos(math.pi * t) - 1) / 2 end
@@ -406,17 +421,20 @@ local function updateTrance(elapsed)
 	local active = forced or tranceStrength > 0.002 or squiggle > 0.001
 	setFilters(active)
 	if active then
-		sendUniform('uTime', shaderTime)
-		sendUniform('uWave', wave)
-		sendUniform('uGhost', ghost)
-		sendUniform('uSaturation', saturation)
-		sendUniform('uContrast', contrast)
-		sendUniform('uBlur', blur)
-		sendUniform('uSquiggle', squiggle)
-		sendUniform('uSquiggleGhost', 0.449)
+		sendBoth('uTime', shaderTime)
+		sendBoth('uWave', wave)
+		sendBoth('uGhost', ghost)
+		sendBoth('uSaturation', saturation)
+		sendBoth('uContrast', contrast)
+		sendBoth('uBlur', blur)
+		sendBoth('uSquiggle', squiggle)
+		sendBoth('uSquiggleGhost', 0.449)
+		-- warp distance: full on the HUD camera, GAME_WARP_RATIO of it on the game camera
 		sendUniform('uWarpScale', warpScale)
 		sendUniform('uSquiggleScale', squiggleScale)
-		sendUniform('uView', debugView)
+		sendUniform('uWarpScale', warpScale * GAME_WARP_RATIO, 'tranceControllerGame')
+		sendUniform('uSquiggleScale', squiggleScale * GAME_WARP_RATIO, 'tranceControllerGame')
+		sendBoth('uView', debugView)
 	end
 
 	-- overlay + GF (trance.gd)

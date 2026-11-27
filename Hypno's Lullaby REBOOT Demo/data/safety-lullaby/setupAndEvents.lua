@@ -76,6 +76,7 @@ function onEvent(name, value1, value2)
         doTweenAlpha('iconP2Out', 'iconP2', 0, 1, 'linear')
     end
     if name == 'Fade In Ending' then
+        setProperty('camGame.visible', false)
         setVar('safetyLullabyEndingLightingOff', true)
         setVar('safetyLullabyEndingActive', true)
         setObjectCamera('pndHandTrail', 'hud')
