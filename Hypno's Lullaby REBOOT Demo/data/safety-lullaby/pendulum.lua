@@ -1,42 +1,19 @@
--- Safety Lullaby pendulum mechanic, ported from the Godot project:
---   scripts/lullaby/mechanics/safety_lullaby/lullaby_pendulum_server.gd  (hit logic, retention, rotation)
---   scripts/lullaby/mechanics/safety_lullaby/lullaby_pendulum.gd         (HUD + in-hand pendulum visuals)
---   resources/funkin/songs/global/mechanics/mch_pendulum.tscn            (HUD layout / animations)
---   resources/funkin/songs/safety_lullaby/characters/trance.gd            (GF trance pose + overlay)
---   songs/safety_lullaby/trance_shaders.gd                                (screen effects)
---   songs/safety_lullaby/sng_safety_lullaby.tscn                          (timeline: drop / start / y offset / ratio)
--- Press SPACE when the pendulum passes the centre (every half measure).
--- Needs Psych Engine 1.0+ and stages/alley.lua (it shares the pendulum bob glow with it through setVar).
---
--- Song events (add them in the chart editor, no custom_events file needed):
---   Pendulum Drop   value1: nothing = drop the HUD pendulum in, "hide" = hide it again
---   Pendulum Start  the mechanic starts (hits count, pendulum swings)
---   Pendulum Stop   the mechanic stops (pendulum eases back to straight)
---   Water Warp      value1: wave strength (0 - 2), value2: seconds to tween there (0 = instant). The SquiggleLayer.
-
--- ===== tunables ==========================================================================================
+-- obnoxious ass variables for fuckin everything
 local KEYS = { 'SPACE' }
-local FAITHFUL_START_MISS = true  -- the Godot server counts the first half-measure after start as a miss (start at 85)
-local BABY_MODE = false           -- Godot "baby mode": the game presses for you at a random offset (no voice lines)
-local HAND_SCALE = 1.25           -- Psych pixels per Godot Hypno-local unit (Hypno's json scale)
+local FAITHFUL_START_MISS = true -- the Godot server counts the first half-measure after start as a miss (start at 85)
+local BABY_MODE = false -- Godot "baby mode": the game presses for you at a random offset (no voice lines)
+local HAND_SCALE = 1.25 -- Psych pixels per Godot Hypno-local unit (Hypno's json scale)
 local TRANCE_GF_CHARACTER = 'gf-hypno' -- Change Character event fired at retention <= 60 (nil = never change)
 local NORMAL_GF_CHARACTER = 'gf'
-local GF_CHAR_TYPE = 'bf'            -- the character slot GF is in (she is the player in this port)
+local GF_CHAR_TYPE = 'bf' -- the character slot GF is in (she is the player (bf) in this port, dont get it twisted)
 
--- Everything from the Godot timeline (squiggle keys, y offset keys, ...) reads about 1 second late in Psych, so the
--- timeline is sampled this many seconds EARLIER. Set to 0 to disable. The chart events are placed already shifted.
 local SONG_TIME_OFFSET = 1.0
--- How far the water warp pushes the picture. 1.0 = exactly the Godot shader, which only moves things ~2 px (retention
--- warp) / ~6 px (Water Warp event) on average because its noise texture is dark - that reads as a faint blur.
--- Higher = visibly wobbly. Try the debug keys in scripts/debugWater.lua to pick values.
 local TRANCE_WARP_SCALE = 1.5
 local SQUIGGLE_WARP_SCALE = 1.5
--- Godot warps the HUD too, but every filtered camera costs a full-screen pass. false = only the game camera is warped
--- (noticeably cheaper). The notes stay readable as well.
-local WARP_HUD = false
-local STOP_EASE = 0.75               -- seconds the pendulum takes to ease back to straight after Pendulum Stop
+local WARP_HUD = true
+local STOP_EASE = 0.75 -- seconds the pendulum takes to ease back to straight after Pendulum Stop
 
--- ===== Godot constants ===================================================================================
+-- taken from the original
 local HIT_WINDOW_MS = 75.0
 local RETENTION_MAX = 100
 local RETENTION_GAIN = 15
@@ -59,9 +36,7 @@ TIME_CHANGES[4] = { measure = 66, ms = TIME_CHANGES[3].ms + 16 * TIME_CHANGES[3]
 local PS = 2 / 3
 local HUD_CENTER_X = 640
 
--- ===== in-hand pendulum (Hypno) ==========================================================================
--- Godot works in "Hypno-local" units. The port's sprite canvas (the 1000x778 xml frame) is Hypno-local + CANVAS.
--- Anchor (Hypno-local) = SPRITE[pose] + PENDULUM_NODE + key[pose][frame]
+-- stuff for the in-hand pendulum
 local CANVAS_X, CANVAS_Y = 446, 713
 local PENDULUM_NODE_X, PENDULUM_NODE_Y = -157.575, 175.805
 local TRAIL_POS = { 10, -127 }
@@ -72,7 +47,7 @@ local BOB_LOCAL = { -0.9634635, 124.806694 }
 local BOB_RADIUS = { 57.8, 81.4 } -- PointLight2D2 (pink glow on Hypno): radial gradient, black at 0.419 * 0.7071 of the texture
 local BOB_COLOR = { 0.4, 0.4 * 0.4745098, 0.4 * 0.5176471 }
 
--- Godot end-character pendulum anchors, keyed by animation frame. Sprite offsets are from the source scene.
+-- hypno_end pendulum anchors, keyed by animation frame. Sprite offsets are from the source scene.
 local ENDING_HAND_POSES = {
 	['idle'] = {
 		spriteOffset = { 0, 106 },
