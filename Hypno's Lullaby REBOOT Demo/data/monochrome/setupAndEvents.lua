@@ -18,6 +18,8 @@ local canRetry = false
 local fgUnownX = {'-55', '150', '515', '1050', '1050'}
 local fgUnownY = {'-35', '550', '-35',  '-35',  '515'}
 
+local jump2offsets = {0,0}
+
 function onCreate()
     setProperty('skipCountdown', true)
 
@@ -83,6 +85,11 @@ function onCreate()
     scaleObject('jumpscareP2', 0.9, 0.9)
     setProperty('jumpscareP2.alpha', 0.0001)
     addLuaSprite('jumpscareP2', true)
+
+    jump2offsets[1] = getProperty('jumpscareP2.offset.x')
+    jump2offsets[2] = getProperty('jumpscareP2.offset.y')
+
+    debugPrint(jump2offsets) -- just workkkkk
 
     -- blood splatters on gold and bf's blood characters
     makeAnimatedLuaSprite('goldbloodsplatter', 'characters/gold/gold_blood_splatter', 100, 50)
@@ -172,8 +179,8 @@ function onUpdate(elapsed)
     setProperty('camZooming', false)
 
     if shakeJumpscare then
-        setProperty('jumpscareP2.offset.x', 88.9 + getRandomInt(-5,5))
-        setProperty('jumpscareP2.offset.y', 64.05 + getRandomInt(-5,5))
+        setProperty('jumpscareP2.offset.x', jump2offsets[1] + getRandomInt(-5,5))
+        setProperty('jumpscareP2.offset.y', jump2offsets[2] + getRandomInt(-5,5))
     end
 
     for i = 0,4 do
@@ -279,8 +286,13 @@ local function jumpscare(type)
             end
             doTweenX('growJumpP2X', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
             doTweenY('growJumpP2Y', 'jumpscareP2.scale', 1.1, getAnimDuration('jumpscareP2'), 'expoInOut')
-            doTweenX('correctJumpP2X', 'jumpscareP2', getProperty('jumpscareP2.x') + 72, getAnimDuration('jumpscareP2'), 'expoInOut')
-            doTweenY('correctJumpP2Y', 'jumpscareP2', getProperty('jumpscareP2.y') + 73, getAnimDuration('jumpscareP2'), 'expoInOut')
+            
+            -- necessary jank because for some reason the jumpscareP2 offsets are different in PE and Psych Online
+            local correctionX = jump2offsets[1] - 88.9
+            local correctionY = jump2offsets[2] - 64.05
+
+            doTweenX('correctJumpP2X', 'jumpscareP2', getProperty('jumpscareP2.x') + 72 + (correctionX * 1.75), getAnimDuration('jumpscareP2'), 'expoInOut')
+            doTweenY('correctJumpP2Y', 'jumpscareP2', getProperty('jumpscareP2.y') + 73 + (correctionY * 1.75), getAnimDuration('jumpscareP2'), 'expoInOut')
             --runTimer('jumpscareEnd', 1.75)
             animEndTimer('jumpscareEnd', 'jumpscareP2')
             --cameraShake('other', 0.005, getAnimDuration('jumpscareP2'))
