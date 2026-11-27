@@ -62,7 +62,7 @@ function onEvent(name, value1, value2)
         runTimer('hypnoSnapForward', getAnimDuration('dad') - 0.001)
     end
     if name == 'Transition to Ending' then
-        setObjectOrder('endBg', getObjectOrder('pndTrail') + 1)
+        setObjectOrder('endBg', getObjectOrder('pndHand') + 1)
         setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
         doTweenAlpha('endBgIn', 'endBg', 1, 1.5, 'linear')
         doTweenZoom('camGameIn', 'camGame', 0.9, 1.4, 'smoothStepIn')
