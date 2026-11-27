@@ -27,6 +27,10 @@ local function getAnimDuration(obj)
     return getProperty(obj..'.animation.curAnim.numFrames') / getProperty(obj..'.animation.curAnim.frameRate')
 end
 
+function rgbToHex(rgb)
+    return string.format('%02x%02x%02x', rgb[1], rgb[2], rgb[3])
+end
+
 function onCreate()
     setProperty('skipCountdown', true)
 
@@ -50,12 +54,74 @@ function onCreatePost()
             setPropertyFromGroup('opponentStrums', i, 'x', -5000)
         end
     end
-    runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]])
+    runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]]) -- hide note underlane for aestheticsss
     setProperty('timeBar.visible', false)
     setProperty('timeTxt.visible', false)
+
+    runHaxeCode( -- hide multiple players, only show dad
+    [[
+        for (m in game.dadGroup.members)
+            if (m != game.dad) m.visible = false;
+    ]])
+
+    -- epic health bar
+    runHaxeCode([[
+        game.healthBar.bg.loadGraphic(Paths.image('safety_lullaby/bar/bar'));
+    ]])
+    setProperty('healthBar.bg.offset.x', 75)
+    setProperty('healthBar.bg.offset.y', 35)
+    setProperty('healthBar.leftBar.visible', false)
+    setProperty('healthBar.rightBar.visible', false)
+    makeLuaSprite('healthBarMaskRight', 'safety_lullaby/bar/barmask', getProperty('healthBar.x') - 54, getProperty('healthBar.y') - 11)
+    makeLuaSprite('healthBarMaskLeft', 'safety_lullaby/bar/barmask', getProperty('healthBar.x') - 54, getProperty('healthBar.y') - 11)
+    setObjectCamera('healthBarMaskRight', 'hud')
+    addLuaSprite('healthBarMaskRight')
+    setObjectCamera('healthBarMaskLeft', 'hud')
+    addLuaSprite('healthBarMaskLeft')
+
+    runHaxeCode([[
+        var leftMask = game.getLuaObject('healthBarMaskLeft');
+        var rightMask = game.getLuaObject('healthBarMaskRight');
+
+        if (game.uiGroup != null) {
+            if (leftMask != null) {
+                leftMask.cameras = [game.camHUD];
+                game.uiGroup.insert(0, leftMask);
+            }
+            if (rightMask != null) {
+                rightMask.cameras = [game.camHUD];
+                game.uiGroup.insert(0, rightMask);
+            }
+        }
+        
+        var hb = game.healthBar;
+        if (hb != null) {
+            var newWidth = 725; // Desired bar/icon travel width
+            var delta = hb.barWidth - newWidth;
+            hb.barWidth = newWidth;
+            // Shift barOffset.x by half the difference to keep it centered
+            hb.barOffset.x += delta * 0.5;
+        }
+    ]])
+
+    if dadName == 'hypno' then
+        runHaxeCode('game.iconP2.changeIcon("hypnoDark");')
+    end
+
+    setProperty('healthBarMaskLeft.color', getColorFromHex(rgbToHex(getProperty('dad.healthColorArray'))))
+    setProperty('healthBarMaskRight.color', getColorFromHex(rgbToHex(getProperty('boyfriend.healthColorArray'))))
+end
+
+function onUpdate()
+    scaleObject('healthBarMaskLeft', 1 - (getHealth() / 2), 1)
 end
 
 function onEvent(name, value1, value2)
+    if name == 'Hypno Icon' then
+        if dadName == 'hypno' then
+            runHaxeCode([[game.iconP2.changeIcon("]] .. value1 .. [[");]])
+        end
+    end
     if name == 'Hypno Step Forward' then
         --debugPrint('walk damnit')
         triggerEvent('Play Animation', 'step', 'dad')
@@ -73,6 +139,8 @@ function onEvent(name, value1, value2)
 
         doTweenAlpha('scoreTxtOut', 'scoreTxt', 0, 1, 'linear')
         doTweenAlpha('healthBarOut', 'healthBar', 0, 1, 'linear')
+        doTweenAlpha('healthMaskLOut', 'healthBarMaskLeft', 0, 1, 'linear')
+        doTweenAlpha('healthMaskROut', 'healthBarMaskRight', 0, 1, 'linear')
         doTweenAlpha('iconP1Out', 'iconP1', 0, 1, 'linear')
         doTweenAlpha('iconP2Out', 'iconP2', 0, 1, 'linear')
     end
