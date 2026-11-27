@@ -1,5 +1,8 @@
 luaDebugMode = true
 
+local canRetry = true
+local pressedRetry = false
+
 local SOURCE_TIME_OFFSET = 1.0
 local PS = 2 / 3
 
@@ -25,6 +28,7 @@ end
 
 function onCreate()
     setProperty('skipCountdown', true)
+    makeLuaSprite('realCamFollow', '', 0, 0) -- for moving the cam during gameover substate
 
     makeLuaSprite('endBg', 'safety_lullaby/cutscenes/end/end_bg', 0, 0)
     setObjectCamera('endBg', 'hud')
@@ -191,4 +195,51 @@ end
 
 function opponentNoteHit(id, direction, noteType, isSustainNote)
     triggerEvent('Play Animation', getProperty('singAnimations')[direction + 1], 'gf')
+end
+
+function onGameOver()
+	openCustomSubstate('gameover', true)
+
+	return Function_Stop
+end
+
+function onCustomSubstateCreate(name)
+	if name == 'gameover' then
+        callOnLuas('hideCamOther')
+        runHaxeCode([[
+            game.variables.set('boyfriend', game.boyfriendGroup);
+            game.boyfriendGroup.cameras = [game.camGame];
+            game.boyfriend.specialAnim = true;
+            game.boyfriend.playAnim('game over', true);
+        ]])
+
+        insertToCustomSubstate('boyfriend')
+        playSound('gameover_sl')
+
+        runTimer('gameOverScene', 3.5)
+
+        setProperty('realCamFollow.x', getProperty('camFollowPos.x'))
+        setProperty('realCamFollow.y', getProperty('camFollowPos.y'))
+
+        doTweenX('camX', 'realCamFollow', 530, 4, 'quintOut') 
+        doTweenY('camY', 'realCamFollow', 90, 4, 'quintOut') 
+        doTweenZoom('camZoom', 'camGame', 0.75, 4, 'cubeOut')
+        doTweenAlpha('gameOverHudOut', 'camHUD', 0, 0.5, 'linear')
+        setProperty('camGame.alpha', 1)
+    end
+end
+
+function onCustomSubstateUpdatePost(name, elapsed)
+	if name == 'gameover' then
+        setProperty('camFollowPos.x', getProperty('realCamFollow.x'))
+        setProperty('camFollowPos.y', getProperty('realCamFollow.y'))
+		if not pressedRetry and canRetry and keyJustPressed('accept') then
+			pressedRetry = true
+
+			restartSong()
+		end
+		if keyJustPressed('back') then
+			exitSong()
+		end
+	end
 end

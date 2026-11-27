@@ -14,6 +14,7 @@ end
 local defined = false
 local monophase = 1
 local canRetry = false
+local pressedRetry = false
 
 local fgUnownX = {'-55', '150', '515', '1050', '1050'}
 local fgUnownY = {'-35', '550', '-35',  '-35',  '515'}
@@ -546,30 +547,6 @@ function opponentNoteHit(id, direction, noteType, isSustainNote)
     end
 end
 
--- Hides everything currently drawn on camOther. Call it whenever you like: hideCamOther()
-function hideCamOther()
-    if not defined then
-        -- defined once; later calls only run it by name (no re-parsing)
-        runHaxeCode([[
-            function hideCamOtherIn(grp) {
-                for (m in grp.members) {
-                    if (m == null) continue;
-                    var cams = m.cameras;
-                    if (cams != null && cams.indexOf(game.camOther) != -1)
-                        m.visible = false;
-                    else if (m.members != null)
-                        hideCamOtherIn(m);
-                }
-            }
-            function hideCamOtherAll() {
-                hideCamOtherIn(game);
-            }
-        ]])
-        defined = true
-    end
-    runHaxeFunction('hideCamOtherAll', {})
-end
-
 function onGameOver()
 	openCustomSubstate('gameover', true)
 
@@ -578,7 +555,7 @@ end
 
 function onCustomSubstateCreate(name)
 	if name == 'gameover' then
-        hideCamOther()
+        callOnLuas('hideCamOther')
         makeAnimatedLuaSprite('gameoverbf', 'monochrome/gameover/monodeath_boyfriend', -10, 10)
         addAnimationByPrefix('gameoverbf', 'idle', 'bf', 24, true)
         setObjectCamera('gameoverbf', 'other')
