@@ -117,7 +117,6 @@ local cone2Rect = rect(lampX + 185.60388 * lampS, lampY + 41.183647 * lampS, 921
 
 local function setupLitSprite(entry)
 	local tag = entry.tag
-	initLuaShader('lightMask')
 	setSpriteShader(tag, 'lightMask')
 	setShaderSampler2D(tag, 'bgTex', 'safety_lullaby/alley/darkness_gradient')
 	setShaderSampler2D(tag, 'poleTex', 'safety_lullaby/alley/post_light_gradient')
@@ -191,6 +190,8 @@ function onCreate()
 	addStageSprite('SafetyLamp2', 'lampoff', 1063, 253, 88, 523, 2.2, 1, 1, layer12)
 	addStageSprite('SafetyBrokenLamp', 'lampbroken', -231, 603, 94, 202, 2.2, 1, 1, layer12)
 
+	initLuaShader('lightMask')
+	
 	lightingOn = shadersEnabled ~= false
 	if lightingOn then
 		for _, entry in ipairs(lit) do

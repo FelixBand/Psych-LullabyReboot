@@ -265,7 +265,6 @@ local function exists(tag)
 end
 
 local function setupSprite(tag)
-	initLuaShader('cutsceneLight')
 	setSpriteShader(tag, 'cutsceneLight')
 	setShaderSampler2D(tag, 'bgTex', dir .. 'darkness_gradient')
 	setShaderSampler2D(tag, 'coneTex', 'safety_lullaby/alley/awesomeahhlight')
@@ -284,6 +283,7 @@ local function setupSprite(tag)
 end
 
 function onCreatePost()
+    initLuaShader('cutsceneLight')
 	for _, tag in ipairs(LIT) do
 		if exists(tag) then setupSprite(tag) end
 	end
