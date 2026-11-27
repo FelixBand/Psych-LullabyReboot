@@ -2,18 +2,18 @@
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
 <!-- $TexturePacker:SmartUpdate:31dabf98d7069d72cebc026d1ef42c67:dd0213b4338b554cabd7afe10dd9a1eb:3be5e210e7fa900f48485c5912314eb8$ -->
 <TextureAtlas imagePath="gf_gameover_loop.png" width="1340" height="921">
-    <SubTexture name="frame_0000_padded" x="271" y="450" width="266" height="466" frameX="0" frameY="0" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0001_padded" x="271" y="450" width="266" height="466" frameX="0" frameY="0" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0002_padded" x="1" y="1" width="267" height="465" frameX="0" frameY="-1" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0003_padded" x="1" y="1" width="267" height="465" frameX="0" frameY="-1" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0004_padded" x="1" y="468" width="268" height="452" frameX="0" frameY="-14" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0005_padded" x="1" y="468" width="268" height="452" frameX="0" frameY="-14" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0006_padded" x="1073" y="1" width="266" height="445" frameX="0" frameY="-21" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0007_padded" x="1073" y="1" width="266" height="445" frameX="0" frameY="-21" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0008_padded" x="539" y="451" width="265" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0009_padded" x="539" y="451" width="265" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0010_padded" x="270" y="1" width="267" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
-    <SubTexture name="frame_0011_padded" x="270" y="1" width="267" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0000" x="271" y="450" width="266" height="466" frameX="0" frameY="0" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0001" x="271" y="450" width="266" height="466" frameX="0" frameY="0" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0002" x="1" y="1" width="267" height="465" frameX="0" frameY="-1" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0003" x="1" y="1" width="267" height="465" frameX="0" frameY="-1" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0004" x="1" y="468" width="268" height="452" frameX="0" frameY="-14" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0005" x="1" y="468" width="268" height="452" frameX="0" frameY="-14" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0006" x="1073" y="1" width="266" height="445" frameX="0" frameY="-21" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0007" x="1073" y="1" width="266" height="445" frameX="0" frameY="-21" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0008" x="539" y="451" width="265" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0009" x="539" y="451" width="265" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0010" x="270" y="1" width="267" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
+    <SubTexture name="quiver0011" x="270" y="1" width="267" height="447" frameX="0" frameY="-19" frameWidth="268" frameHeight="466"/>
     <SubTexture name="wake0000" x="806" y="450" width="265" height="440" frameX="0" frameY="-8" frameWidth="265" frameHeight="448"/>
     <SubTexture name="wake0001" x="806" y="450" width="265" height="440" frameX="0" frameY="-8" frameWidth="265" frameHeight="448"/>
     <SubTexture name="wake0002" x="1073" y="448" width="265" height="444" frameX="0" frameY="-4" frameWidth="265" frameHeight="448"/>

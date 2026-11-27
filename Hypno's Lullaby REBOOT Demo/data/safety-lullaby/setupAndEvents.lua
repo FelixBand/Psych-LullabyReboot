@@ -1,6 +1,6 @@
 luaDebugMode = true
 
-local canRetry = true
+local canRetry = false
 local pressedRetry = false
 
 local SOURCE_TIME_OFFSET = 1.0
@@ -36,6 +36,65 @@ function onCreate()
     setProperty('endBg.alpha', 0.0001)
     setProperty('endBg.color', '000000')
     addLuaSprite('endBg')
+
+    -- game over
+        -- gf gets hypnotised, close up
+        makeLuaSprite('go_gfbg', 'safety_lullaby/cutscenes/intro/gf_focus_bg', 0, 0)
+        setProperty('go_gfbg.alpha', 0.0001)
+        setObjectCamera('go_gfbg', 'other')
+        scaleObject('go_gfbg', 1, 1)
+        addLuaSprite('go_gfbg')
+
+        makeAnimatedLuaSprite('go_gfcut', 'safety_lullaby/gameover/sl_gameover_gf', 287, 107)
+        addAnimationByPrefix('go_gfcut', 'ohno', 'gf', 24, false)
+        setObjectCamera('go_gfcut', 'other')
+        scaleObject('go_gfcut', 0.89, 0.89)
+        setProperty('go_gfcut.alpha', 0.0001)
+        addLuaSprite('go_gfcut')
+
+        -- actual looping game over screen
+        makeAnimatedLuaSprite('go_bg', 'safety_lullaby/gameover/BG', -104, -214)
+        addAnimationByPrefix('go_bg', 'idle', 'BG', 24, true)
+        setObjectCamera('go_bg', 'other') 
+        scaleObject('go_bg', 1.36, 1.36)
+        setProperty('go_bg.alpha', 0.0001)
+        addLuaSprite('go_bg')
+
+        makeAnimatedLuaSprite('go_gfloop', 'safety_lullaby/gameover/gf_gameover_loop', 695, 150)
+        addAnimationByPrefix('go_gfloop', 'quiver', 'quiver', 24, true)
+        addAnimationByPrefix('go_gfloop', 'wake', 'wake', 24, false)
+        setObjectCamera('go_gfloop', 'other')
+        scaleObject('go_gfloop', 1.36, 1.36)
+        setProperty('go_gfloop.alpha', 0.0001)
+        addLuaSprite('go_gfloop')
+
+        makeAnimatedLuaSprite('go_fg', 'safety_lullaby/gameover/FG', -312, -205)
+        addAnimationByPrefix('go_fg', 'idle', 'FG', 24, true)
+        setObjectCamera('go_fg', 'other') 
+        scaleObject('go_fg', 1.36, 1.36)
+        setProperty('go_fg.alpha', 0.0001)
+        addLuaSprite('go_fg')
+
+        makeAnimatedLuaSprite('go_hypnohand', 'safety_lullaby/gameover/hypno_hand', 75, 100)
+        addAnimationByPrefix('go_hypnohand', 'idle', 'twirl', 24, true)
+        addAnimationByPrefix('go_hypnohand', 'close', 'close', 24, true)
+        setObjectCamera('go_hypnohand', 'other') 
+        scaleObject('go_hypnohand', 1.36, 1.36)
+        setProperty('go_hypnohand.alpha', 0.0001)
+        addLuaSprite('go_hypnohand')
+
+        makeLuaSprite('go_moonglow', 'safety_lullaby/gameover/MoonGlow', -104, -214)
+        setObjectCamera('go_moonglow', 'other') 
+        scaleObject('go_moonglow', 1.36, 1.36)
+        setProperty('go_moonglow.alpha', 0.0001)
+        setBlendMode('go_moonglow', 'add')
+        addLuaSprite('go_moonglow')
+
+        makeLuaSprite('go_overlay', 'safety_lullaby/gameover/Overlay', -10, -10)
+        setObjectCamera('go_overlay', 'other') 
+        scaleObject('go_overlay', 1.36, 1.36)
+        setProperty('go_overlay.alpha', 0.0001)
+        addLuaSprite('go_overlay')
 end
 
 function onCreatePost()
@@ -191,6 +250,13 @@ function onTimerCompleted(tag, loops, loopsLeft)
         setProperty('dad.x', getProperty('dad.x') + 66)
         setProperty('dad.cameraPosition[0]', getProperty('dad.cameraPosition[0]') - 66)
     end
+    if name == 'gameOverScene' then
+        setProperty('go_gfbg.visible', true)
+        setProperty('go_gfbg.alpha', 1)
+        setProperty('go_gfcut.visible', true)
+        setProperty('go_gfcut.alpha', 1)
+        playAnim('go_gfcut', 'ohno', true)
+    end
 end
 
 function opponentNoteHit(id, direction, noteType, isSustainNote)
@@ -214,6 +280,17 @@ function onCustomSubstateCreate(name)
         ]])
 
         insertToCustomSubstate('boyfriend')
+
+        insertToCustomSubstate('go_gfbg')
+        insertToCustomSubstate('go_gfcut')
+        insertToCustomSubstate('go_bg')
+        insertToCustomSubstate('go_gfloop')
+        insertToCustomSubstate('go_fg')
+        insertToCustomSubstate('go_hypnohand')
+        insertToCustomSubstate('go_moonglow')
+        insertToCustomSubstate('go_overlay')
+
+
         playSound('gameover_sl')
 
         runTimer('gameOverScene', 3.5)
