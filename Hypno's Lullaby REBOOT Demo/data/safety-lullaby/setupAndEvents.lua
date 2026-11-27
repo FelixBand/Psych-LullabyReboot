@@ -35,7 +35,7 @@ function onCreate()
     scaleObject('endBg', 0.39, 0.39)
     setProperty('endBg.alpha', 0.0001)
     setProperty('endBg.color', '000000')
-    addLuaSprite('endBg', true)
+    addLuaSprite('endBg')
 end
 
 function onCreatePost()
@@ -43,7 +43,6 @@ function onCreatePost()
     setProperty('gf.x', 310)
     setProperty('gf.y', 10)
     setProperty('gf.alpha', 0.0001)
-    setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
     setVar('safetyLullabyEndingActive', false)
 
     if getPlaysAsBF() then -- hide opponent strums if not playing as opponent
@@ -63,6 +62,8 @@ function onEvent(name, value1, value2)
         runTimer('hypnoSnapForward', getAnimDuration('dad') - 0.001)
     end
     if name == 'Transition to Ending' then
+        setObjectOrder('endBg', getObjectOrder('pndTrail') + 1)
+        setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
         doTweenAlpha('endBgIn', 'endBg', 1, 1.5, 'linear')
         doTweenZoom('camGameIn', 'camGame', 0.9, 1.4, 'smoothStepIn')
 

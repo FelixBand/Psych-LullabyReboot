@@ -1,0 +1,227 @@
+{
+	"events": [
+		[
+			9500,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			11363,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			12727.2727272727,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			14204.5454545455,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			16363.6363636364,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			19090.9090909091,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			21818.1818181818,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			25909.0909090909,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			28977,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			30000,
+			[
+				["intro cutscene", "", ""]
+			]
+		],
+		[
+			30113,
+			[
+				["Play Animation", "intro", "bf"]
+			]
+		],
+		[
+			30933,
+			[
+				["Pendulum Drop", "", ""]
+			]
+		],
+		[
+			32733,
+			[
+				["Pendulum Start", "", ""]
+			]
+		],
+		[
+			64125,
+			[
+				["Water Warp", "1", "1.375"]
+			]
+		],
+		[
+			67844,
+			[
+				["Hypno Step Forward", "", ""]
+			]
+		],
+		[
+			67958,
+			[
+				["Water Warp", "0", "1.125"]
+			]
+		],
+		[
+			77042,
+			[
+				["Water Warp", "2", "1.083"]
+			]
+		],
+		[
+			90083,
+			[
+				["Water Warp", "0", "3.042"]
+			]
+		],
+		[
+			111833,
+			[
+				["Water Warp", "1", "0.584"]
+			]
+		],
+		[
+			111865.50802139,
+			[
+				["Play Animation", "laugh", "dad"]
+			]
+		],
+		[
+			112417,
+			[
+				["Water Warp", "0", "3.333"]
+			]
+		],
+		[
+			117256,
+			[
+				["Hypno Step Forward", "", ""]
+			]
+		],
+		[
+			117256,
+			[
+				["Alt Idle Animation", "dad", "-alt"]
+			]
+		],
+		[
+			140903,
+			[
+				["Hypno Step Forward", "", ""]
+			]
+		],
+		[
+			156609,
+			[
+				["Hypno Step Forward", "", ""]
+			]
+		],
+		[
+			156962.56684492,
+			[
+				["Transition to Ending", "", ""]
+			]
+		],
+		[
+			157583,
+			[
+				["Water Warp", "1.2", "0"]
+			]
+		],
+		[
+			158083,
+			[
+				["Pendulum Stop", "", ""]
+			]
+		],
+		[
+			159000,
+			[
+				["Pendulum Drop", "hide", ""]
+			]
+		],
+		[
+			159042,
+			[
+				["Pendulum Start", "", ""]
+			]
+		],
+		[
+			159080,
+			[
+				["Fade In Ending", "", ""]
+			]
+		],
+		[
+			180250,
+			[
+				["Water Warp", "1.5", "0"]
+			]
+		],
+		[
+			180251,
+			[
+				["Water Warp", "2", "0.458"]
+			]
+		],
+		[
+			180708,
+			[
+				["Water Warp", "0", "19.125"]
+			]
+		],
+		[
+			183786,
+			[
+				["Alt Idle Animation", "gf", "-disabled"]
+			]
+		],
+		[
+			183786,
+			[
+				["Play Animation", "laugh", "gf"]
+			]
+		],
+		[
+			193367,
+			[
+				["Pendulum Stop", "", ""]
+			]
+		]
+	],
+	"format": "psych_v1"
+}
