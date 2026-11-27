@@ -103,6 +103,8 @@ function onCreatePost()
             hb.barOffset.x += delta * 0.5;
         }
     ]])
+    
+    setHealth(0.99999999) -- update health to apply bar width for icons
 
     if dadName == 'hypno' then
         runHaxeCode('game.iconP2.changeIcon("hypnoDark");')
