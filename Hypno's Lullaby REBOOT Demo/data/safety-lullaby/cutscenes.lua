@@ -19,7 +19,7 @@ function onCreate()
         addLuaSprite('sc1pole')
 
         makeAnimatedLuaSprite('sc1gf', dir..'gf/walk_turn', 1200, 140)
-        addAnimationByIndices('sc1gf', 'walk', 'walk', '0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18', 24, false)
+        addAnimationByIndices('sc1gf', 'walk', 'walk', '0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18', 24, false)
         addAnimationByPrefix('sc1gf', 'turn', 'turn', 24, false)
         setObjectCamera('sc1gf', 'other')
         scaleObject('sc1gf', 0.825, 0.825)

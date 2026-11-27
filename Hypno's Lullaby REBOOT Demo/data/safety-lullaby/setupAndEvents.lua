@@ -96,7 +96,7 @@ function onCreatePost()
         
         var hb = game.healthBar;
         if (hb != null) {
-            var newWidth = 725; // Desired bar/icon travel width
+            var newWidth = 720; // Desired bar/icon travel width
             var delta = hb.barWidth - newWidth;
             hb.barWidth = newWidth;
             // Shift barOffset.x by half the difference to keep it centered
