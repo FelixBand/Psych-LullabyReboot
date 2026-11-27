@@ -2,14 +2,6 @@ luaDebugMode = true
 
 local SOURCE_TIME_OFFSET = 1.0
 local PS = 2 / 3
-local ENDING_MOVE_START = 181.1
-local ENDING_FADE_START = 184.1
-local ENDING_DARKEN_START = 191.86667
-local ENDING_ZOOM_DURATION = 198 - ENDING_MOVE_START
-local ENDING_HYPNO_DURATION = 193.13333 - ENDING_MOVE_START
-local endingMotionStarted = false
-local endingFadeStarted = false
-local endingDarkenStarted = false
 
 local function getPlaysAsBF() -- returns true if not playing Psych Online for PE compat :)))
     if type(_G.playsAsBF) == "function" then
@@ -57,7 +49,13 @@ function onCreatePost()
     runHaxeCode([[if (game.noteUnderlays != null) game.noteUnderlays.visible = false;]]) -- hide note underlane for aestheticsss
     setProperty('timeBar.visible', false)
     setProperty('timeTxt.visible', false)
+    setProperty('scoreTxt.scale.x', getProperty('scoreTxt.scale.x') / 1.1)
+    setProperty('scoreTxt.scale.y', getProperty('scoreTxt.scale.y') / 1.1)
 
+    setProperty('camZoomingDecay', 0.25) -- slower cam zooming
+    setProperty('camZoomingMult', 0)
+    setProperty('camZooming', true)
+    
     runHaxeCode( -- hide multiple players, only show dad
     [[
         for (m in game.dadGroup.members)
@@ -104,7 +102,7 @@ function onCreatePost()
         }
     ]])
     
-    setHealth(0.99999999) -- update health to apply bar width for icons
+    addHealth(0.000000001) -- update health to apply bar width for icons
 
     if dadName == 'hypno' then
         runHaxeCode('game.iconP2.changeIcon("hypnoDark");')
@@ -118,10 +116,19 @@ function onUpdate()
     scaleObject('healthBarMaskLeft', 1 - (getHealth() / 2), 1)
 end
 
+function onBeatHit()
+    if curBeat >= 72 then        
+        if curBeat % 2 == 0 then
+            triggerEvent('Add Camera Zoom', '0.015', '0')
+        end
+    end
+end
+
 function onEvent(name, value1, value2)
     if name == 'Hypno Icon' then
         if dadName == 'hypno' then
             runHaxeCode([[game.iconP2.changeIcon("]] .. value1 .. [[");]])
+            addHealth(0.0000000001) -- icon doesn't update neutral/lose state unless health changes......
         end
     end
     if name == 'Hypno Step Forward' then
@@ -132,6 +139,7 @@ function onEvent(name, value1, value2)
     if name == 'Transition to Ending' then
         setObjectOrder('endBg', getObjectOrder('pndHand') + 1)
         setObjectOrder('gfGroup', getObjectOrder('endBg') + 1)
+        setBlendMode('gf', 'add')
         doTweenAlpha('endBgIn', 'endBg', 1, 1.5, 'linear')
         doTweenZoom('camGameIn', 'camGame', 0.9, 1.4, 'smoothStepIn')
 
@@ -157,45 +165,19 @@ function onEvent(name, value1, value2)
         doTweenColor('endBgColor', 'endBg', getColorFromHex('FFFFFF'), 1.5, 'linear')
         doTweenAlpha('hypnoIn', 'gf', 1, 1.5, 'linear')
     end
-end
-
-function onUpdatePost()
-    local songTime = (getSongPosition() or 0) / 1000 + SOURCE_TIME_OFFSET
-
-    if curBeat >= 247 then
-        setProperty('camZooming', false)
+    if name == 'Ending Move Start' then
+        doTweenX('endBgZoomX', 'endBg.scale', getProperty('endBg.scale.x') * 1.5, 17, 'linear')
+        doTweenY('endBgZoomY', 'endBg.scale', getProperty('endBg.scale.y') * 1.5, 17, 'linear')
+        doTweenX('hypnoShrinkX', 'gf.scale', 0.65, 12, 'quadIn')
+        doTweenY('hypnoShrinkY', 'gf.scale', 0.65, 12, 'quadIn')
+        doTweenX('hypnoDriftX', 'gf', getProperty('gf.x') - 5 * PS, 12, 'quadIn')
+        doTweenY('hypnoDriftY', 'gf', getProperty('gf.y') - 93 * PS, 12, 'quadIn')
     end
-
-    if not endingMotionStarted and songTime >= ENDING_MOVE_START then
-        endingMotionStarted = true
-
-        local bgWidth = getProperty('endBg.width')
-        local bgHeight = getProperty('endBg.height')
-        local bgX = getProperty('endBg.x')
-        local bgY = getProperty('endBg.y')
-        local bgScaleX = getProperty('endBg.scale.x')
-        local bgScaleY = getProperty('endBg.scale.y')
-        local zoom = 1.5
-        local targetBgX = bgX - bgWidth * (zoom - 1) / 2 - PS
-        local targetBgY = bgY - bgHeight * (zoom - 1) / 2 + 113 * PS
-
-        doTweenX('endBgZoomX', 'endBg.scale', bgScaleX * zoom, ENDING_ZOOM_DURATION, 'linear')
-        doTweenY('endBgZoomY', 'endBg.scale', bgScaleY * zoom, ENDING_ZOOM_DURATION, 'linear')
-
-        doTweenX('hypnoShrinkX', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')
-        doTweenY('hypnoShrinkY', 'gf.scale', 0.65, ENDING_HYPNO_DURATION, 'cubeIn')
-        doTweenX('hypnoDriftX', 'gf', getProperty('gf.x') - 5 * PS, ENDING_HYPNO_DURATION, 'cubeIn')
-        doTweenY('hypnoDriftY', 'gf', getProperty('gf.y') - 93 * PS, ENDING_HYPNO_DURATION, 'cubeIn')
+    if name == 'Hypno Fade Away' then
+        doTweenAlpha('hypnoDarkFade', 'gf', 0, 5, 'quadOut')
     end
-
-    if not endingFadeStarted and songTime >= ENDING_FADE_START then
-        endingFadeStarted = true
-        doTweenAlpha('hypnoDarkFade', 'gf', 0, 189.16667 - ENDING_FADE_START, 'quadOut')
-    end
-
-    if not endingDarkenStarted and songTime >= ENDING_DARKEN_START then
-        endingDarkenStarted = true
-        doTweenColor('endBgToDark', 'endBg', getColorFromHex('000000'), 197 - ENDING_DARKEN_START, 'quadIn')
+    if name == 'Ending BG Darken' then
+        doTweenColor('endBgToDark', 'endBg', '000000', 5, 'quadIn')
     end
 end
 

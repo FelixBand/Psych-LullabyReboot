@@ -211,6 +211,18 @@
 			]
 		],
 		[
+			180100,
+			[
+				["Ending Move Start", "", ""]
+			]
+		],
+		[
+			183100,
+			[
+				["Hypno Fade Away", "", ""]
+			]
+		],
+		[
 			183786,
 			[
 				["Alt Idle Animation", "gf", "-disabled"]
@@ -220,6 +232,12 @@
 			183786,
 			[
 				["Play Animation", "laugh", "gf"]
+			]
+		],
+		[
+			190870,
+			[
+				["Ending BG Darken", "", ""]
 			]
 		],
 		[
